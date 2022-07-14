@@ -11,7 +11,11 @@
 
 		@include('components.menus')
 		
-		@yield('contents')
+		<div class="pcoded-main-container">
+			<div class="pcoded-content">
+				@yield('contents')
+			</div>
+		</div>
 		
 		@include('components.footer-link')
 		@include('components.footer')
