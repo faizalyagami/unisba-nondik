@@ -16,7 +16,7 @@ class CreateTableActivities extends Migration
         Schema::create('activities', function (Blueprint $table) {
             $table->id();
             $table->string('name', 151);
-            $table->integer('status')->comment("1 active, 2 inactive");
+            $table->integer('status')->default(1)->comment("1 active, 2 inactive");
             $table->string('creator', 51);
             $table->string('editor', 51);
             $table->timestamps();

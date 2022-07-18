@@ -13,12 +13,12 @@ class CreateTableReff extends Migration
      */
     public function up()
     {
-        Schema::create('reff', function (Blueprint $table) {
+        Schema::create('reffs', function (Blueprint $table) {
             $table->id();
             $table->string('name', 131);
             $table->integer('value');
             $table->string('show', 255);
-            $table->integer('status')->comment("1 active, 2 inactive");
+            $table->integer('status')->default(1)->comment("1 active, 2 inactive");
             $table->string('creator', 51);
             $table->string('editor', 51);
             $table->timestamps();
@@ -32,6 +32,6 @@ class CreateTableReff extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('reff');
+        Schema::dropIfExists('reffs');
     }
 }

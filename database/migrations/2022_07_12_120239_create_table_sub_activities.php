@@ -19,7 +19,7 @@ class CreateTableSubActivities extends Migration
             $table->string('name', 255);
             $table->integer('sks');
             $table->text('notes');
-            $table->integer('status')->comment("1 active, 2 inactive");
+            $table->integer('status')->default(1)->comment("1 active, 2 inactive");
             $table->string('creator', 51);
             $table->string('editor', 51);
             $table->timestamps();

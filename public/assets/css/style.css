@@ -30174,3 +30174,53 @@ new-task label input[type=checkbox] {
 }
 
 /**====== user card css end ======**/
+
+/**======pagination start ======**/
+.paginate {
+    float: right;
+    margin: 5px 0;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+  }
+  .paginate a {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    box-sizing: border-box;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    -webkit-transition: all 0.2s ease-out 0s;
+    -moz-transition: all 0.2s ease-out 0s;
+    -ms-transition: all 0.2s ease-out 0s;
+    -o-transition: all 0.2s ease-out 0s;
+    transition: all 0.2s ease-out 0s;
+    height: 24px;
+    min-width: 28px;
+    max-width: 54px;
+    border: 1px solid #18222c;
+    margin: 0 3px;
+    padding: 0 3px;
+    font-size: 11px;
+    color: #fff;
+    text-decoration: none;
+  }
+  .paginate a.current, 
+  .paginate a:hover{
+    background-color: #1abc9c;
+    color: #fff;
+    border-color: #1abc9c;
+  }
+  .paginate a:first-child,
+  .paginate a:last-child {
+    font-size: 16px;
+    padding: 5px 0 7px 0;
+  }
+  .paginate a:first-child:hover,
+  .paginate a:last-child:hover {
+    background-color: #1abc9c;
+    color: #fff;
+    border-color: #1abc9c;
+  }
+/**======pagination start ======**/

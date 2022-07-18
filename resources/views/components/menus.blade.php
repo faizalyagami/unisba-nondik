@@ -5,7 +5,7 @@
 				
 				<div class="">
 					<div class="main-menu-header">
-						<img class="img-radius" src="assets/images/user/avatar-2.jpg" alt="User-Profile-Image">
+						<img class="img-radius" src="/assets/images/user/avatar-2.jpg" alt="User-Profile-Image">
 						<div class="user-details">
 							<span>John Doe</span>
 							<div id="more-details">UX Designer</div>
@@ -32,13 +32,13 @@
 						<label>Administration</label>
 					</li>
 					<li class="nav-item">
-						<a href="form_elements.html" class="nav-link "><span class="pcoded-micon"><i class="feather icon-file-text"></i></span><span class="pcoded-mtext">Users</span></a>
+						<a href="form_elements.html" class="nav-link "><span class="pcoded-micon"><i class="feather icon-users"></i></span><span class="pcoded-mtext">Users</span></a>
 					</li>
 					<li class="nav-item">
-						<a href="{{ route('student.index') }}" class="nav-link "><span class="pcoded-micon"><i class="feather icon-align-justify"></i></span><span class="pcoded-mtext">Students</span></a>
+						<a href="{{ route('student.index') }}" class="nav-link "><span class="pcoded-micon"><i class="feather icon-users"></i></span><span class="pcoded-mtext">Mahasiswa</span></a>
 					</li>
 					<li class="nav-item">
-						<a href="tbl_bootstrap.html" class="nav-link "><span class="pcoded-micon"><i class="feather icon-align-justify"></i></span><span class="pcoded-mtext">Activities</span></a>
+						<a href="tbl_bootstrap.html" class="nav-link "><span class="pcoded-micon"><i class="feather icon-file-text"></i></span><span class="pcoded-mtext">Activities</span></a>
 					</li>
 				</ul>
 				

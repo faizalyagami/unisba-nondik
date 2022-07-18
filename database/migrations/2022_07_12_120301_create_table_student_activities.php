@@ -18,7 +18,7 @@ class CreateTableStudentActivities extends Migration
             $table->integer('student_id');
             $table->integer('sub_activity_id');
             $table->string('attachment', 255);
-            $table->integer('status')->comment("1 active, 2 inactive");
+            $table->integer('status')->default(1)->comment("1 active, 2 inactive");
             $table->string('creator', 51);
             $table->string('editor', 51);
             $table->timestamps();

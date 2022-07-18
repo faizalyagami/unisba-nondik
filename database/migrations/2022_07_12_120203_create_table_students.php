@@ -22,8 +22,8 @@ class CreateTableStudents extends Migration
             $table->date('date_of_birth')->nullable();
             $table->integer('gender')->default(1)->comment('1 Laki-laki, 2 Perempuan');
             $table->integer('religion')->default(1)->comment('1 Islam, 2 Hindu, 3 Budha, 4 Kristen, 5 Protestan, 6 Other');
-            $table->string('photo', 255);
-            $table->integer('status')->comment("1 active, 2 inactive");
+            $table->string('photo', 255)->nullable();
+            $table->integer('status')->default(1)->comment("1 active, 2 inactive");
             $table->string('creator', 51);
             $table->string('editor', 51);
             $table->timestamps();
