@@ -48,19 +48,23 @@
                 <input type="hidden" name="id" value="{{  $student->id }}">
                 <div class="form-group">
                     <label for="name">Nama</label>
-                    <input readonly type="text" class="form-control" name="name" id="name" placeholder="Nama" value="{{ $student->name }}">
+                    <input readonly type="text" class="form-control form-control-sm" name="name" id="name" placeholder="Nama" value="{{ $student->name }}">
                 </div>
                 <div class="form-group">
                     <label for="phone">No Telepon</label>
-                    <input readonly type="text" class="form-control" name="phone" id="phone" placeholder="No Telepon" value="{{ $student->phone }}">
+                    <input readonly type="text" class="form-control form-control-sm" name="phone" id="phone" placeholder="No Telepon" value="{{ $student->phone }}">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input readonly type="text" class="form-control form-control-sm" name="email" id="email" placeholder="No Telepon" value="{{ $student->email }}">
                 </div>
                 <div class="form-group">
                     <label for="address">Alamat</label>
-                    <textarea readonly class="form-control" name="address" id="address" rows="3"> {{$student->address }} </textarea>
+                    <textarea readonly class="form-control form-control-sm" name="address" id="address" rows="3"> {{$student->address }} </textarea>
                 </div>
                 <div class="form-group">
                     <label for="date_of_birth">Tanggal Lahir</label>
-                    <input readonly type="date" class="form-control" name="date_of_birth" id="date_of_birth" placeholder="Tanggal Lahir" value="{{ $student->date_of_birth !== null ? date("Y-m-d", strtotime($student->date_of_birth)) : '' }}">
+                    <input readonly type="date" class="form-control form-control-sm" name="date_of_birth" id="date_of_birth" placeholder="Tanggal Lahir" value="{{ $student->date_of_birth !== null ? date("Y-m-d", strtotime($student->date_of_birth)) : '' }}">
                 </div>
                 <div class="form-group">
                     <label for="address">Jenis Kelamin</label><br />
@@ -85,12 +89,21 @@
                     @foreach ($status as $key => $value)
                         <div class="custom-control custom-radio custom-control-inline">
                             <input disabled type="radio" {{ $key == $student->status ? 'checked' : '' }} id="status-{{ $key }}" name="status" value="{{ $key }}" class="custom-control-input">
-                            <label class="custom-control-label" for="status-{{ $key }}">{{ $value}}</label>
+                            <label class="custom-control-label" for="status-{{ $key }}">{{ $value }}</label>
+                        </div>
+                    @endforeach
+                </div>
+                <div class="form-group">
+                    <label for="address">Pansus</label><br />
+                    @foreach ($pansus as $key => $value)
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input disabled type="radio" {{ $key == $student->pansus ? 'checked' : '' }} id="pansus-{{ $key }}" name="pansus" value="{{ $key }}" class="custom-control-input">
+                            <label class="custom-control-label" for="pansus-{{ $key }}">{{ $value }}</label>
                         </div>
                     @endforeach
                 </div>
                 <div class="">
-                    <img class="img-fluid d-block w-10" src="{{ url("uploads/20220718074641.png") }}" alt="First slide">
+                    <img class="img-fluid d-block w-10" src="{{ url("uploads/". $student->photo) }}" alt="{{ $student->name }}">
                 </div>
             </form>
 

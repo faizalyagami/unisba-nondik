@@ -31,14 +31,18 @@
 					<li class="nav-item pcoded-menu-caption">
 						<label>Administration</label>
 					</li>
-					<li class="nav-item">
-						<a href="form_elements.html" class="nav-link "><span class="pcoded-micon"><i class="feather icon-users"></i></span><span class="pcoded-mtext">Users</span></a>
+					<li class="nav-item {{ $active == 'users' ? 'active' : '' }}">
+						<a href="{{ route('user.index') }}" class="nav-link "><span class="pcoded-micon"><i class="feather icon-users"></i></span><span class="pcoded-mtext">Users</span></a>
 					</li>
-					<li class="nav-item">
-						<a href="{{ route('student.index') }}" class="nav-link "><span class="pcoded-micon"><i class="feather icon-users"></i></span><span class="pcoded-mtext">Mahasiswa</span></a>
+					<li class="nav-item {{ $active == 'students' ? 'active' : '' }}">
+						<a href="{{ route('student.index') }}" class="nav-link"><span class="pcoded-micon"><i class="feather icon-users"></i></span><span class="pcoded-mtext">Mahasiswa</span></a>
 					</li>
-					<li class="nav-item">
-						<a href="tbl_bootstrap.html" class="nav-link "><span class="pcoded-micon"><i class="feather icon-file-text"></i></span><span class="pcoded-mtext">Activities</span></a>
+					<li class="nav-item pcoded-hasmenu {{ $active == 'activities' ? 'active pcoded-trigger' : '' }}">
+						<a href="javascript:void(0)" class="nav-link "><span class="pcoded-micon"><i class="feather icon-file-text"></i></span><span class="pcoded-mtext">Activities</span></a>
+					    <ul class="pcoded-submenu">
+					        <li class="{{ $sub_active == 'activities' ? 'active' : '' }}"><a href="{{ route('activity.index') }}">Activities</a></li>
+					        <li><a href="">Student Activities</a></li>
+					    </ul>
 					</li>
 				</ul>
 				

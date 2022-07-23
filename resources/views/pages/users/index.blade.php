@@ -7,7 +7,7 @@
             <div class="row align-items-center">
                 <div class="col-md-12">
                     <div class="page-header-title">
-                        <h5 class="m-b-10">Mahasiswa</h5>
+                        <h5 class="m-b-10">Users</h5>
                     </div>
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="index.html"><i class="feather icon-home"></i></a></li>
@@ -16,6 +16,24 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <div style="top:27px; right:27px; position: fixed; z-index: 99999;">
+        @if (session('success'))
+            <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                    {{ session('success') }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{ session('error') }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+            </div>
+        @endif
+
+        <div id="reset-alert1"></div>
     </div>
 
     <div class="card">
@@ -30,8 +48,7 @@
                     <ul class="list-unstyled card-option dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; transform: translate3d(-138px, 28px, 0px); top: 0px; left: 0px; will-change: transform;">
                         <li class="dropdown-item"><a href="javascript:void(0)" class="" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo"><i class="feather mr-2 icon-search"></i> Search</a></li>
                         <li class="dropdown-item"><hr></li>
-                        <li class="dropdown-item"><a href="{{ route('student.create') }}" class=""><i class="feather mr-2 icon-user-plus"></i> Tambah Baru</a></li>
-                        <li class="dropdown-item"><a href="{{ route('student.import') }}" class=""><i class="feather mr-2 icon-log-in" style="transform: rotate(90deg);"></i> Import</a></li>
+                        <li class="dropdown-item"><a href="{{ route('user.create') }}" class=""><i class="feather mr-2 icon-plus"></i> Tambah Baru</a></li>
                     </ul>
                 </div>
             </div>
@@ -52,29 +69,11 @@
                                 <input type="text" class="form-control" name="search_text" id="search_text" value="{{  $search_text }}">
                             </div>
                             <div class="form-group">
-                                <label for="address">Jenis Kelamin</label><br />
-                                @foreach ($genders as $key => $value)
+                                <label for="address">Level</label><br />
+                                @foreach ($levels as $key => $value)
                                     <div class="custom-control custom-radio custom-control-inline">
-                                        <input type="radio" {{ $key == $search_gender ? 'checked' : '' }} id="gender-{{ $key }}" name="search_gender" value="{{ $key }}" class="custom-control-input">
-                                        <label class="custom-control-label" for="gender-{{ $key }}">{{ $value }}</label>
-                                    </div>
-                                @endforeach
-                            </div>
-                            <div class="form-group">
-                                <label for="address">Agama</label><br />
-                                @foreach ($religions as $key => $value)
-                                    <div class="custom-control custom-radio custom-control-inline">
-                                        <input type="radio" {{ $key == $search_religion ? 'checked' : '' }} id="religion-{{ $key }}" name="search_religion" value="{{ $key }}" class="custom-control-input">
-                                        <label class="custom-control-label" for="religion-{{ $key }}">{{ $value }}</label>
-                                    </div>
-                                @endforeach
-                            </div>
-                            <div class="form-group">
-                                <label for="address">Pansus</label><br />
-                                @foreach ($pansus as $key => $value)
-                                    <div class="custom-control custom-radio custom-control-inline">
-                                        <input type="radio" {{ $key == $search_pansus ? 'checked' : '' }} id="pansus-{{ $key }}" name="search_pansus" value="{{ $key }}" class="custom-control-input">
-                                        <label class="custom-control-label" for="pansus-{{ $key }}">{{ $value }}</label>
+                                        <input type="radio" {{ $key == $search_level ? 'checked' : '' }} id="level-{{ $key }}" name="search_level" value="{{ $key }}" class="custom-control-input">
+                                        <label class="custom-control-label" for="level-{{ $key }}">{{ $value }}</label>
                                     </div>
                                 @endforeach
                             </div>
@@ -96,35 +95,48 @@
             </div>
         </div>
 
+        <div id="exampleModalLive" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLiveLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLiveLabel">Reset Password</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="mb-0">Anda yakin akan mereset password <span id="recipient-name"></span></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn  btn-primary" id="recipient-btn" data-id="" data-dismiss="modal" onclick="resetPassword(this)">Reset</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="card-body">
             <div class="table-responsive">
                 <table class="table table-hover">
                     <thead>
                         <tr>
                             <th>#</th>
+                            <th>Username</th>
                             <th>Nama</th>
-                            <th>Telepon</th>
-                            <th>Jenis Kelamin</th>
+                            <th>email</th>
+                            <th>Level</th>
+                            <th>Status</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @if (count($students))
-                            @foreach ($students as $key => $student)
+                        @if (count($users))
+                            @foreach ($users as $key => $user)
                                 <tr>
-                                    <td>{{ $students->firstItem() + $key }}</td>
-                                    <td>
-                                        @if ($student->photo !== null && $student->photo !== '')
-                                            <img src="/uploads/{{ $student->photo }}" alt="{{ $student->name }}" class="img-radius wid-40 align-top m-r-15">
-                                        @endif
-                                        <div class="d-inline-block">
-                                            <h6>{{ $student->name }}</h6>
-                                            <p class="text-muted m-b-0">NPM: 
-                                                <a href="{{ route('student.show', [$student->id]) }}">{{ $student->npm }}</a>
-                                            </p>
-                                        </div>
-                                    </td>
-                                    <td>{{ $student->phone }}</td>
-                                    <td>{{ $genders[$student->gender] }}</td>
+                                    <td>{{ $users->firstItem() + $key }}</td>
+                                    <td><a href="{{ route('user.show', $user->id) }}"> {{ $user->username }}</a></td>
+                                    <td>{{ $user->name }}</td>
+                                    <td>{{ $user->email }}</td>
+                                    <td>{{ $levels[$user->level] }}</td>
+                                    <td>{{ $status[$user->status] }}</td>
+                                    <td><a haref="javascript:void(0)" class="btn btn-info" data-toggle="modal" data-target="#exampleModalLive" onclick="setData({{ $user->id .", '". $user->name ."'" }})" style="cursor: pointer">Reset Password</a></td>
                                 </tr>
                             @endforeach
                         @else
@@ -135,9 +147,39 @@
                     </tbody>
                 </table>
 
-                {{ $students->links('vendor.pagination.custom-default') }}
+                {{ $users->links('vendor.pagination.custom-default') }}
             </div>
         </div>
     </div>
+
+    <script>
+        window.resetPassword = function (th) {
+            var id = $(th).data('id');
+            
+            var csrf_token = $("input[name=_token]").val();
+            $.ajax({
+                url: 'user/reset-password',
+                dataType: 'JSON',
+                type: 'POST',
+                data: {
+                    _token: csrf_token,
+                    id: id,
+                },
+                success: function success(data) {
+                    $("#reset-alert1").html(`
+                        <div class="alert alert-primary alert-dismissible fade show" role="alert" id="reset-alert">
+                            `+ data.msg +`
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                        </div>
+                    `);
+                }
+            });
+        };
+
+        window.setData = function (id, name) {
+            $("#recipient-name").html(name);
+            $("#recipient-btn").data('id', id);
+        };
+    </script>
 
 @endsection

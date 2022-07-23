@@ -27,7 +27,7 @@
                 @csrf
                 <div class="form-group">
                     <label for="npm">NPM</label>
-                    <input type="text" class="form-control @error('npm')  is-invalid @enderror" name="npm" id="npm" placeholder="NPM" value="{{ $student->npm }}">
+                    <input type="text" class="form-control form-control-sm @error('npm')  is-invalid @enderror" name="npm" id="npm" placeholder="NPM" value="{{ $student->npm }}">
                     @error('npm')
                         <div class="invalid-feedback">
                             {{ $message }}
@@ -36,7 +36,7 @@
                 </div>
                 <div class="form-group">
                     <label for="name">Nama</label>
-                    <input type="text" class="form-control @error('name')  is-invalid @enderror" name="name" id="name" placeholder="Nama" value="{{ $student->name }}">
+                    <input type="text" class="form-control form-control-sm @error('name')  is-invalid @enderror" name="name" id="name" placeholder="Nama" value="{{ $student->name }}">
                     @error('name')
                         <div class="invalid-feedback">
                             {{ $message }}
@@ -45,7 +45,7 @@
                 </div>
                 <div class="form-group">
                     <label for="phone">No Telepon</label>
-                    <input type="text" class="form-control @error('phone')  is-invalid @enderror" name="phone" id="phone" placeholder="No Telepon" value="{{ $student->phone }}">
+                    <input type="text" class="form-control form-control-sm @error('phone')  is-invalid @enderror" name="phone" id="phone" placeholder="No Telepon" value="{{ $student->phone }}">
                     @error('phone')
                         <div class="invalid-feedback">
                             {{ $message }}
@@ -53,8 +53,17 @@
                     @enderror
                 </div>
                 <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" class="form-control form-control-sm @error('email')  is-invalid @enderror" name="email" id="email" placeholder="No Telepon" value="{{ $student->email }}">
+                    @error('email')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
+                <div class="form-group">
                     <label for="address">Alamat</label>
-                    <textarea class="form-control @error('address')  is-invalid @enderror" name="address" id="address" rows="3"> {{ $student->address }} </textarea>
+                    <textarea class="form-control form-control-sm @error('address')  is-invalid @enderror" name="address" id="address" rows="3"> {{ $student->address }} </textarea>
                     @error('address')
                         <div class="invalid-feedback">
                             {{ $message }}
@@ -63,7 +72,7 @@
                 </div>
                 <div class="form-group">
                     <label for="date_of_birth">Tanggal Lahir</label>
-                    <input type="date" class="form-control @error('date_of_birth')  is-invalid @enderror" name="date_of_birth" id="date_of_birth" placeholder="Tanggal Lahir" value="{{ $student->date_of_birth !== null ? date("Y-m-d", strtotime($student->date_of_birth)) : '' }}">
+                    <input type="date" class="form-control form-control-sm @error('date_of_birth')  is-invalid @enderror" name="date_of_birth" id="date_of_birth" placeholder="Tanggal Lahir" value="{{ $student->date_of_birth !== null ? date("Y-m-d", strtotime($student->date_of_birth)) : '' }}">
                     @error('date_of_birth')
                         <div class="invalid-feedback">
                             {{ $message }}
@@ -100,7 +109,16 @@
                     @foreach ($status as $key => $value)
                         <div class="custom-control custom-radio custom-control-inline">
                             <input type="radio" {{ $key == $student->status ? 'checked' : '' }} id="status-{{ $key }}" name="status" value="{{ $key }}" class="custom-control-input">
-                            <label class="custom-control-label" for="status-{{ $key }}">{{ $value}}</label>
+                            <label class="custom-control-label" for="status-{{ $key }}">{{ $value }}</label>
+                        </div>
+                    @endforeach
+                </div>
+                <div class="form-group">
+                    <label for="address">Pansus</label><br />
+                    @foreach ($pansus as $key => $value)
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input type="radio" {{ $key == $student->pansus ? 'checked' : '' }} id="pansus-{{ $key }}" name="pansus" value="{{ $key }}" class="custom-control-input">
+                            <label class="custom-control-label" for="pansus-{{ $key }}">{{ $value }}</label>
                         </div>
                     @endforeach
                 </div>

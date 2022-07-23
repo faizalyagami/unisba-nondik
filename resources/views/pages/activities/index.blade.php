@@ -7,7 +7,7 @@
             <div class="row align-items-center">
                 <div class="col-md-12">
                     <div class="page-header-title">
-                        <h5 class="m-b-10">Mahasiswa</h5>
+                        <h5 class="m-b-10">Activities</h5>
                     </div>
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="index.html"><i class="feather icon-home"></i></a></li>
@@ -16,6 +16,22 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <div style="top:27px; right:27px; position: fixed; z-index: 99999;">
+        @if (session('success'))
+            <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                    {{ session('success') }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{ session('error') }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+            </div>
+        @endif
     </div>
 
     <div class="card">
@@ -30,8 +46,7 @@
                     <ul class="list-unstyled card-option dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; transform: translate3d(-138px, 28px, 0px); top: 0px; left: 0px; will-change: transform;">
                         <li class="dropdown-item"><a href="javascript:void(0)" class="" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo"><i class="feather mr-2 icon-search"></i> Search</a></li>
                         <li class="dropdown-item"><hr></li>
-                        <li class="dropdown-item"><a href="{{ route('student.create') }}" class=""><i class="feather mr-2 icon-user-plus"></i> Tambah Baru</a></li>
-                        <li class="dropdown-item"><a href="{{ route('student.import') }}" class=""><i class="feather mr-2 icon-log-in" style="transform: rotate(90deg);"></i> Import</a></li>
+                        <li class="dropdown-item"><a href="{{ route('activity.create') }}" class=""><i class="feather mr-2 icon-plus"></i> Tambah Baru</a></li>
                     </ul>
                 </div>
             </div>
@@ -50,33 +65,6 @@
                             <div class="form-group">
                                 <label for="search_text" class="col-form-label">Search</label>
                                 <input type="text" class="form-control" name="search_text" id="search_text" value="{{  $search_text }}">
-                            </div>
-                            <div class="form-group">
-                                <label for="address">Jenis Kelamin</label><br />
-                                @foreach ($genders as $key => $value)
-                                    <div class="custom-control custom-radio custom-control-inline">
-                                        <input type="radio" {{ $key == $search_gender ? 'checked' : '' }} id="gender-{{ $key }}" name="search_gender" value="{{ $key }}" class="custom-control-input">
-                                        <label class="custom-control-label" for="gender-{{ $key }}">{{ $value }}</label>
-                                    </div>
-                                @endforeach
-                            </div>
-                            <div class="form-group">
-                                <label for="address">Agama</label><br />
-                                @foreach ($religions as $key => $value)
-                                    <div class="custom-control custom-radio custom-control-inline">
-                                        <input type="radio" {{ $key == $search_religion ? 'checked' : '' }} id="religion-{{ $key }}" name="search_religion" value="{{ $key }}" class="custom-control-input">
-                                        <label class="custom-control-label" for="religion-{{ $key }}">{{ $value }}</label>
-                                    </div>
-                                @endforeach
-                            </div>
-                            <div class="form-group">
-                                <label for="address">Pansus</label><br />
-                                @foreach ($pansus as $key => $value)
-                                    <div class="custom-control custom-radio custom-control-inline">
-                                        <input type="radio" {{ $key == $search_pansus ? 'checked' : '' }} id="pansus-{{ $key }}" name="search_pansus" value="{{ $key }}" class="custom-control-input">
-                                        <label class="custom-control-label" for="pansus-{{ $key }}">{{ $value }}</label>
-                                    </div>
-                                @endforeach
                             </div>
                             <div class="form-group">
                                 <label for="address">Status</label><br />
@@ -103,28 +91,16 @@
                         <tr>
                             <th>#</th>
                             <th>Nama</th>
-                            <th>Telepon</th>
-                            <th>Jenis Kelamin</th>
+                            <th>Status</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @if (count($students))
-                            @foreach ($students as $key => $student)
+                        @if (count($activities))
+                            @foreach ($activities as $key => $activity)
                                 <tr>
-                                    <td>{{ $students->firstItem() + $key }}</td>
-                                    <td>
-                                        @if ($student->photo !== null && $student->photo !== '')
-                                            <img src="/uploads/{{ $student->photo }}" alt="{{ $student->name }}" class="img-radius wid-40 align-top m-r-15">
-                                        @endif
-                                        <div class="d-inline-block">
-                                            <h6>{{ $student->name }}</h6>
-                                            <p class="text-muted m-b-0">NPM: 
-                                                <a href="{{ route('student.show', [$student->id]) }}">{{ $student->npm }}</a>
-                                            </p>
-                                        </div>
-                                    </td>
-                                    <td>{{ $student->phone }}</td>
-                                    <td>{{ $genders[$student->gender] }}</td>
+                                    <td>{{ $activities->firstItem() + $key }}</td>
+                                    <td><a href="{{ route('activity.show', $activity->id) }}"> {{ $activity->name }}</a></td>
+                                    <td>{{ $status[$activity->status] }}</td>
                                 </tr>
                             @endforeach
                         @else
@@ -135,7 +111,7 @@
                     </tbody>
                 </table>
 
-                {{ $students->links('vendor.pagination.custom-default') }}
+                {{ $activities->links('vendor.pagination.custom-default') }}
             </div>
         </div>
     </div>

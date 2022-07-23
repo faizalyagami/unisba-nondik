@@ -42,7 +42,7 @@
                 @csrf
                 <div class="form-group">
                     <label for="npm">NPM</label>
-                    <input type="text" class="form-control @error('npm')  is-invalid @enderror" name="npm" id="npm" placeholder="NPM" value="{{ old("npm") }}">
+                    <input type="text" class="form-control form-control-sm @error('npm')  is-invalid @enderror" name="npm" id="npm" placeholder="NPM" value="{{ old("npm") }}">
                     @error('npm')
                         <div class="invalid-feedback">
                             {{ $message }}
@@ -51,7 +51,7 @@
                 </div>
                 <div class="form-group">
                     <label for="name">Nama</label>
-                    <input type="text" class="form-control @error('name')  is-invalid @enderror" name="name" id="name" placeholder="Nama" value="{{ old("name") }}">
+                    <input type="text" class="form-control form-control-sm @error('name')  is-invalid @enderror" name="name" id="name" placeholder="Nama" value="{{ old("name") }}">
                     @error('name')
                         <div class="invalid-feedback">
                             {{ $message }}
@@ -60,7 +60,7 @@
                 </div>
                 <div class="form-group">
                     <label for="phone">No Telepon</label>
-                    <input type="text" class="form-control @error('phone')  is-invalid @enderror" name="phone" id="phone" placeholder="No Telepon" value="{{ old("phone") }}">
+                    <input type="text" class="form-control form-control-sm @error('phone')  is-invalid @enderror" name="phone" id="phone" placeholder="No Telepon" value="{{ old("phone") }}">
                     @error('phone')
                         <div class="invalid-feedback">
                             {{ $message }}
@@ -68,8 +68,17 @@
                     @enderror
                 </div>
                 <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" class="form-control form-control-sm @error('email')  is-invalid @enderror" name="email" id="email" placeholder="Email" value="{{ old("email") }}">
+                    @error('email')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
+                <div class="form-group">
                     <label for="address">Alamat</label>
-                    <textarea class="form-control @error('address')  is-invalid @enderror" name="address" id="address" rows="3"> {{ old("address") }} </textarea>
+                    <textarea class="form-control form-control-sm @error('address')  is-invalid @enderror" name="address" id="address" rows="3"> {{ old("address") }} </textarea>
                     @error('address')
                         <div class="invalid-feedback">
                             {{ $message }}
@@ -78,7 +87,7 @@
                 </div>
                 <div class="form-group">
                     <label for="date_of_birth">Tanggal Lahir</label>
-                    <input type="date" class="form-control @error('date_of_birth')  is-invalid @enderror" name="date_of_birth" id="date_of_birth" placeholder="Tanggal Lahir" value="{{ old("date_of_birth") }}">
+                    <input type="date" class="form-control form-control-sm @error('date_of_birth')  is-invalid @enderror" name="date_of_birth" id="date_of_birth" placeholder="Tanggal Lahir" value="{{ old("date_of_birth") }}">
                     @error('date_of_birth')
                         <div class="invalid-feedback">
                             {{ $message }}

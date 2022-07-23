@@ -5063,7 +5063,7 @@ input[type="button"].btn-block {
 .breadcrumb-item + .breadcrumb-item::before {
     display: inline-block;
     padding-right: 0.5rem;
-    color: #6c757d;
+    color: #1abc9c;
     content: "/";
 }
 
@@ -18169,7 +18169,7 @@ strong {
 }
 
 .page-header .page-header-title + .breadcrumb > .breadcrumb-item:before {
-    color: rgba(55, 58, 60, 0.6);
+    color: rgba(26, 210, 39, 0.84);
 }
 
 .page-header .page-header-title + .breadcrumb > .breadcrumb-item a {
@@ -30175,7 +30175,7 @@ new-task label input[type=checkbox] {
 
 /**====== user card css end ======**/
 
-/**======pagination start ======**/
+/**====== pagination start ======**/
 .paginate {
     float: right;
     margin: 5px 0;
@@ -30223,4 +30223,39 @@ new-task label input[type=checkbox] {
     color: #fff;
     border-color: #1abc9c;
   }
-/**======pagination start ======**/
+/**====== pagination start ======**/
+
+
+/**====== pagination start ======**/
+.progres-s {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.progres-s span {
+    position: absolute;
+    font-size: 11px;
+    font-weight: 600;
+    color: #fff;
+}
+.progres-s progress {
+    -webkit-appearance: none;
+    appearance: none;
+    border-radius: 3px; 
+    width: 100%;
+    height: 27px;
+    transition: 1s ease;
+    box-shadow: 1px 1px 4px rgba( 0, 0, 0, 0.2 );
+}
+.progres-s progress::-webkit-progress-bar {
+    background-color: #233140;
+    border-radius: 3px;
+    border: 2px solid #18222c;
+}
+.progres-s progress::-webkit-progress-value {
+    /* background-color: #1abc9c; */
+    background-image: -webkit-linear-gradient(left, #04a988, #15ad8f);
+    border-radius: 3px;
+    background-size: 100% 28px;
+}
+/**====== pagination start ======**/
