@@ -24,8 +24,8 @@
 					<li class="nav-item pcoded-menu-caption">
 						<label>Activities</label>
 					</li>
-					<li class="nav-item">
-						<a href="form_elements.html" class="nav-link "><span class="pcoded-micon"><i class="feather icon-file-text"></i></span><span class="pcoded-mtext">Activities</span></a>
+					<li class="nav-item {{ $active == 'student-activities' ? 'active' : '' }}">
+						<a href="{{ route('student.activity.index') }}" class="nav-link "><span class="pcoded-micon"><i class="feather icon-file-text"></i></span><span class="pcoded-mtext">Activities</span></a>
 					</li>
 
 					<li class="nav-item pcoded-menu-caption">

@@ -19,7 +19,7 @@ class ActivityController extends Controller
         $status = [0 => 'Semua', 1 => 'Aktif', 'Tidak Aktif'];
 
         $search_text = $request->search_text;
-        $search_status = $request->search_status ? $request->search_status : 1;
+        $search_status = $request->search_status !== null ? $request->search_status : 1;
 
         $activities = Activity::select('id', 'name', 'status')
             ->whereRaw('name ilike ?', ['%'. $search_text .'%'])

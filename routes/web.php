@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\StudentActivityController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SubActivityController;
 use App\Http\Controllers\UserController;
@@ -41,6 +42,16 @@ Route::prefix('student')->name('student.')->group(function () {
 	Route::get('/import', [StudentController::class, 'import'])->name('import');
 	Route::post('/import/read', [StudentController::class, 'read'])->name('read');
 	Route::post('/import/process', [StudentController::class, 'process'])->name('process');
+
+	Route::prefix('activity')->name('activity.')->group(function () {
+		Route::get('/', [StudentActivityController::class, 'index'])->name('index');
+		Route::post('/', [StudentActivityController::class, 'store'])->name('store');
+		Route::get('/create', [StudentActivityController::class, 'create'])->name('create');
+		Route::get('/show/{studentActivity}', [StudentActivityController::class, 'show'])->name('show');
+		Route::get('/edit/{studentActivity}', [StudentActivityController::class, 'edit'])->name('edit');
+		Route::post('/update/{studentActivity}', [StudentActivityController::class, 'update'])->name('update');
+		Route::post('/approve/{studentActivity}', [StudentActivityController::class, 'approve'])->name('approve');
+	});
 });
 
 Route::prefix('activity')->name('activity.')->group(function () {
