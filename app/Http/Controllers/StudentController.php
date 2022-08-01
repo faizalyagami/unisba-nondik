@@ -123,8 +123,8 @@ class StudentController extends Controller
                 if($request->photo) {
                     $message->photo = $file_name;
                 }
-                $message->creator = 'sessionadmin';
-                $message->editor = 'sessionadmin';
+                $message->creator = auth()->user()->username;
+                $message->editor = auth()->user()->username;
                 $message->save();
 
                 if($request->photo) {
@@ -140,8 +140,8 @@ class StudentController extends Controller
                 $user->username = $request->npm;
                 $user->email = $request->email;
                 $user->password = Hash::make("passwordnyabelumdisetting");
-                $user->creator = 'sessionadmin';
-                $user->editor = 'sessionadmin';
+                $user->creator = auth()->user()->username;
+                $user->editor = auth()->user()->username;
                 $message->user()->save($user);
             });
 
@@ -238,7 +238,7 @@ class StudentController extends Controller
                 }
                 $message->status = $request->status;
                 $message->pansus = $request->pansus;
-                $message->editor = 'sessionadmin';
+                $message->editor = auth()->user()->username;
                 $message->save();
 
                 if($request->photo) {
@@ -254,7 +254,7 @@ class StudentController extends Controller
                 $user->username = $request->npm;
                 $user->email = $request->email;
                 $user->level = $request->pansus;
-                $user->editor = 'sessionadmin';
+                $user->editor = auth()->user()->username;
                 $user->save();
             });
 
@@ -383,14 +383,18 @@ class StudentController extends Controller
 
                     $dupliflag = true;
                     $coll = array_filter(array_column($rows, 0));
-                    $sear = (string) $contents[0];
-                    $dupli = 0;
+                    $collemail = array_filter(array_column($rows, 5));
+                    $dupli = $dupliemail = 0;
 
                     if($contents[0] !== null && $contents[0] !== '') {
                         $dupli = array_count_values($coll)[$contents[0]];
                     }
 
-                    if($dupli > 1) {
+                    if($contents[5] !== null && $contents[5] !== '') {
+                        $dupliemail = array_count_values($collemail)[$contents[5]];
+                    }
+
+                    if($dupli > 1 || $dupliemail > 1) {
                         $dupliflag = false;
                     }
 
@@ -415,7 +419,7 @@ class StudentController extends Controller
                             $table_contents .= '<tr id="tr-import-'.$index .'" class="student_exist" style="background:#ffca68" title="Mahasiswa sudah ada !!">';
                         }
                     } else {
-                        $table_contents .= '<tr id="tr-import-'.$index .'" class="student_duplicate" style="background:#a35252" title="Duplicated Student !!">';
+                        $table_contents .= '<tr id="tr-import-'.$index .'" class="student_duplicate" style="background:#a35252" title="Duplicated Student or duplicate email !!">';
                     }
 
                     $genders = ["1" => "Laki - Laki", "Perempuan"];
@@ -503,14 +507,18 @@ class StudentController extends Controller
 
                 $dupliflag = true;
                 $coll = array_filter(array_column($rows, 0));
-                $sear = (string) $contents[0];
-                $dupli = 0;
+                $collemail = array_filter(array_column($rows, 5));
+                $dupli = $dupliemail = 0;
 
                 if($contents[0] !== null && $contents[0] !== '') {
                     $dupli = array_count_values($coll)[$contents[0]];
                 }
 
-                if($dupli > 1) {
+                if($contents[5] !== null && $contents[5] !== '') {
+                    $dupliemail = array_count_values($collemail)[$contents[5]];
+                }
+
+                if($dupli > 1 || $dupliemail > 1) {
                     $dupliflag = false;
                 }
 
@@ -535,8 +543,8 @@ class StudentController extends Controller
                                         if($contents[6] !== null && $contents[6] != '') {
                                             $message->address = $contents[6];
                                         }
-                                        $message->creator = 'sessionadmin';
-                                        $message->editor = 'sessionadmin';
+                                        $message->creator = auth()->user()->username;
+                                        $message->editor = auth()->user()->username;
                                         $message->save();
 
                                         $user = New User();
@@ -544,8 +552,8 @@ class StudentController extends Controller
                                         $user->username = $contents[0];
                                         $user->email = $contents[5];
                                         $user->password = Hash::make("passwordnyabelumdisetting");
-                                        $user->creator = 'sessionadmin';
-                                        $user->editor = 'sessionadmin';
+                                        $user->creator = auth()->user()->username;
+                                        $user->editor = auth()->user()->username;
                                         $message->user()->save($user);
 
                                     });
@@ -564,7 +572,7 @@ class StudentController extends Controller
                         $result = ['message' => 'error', 'data' => 'Mahasiswa sudah ada!!', 'index' => $index];
                     }
                 } else {
-                    $result = ['message' => 'error', 'data' => 'Duplicate Student!!', 'index' => $index];
+                    $result = ['message' => 'error', 'data' => 'Duplicate Student or email!!', 'index' => $index];
                 }
 
             }

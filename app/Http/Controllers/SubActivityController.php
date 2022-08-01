@@ -53,8 +53,8 @@ class SubActivityController extends Controller
             $message->name = $request->name;
             $message->sks = $request->sks;
             $message->notes = $request->notes;
-            $message->creator = 'sessionadmin';
-            $message->editor = 'sessionadmin';
+            $message->creator = auth()->user()->username;
+            $message->editor = auth()->user()->username;
             $message->save();
 
             $request->session()->flash('success', 'Sub Activity has been added successfully');
@@ -122,7 +122,7 @@ class SubActivityController extends Controller
             $message->sks = $request->sks;
             $message->notes = $request->notes;
             $message->status = $request->status;
-            $message->editor = 'sessionadmin';
+            $message->editor = auth()->user()->username;
             $message->save();
 
             $request->session()->flash('success', 'Sub Activity has been update successfully');

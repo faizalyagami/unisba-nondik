@@ -38,12 +38,14 @@
     <div class="card">
 
         <div class="card-body">
-            <form action="" method="post" name="student-activity-form" id="student-activity-form" class="" enctype="multipart/form-data">
+            <form action="{{ route('student.activity.review', [$studentActivity->id]) }}" method="post" name="student-activity-form" id="student-activity-form" class="" enctype="multipart/form-data">
                 @csrf
-                <div class="form-group">
-                    <label for="student">Mahasiswa</label>
-                    <input readonly type="text" class="form-control form-control-sm" name="student" id="student" placeholder="Mahasiswa" value="{{ $studentActivity->student->name }}">
-                </div>
+                @if(auth()->user()->level != 3)
+                    <div class="form-group">
+                        <label for="student">Mahasiswa</label>
+                        <input readonly type="text" class="form-control form-control-sm" name="student" id="student" placeholder="Mahasiswa" value="{{ $studentActivity->student->name }}">
+                    </div>
+                @endif
                 <div class="form-group">
                     <label for="sub-activity">Aktivitas</label>
                     <input readonly type="text" class="form-control form-control-sm" name="subActivity" id="sub-activity" placeholder="Sub Activity..." value="{{ $studentActivity->subActivity->name }}">
@@ -60,36 +62,44 @@
                     @endif
                 </div>
 
-                <a href="{{ route('student.activity.edit', [$studentActivity->id]) }}" class="btn  btn-primary">Edit</a>
+                @if($user->level != 2 && $studentActivity->status == 1)
+                    <a href="{{ route('student.activity.edit', [$studentActivity->id]) }}" class="btn  btn-primary">Edit</a>
+                @endif
+
+                @if($user->level != 3 && $studentActivity->status == 1)
+                    <button type="submit" class="btn  btn-primary" name="action" value="Review">Review</button>
+                @endif
             </form>
 
         </div>
 
     </div>
 
-    <div class="card">
+    @if($user->level != 3 && $studentActivity->status == 2)
+        <div class="card">
 
-        <div class="card-body">
-            <form action="{{ route('student.activity.approve', [$studentActivity->id]) }}" method="post" name="approve-form" id="approve-form" class="" enctype="multipart/form-data">
-                @csrf
-                <input type="hidden" name="id" value="{{ $studentActivity->id }}">
-                <div class="form-group">
-                    <label for="notes">Alasan / Keterangan</label>
-                    <textarea class="form-control @error('notes')  is-invalid @enderror" name="notes" id="notes" rows="3"></textarea>
-                    @error('notes')
-                        <div class="invalid-feedback">
-                            {{ $message }}
-                        </div>
-                    @enderror
-                </div>
+            <div class="card-body">
+                <form action="{{ route('student.activity.approve', [$studentActivity->id]) }}" method="post" name="approve-form" id="approve-form" class="" enctype="multipart/form-data">
+                    @csrf
+                    <input type="hidden" name="id" value="{{ $studentActivity->id }}">
+                    <div class="form-group">
+                        <label for="notes">Alasan / Keterangan</label>
+                        <textarea class="form-control @error('notes')  is-invalid @enderror" name="notes" id="notes" rows="3"></textarea>
+                        @error('notes')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
 
-                <button type="submit" class="btn  btn-primary" name="action" value="Approv">Approve</button>
-                <button type="submit" class="btn  btn-primary" name="action" value="Reject">Reject</button>
-            </form>
+                    <button type="submit" class="btn  btn-primary" name="action" value="Approv">Approve</button>
+                    <button type="submit" class="btn  btn-primary" name="action" value="Reject">Reject</button>
+                </form>
+
+            </div>
 
         </div>
-
-    </div>
+    @endif
 
     <div class="card">
         <div class="card-header">

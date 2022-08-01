@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ActivityController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\StudentActivityController;
 use App\Http\Controllers\StudentController;
@@ -19,29 +20,34 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome', [
-		'active' => 'home'
-	]);
-}); //->middleware('auth');
+Route::get('/', [HomeController::class, 'index'])->name('home')->middleware('auth');
 
-Route::get('/login', [LoginController::class, 'index'])->name('login');
+Route::prefix('profile')->name('profile.')->middleware('auth')->group(function () {
+	Route::get('/', [HomeController::class, 'profile'])->name('index');
+	Route::get('/edit', [HomeController::class, 'editProfile'])->name('edit');
+	Route::post('/update', [HomeController::class, 'updateProfile'])->name('update');
+	Route::get('/edit-password', [HomeController::class, 'editPasswordProfile'])->name('edit-password');
+	Route::post('/update-password', [HomeController::class, 'updatePasswordProfile'])->name('update-password');
+});
+
+Route::get('/login', [LoginController::class, 'index'])->name('login')->middleware('guest');
 Route::post('/login', [LoginController::class, 'authenticate']);
+Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
 
-Route::prefix('student')->name('student.')->group(function () {
-	Route::get('/', [StudentController::class, 'index'])->name('index');
-	Route::post('/', [StudentController::class, 'store'])->name('store');
-	Route::get('/create', [StudentController::class, 'create'])->name('create');
-	Route::get('/show/{student}', [StudentController::class, 'show'])->name('show');
-	Route::get('/edit/{student}', [StudentController::class, 'edit'])->name('edit');
-	Route::post('/update/{student}', [StudentController::class, 'update'])->name('update');
+Route::prefix('student')->name('student.')->middleware('auth')->group(function () {
+	Route::get('/', [StudentController::class, 'index'])->name('index')->middleware('review');
+	Route::post('/', [StudentController::class, 'store'])->name('store')->middleware('review');
+	Route::get('/create', [StudentController::class, 'create'])->name('create')->middleware('review');
+	Route::get('/show/{student}', [StudentController::class, 'show'])->name('show')->middleware('review');
+	Route::get('/edit/{student}', [StudentController::class, 'edit'])->name('edit')->middleware('review');
+	Route::post('/update/{student}', [StudentController::class, 'update'])->name('update')->middleware('review');
 	
-	Route::get('/export-format', [StudentController::class, 'exportFormatStudent'])->name('export-format');
+	Route::get('/export-format', [StudentController::class, 'exportFormatStudent'])->name('export-format')->middleware('review');
 
-	Route::get('/import', [StudentController::class, 'import'])->name('import');
-	Route::post('/import/read', [StudentController::class, 'read'])->name('read');
-	Route::post('/import/process', [StudentController::class, 'process'])->name('process');
+	Route::get('/import', [StudentController::class, 'import'])->name('import')->middleware('review');
+	Route::post('/import/read', [StudentController::class, 'read'])->name('read')->middleware('review');
+	Route::post('/import/process', [StudentController::class, 'process'])->name('process')->middleware('review');
 
 	Route::prefix('activity')->name('activity.')->group(function () {
 		Route::get('/', [StudentActivityController::class, 'index'])->name('index');
@@ -50,11 +56,12 @@ Route::prefix('student')->name('student.')->group(function () {
 		Route::get('/show/{studentActivity}', [StudentActivityController::class, 'show'])->name('show');
 		Route::get('/edit/{studentActivity}', [StudentActivityController::class, 'edit'])->name('edit');
 		Route::post('/update/{studentActivity}', [StudentActivityController::class, 'update'])->name('update');
-		Route::post('/approve/{studentActivity}', [StudentActivityController::class, 'approve'])->name('approve');
+		Route::post('/approve/{studentActivity}', [StudentActivityController::class, 'approve'])->name('approve')->middleware('review');
+		Route::post('/review/{studentActivity}', [StudentActivityController::class, 'review'])->name('review')->middleware('review');
 	});
 });
 
-Route::prefix('activity')->name('activity.')->group(function () {
+Route::prefix('activity')->name('activity.')->middleware('admin')->group(function () {
 	Route::get('/', [ActivityController::class, 'index'])->name('index');
 	Route::post('/', [ActivityController::class, 'store'])->name('store');
 	Route::get('/create', [ActivityController::class, 'create'])->name('create');
@@ -71,7 +78,7 @@ Route::prefix('activity')->name('activity.')->group(function () {
 	});
 });
 
-Route::prefix('user')->name('user.')->group(function () {
+Route::prefix('user')->name('user.')->middleware('admin')->group(function () {
 	Route::get('/', [UserController::class, 'index'])->name('index');
 	Route::post('/', [UserController::class, 'store'])->name('store');
 	Route::get('/create', [UserController::class, 'create'])->name('create');

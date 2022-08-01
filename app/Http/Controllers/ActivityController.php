@@ -64,8 +64,8 @@ class ActivityController extends Controller
         try {
             $message = new Activity();
             $message->name = $request->name;
-            $message->creator = 'sessionadmin';
-            $message->editor = 'sessionadmin';
+            $message->creator = auth()->user()->username;
+            $message->editor = auth()->user()->username;
             $message->save();
 
             $request->session()->flash('success', 'Activity has been added successfully');
@@ -129,7 +129,7 @@ class ActivityController extends Controller
             $message = Activity::findOrFail($activity->id);
             $message->name = $request->name;
             $message->status = $request->status;
-            $message->editor = 'sessionadmin';
+            $message->editor = auth()->user()->username;
             $message->save();
 
             $request->session()->flash('success', 'Activity has been update successfully');

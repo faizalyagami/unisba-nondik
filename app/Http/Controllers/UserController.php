@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\Helpers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -81,8 +82,8 @@ class UserController extends Controller
             $message->password = Hash::make($request->password);
             $message->level = 1;
             $message->student_id = 0;
-            $message->creator = 'sessionadmin';
-            $message->editor = 'sessionadmin';
+            $message->creator = auth()->user()->username;
+            $message->editor = auth()->user()->username;
             $message->save();
 
             $request->session()->flash('success', 'User has been added successfully');
@@ -157,7 +158,7 @@ class UserController extends Controller
             }
             $message->level = 1;
             $message->student_id = 0;
-            $message->editor = 'sessionadmin';
+            $message->editor = auth()->user()->username;
             $message->save();
 
             $request->session()->flash('success', 'User has been update successfully');
@@ -189,11 +190,12 @@ class UserController extends Controller
     {
         try{
             $user = User::findOrFail($request->id);
-            $user->password = Hash::make("passwordnyabelumdisetting");
-            $user->editor = 'sessionadmin';
+            $pass = Helpers::randomString();
+            $user->password = Hash::make($pass);
+            $user->editor = auth()->user()->username;
             $user->save();
 
-            return response()->json(array('status' => 'success', 'msg' => 'User password has been reset.'));
+            return response()->json(array('status' => 'success', 'msg' => 'User password has been reset. [ new password: '. $pass .']'));
         } catch (\Exception $e) {
             return response()->json(array('status' => 'failed', 'msg' => 'Something wrong happend'));
         }

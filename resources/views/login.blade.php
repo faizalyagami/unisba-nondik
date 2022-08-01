@@ -17,9 +17,55 @@
 		<script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
 		<script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
 
-		<title>Survey</title>
+		<title>Unisba</title>
     </head>
     <body>
-test
+		<div style="top:27px; right:27px; position: fixed; z-index: 99999;">
+			@if (session('success'))
+				<div class="alert alert-primary alert-dismissible fade show" role="alert">
+						{{ session('success') }}
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+				</div>
+			@endif
+	
+			@if (session('error') || $errors->has('username') || $errors->has('password'))
+				<div class="alert alert-danger alert-dismissible fade show" role="alert">
+						{{ session('error') }}
+						{{ $errors->first('username') }}
+						{{ $errors->first('password') }}
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+				</div>
+			@endif
+		</div>
+
+		<div class="auth-wrapper">
+			<div class="auth-content text-center">
+				<div class="card borderless">
+					<div class="row align-items-center ">
+						<div class="col-md-12">
+							<div class="card-body">
+								<h4 class="mb-3 f-w-400">Login</h4>
+								<hr>
+								<form action="/login" method="post" name="formLogin" id="form-login">
+									@csrf
+									<div class="form-group mb-3">
+										<input type="text" class="form-control" id="username" name="username" placeholder="Username" autofocus>
+									</div>
+									<div class="form-group mb-4">
+										<input type="password" class="form-control" id="password" name="password" placeholder="Password">
+									</div>
+									<button class="btn btn-block btn-primary mb-4" type="submit">Login</button>
+									<p class="mt-5 mb-3 text-muted text-center">© 2021–2022</p>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script src="{{ asset('assets/js/vendor-all.min.js') }}"></script>
+		<script src="{{ asset('assets/js/plugins/bootstrap.min.js') }}"></script>
+		<script src="{{ asset('assets/js/pcoded.min.js') }}"></script>
     </body>
 </html>

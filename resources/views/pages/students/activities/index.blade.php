@@ -29,8 +29,10 @@
                     </button>
                     <ul class="list-unstyled card-option dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; transform: translate3d(-138px, 28px, 0px); top: 0px; left: 0px; will-change: transform;">
                         <li class="dropdown-item"><a href="javascript:void(0)" class="" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo"><i class="feather mr-2 icon-search"></i> Search</a></li>
-                        <li class="dropdown-item"><hr></li>
-                        <li class="dropdown-item"><a href="{{ route('student.activity.create') }}" class=""><i class="feather mr-2 icon-plus"></i> Tambah Baru</a></li>
+                        @if(auth()->user()->level != 2)
+                            <li class="dropdown-item"><hr></li>
+                            <li class="dropdown-item"><a href="{{ route('student.activity.create') }}" class=""><i class="feather mr-2 icon-plus"></i> Tambah Baru</a></li>
+                        @endif
                     </ul>
                 </div>
             </div>
@@ -74,7 +76,9 @@
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>Mahasiswa</th>
+                            @if(auth()->user()->level != 3)
+                                <th>Mahasiswa</th>
+                            @endif
                             <th>Nama Aktivitas</th>
                             <th>Tanggal Buat</th>
                             <th>Attachment</th>
@@ -87,7 +91,9 @@
                             @foreach ($studentActivities as $key => $studentActivity)
                                 <tr>
                                     <td>{{ $studentActivities->firstItem() + $key }}</td>
-                                    <td>{{ $studentActivity->student->name }}</td>
+                                    @if(auth()->user()->level != 3)
+                                        <td>{{ $studentActivity->student->name }}</td>
+                                    @endif
                                     <td>{{ $studentActivity->subActivity->name }}</td>
                                     <td>{{ date("d F Y", strtotime($studentActivity->created_at)) }}</td>
                                     <td>
