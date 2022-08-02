@@ -52,15 +52,15 @@
             <!-- widget-success-card start -->
             <div class="card flat-card widget-purple-card">
                 <div class="row-table">
-                    <div class="col-sm-3 card-body">
+                    <div class="col-sm-3 card-body" @if($result === "Belum Cukup") style="background-color: crimson" @endif>
                         <i class="fas fa-trophy"></i>
                     </div>
                     <div class="col-sm-9">
                         <h4>
                             @if ($achievement !== null && $achievement->sks !== null)
-                                {{ $achievement->sks }}
+                                {{ $achievement->sks .' ('. $result .')' }}
                             @else
-                                0
+                                0 (Belum Cukup)
                             @endif
                         </h4>
                         <h6>Achievements</h6>

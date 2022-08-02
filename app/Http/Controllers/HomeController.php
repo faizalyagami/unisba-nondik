@@ -26,14 +26,26 @@ class HomeController extends Controller
         $user = auth()->user();
         $status = [0 => 'Semua', 'Open', 'Review', 'Approve', 'Reject'];
         $achievement = null;
+        $result = "Belum Cukup";
 
         $needed = Reff::select('value', 'show')->where('status', 1)->where('name', 'minimalsks')->orderBy('value')->first();
+        $ranges = Reff::select('value', 'show')->where('status', 1)->where('name', 'rangesks')->orderBy('id')->get()->toArray();
+
         if($user->level == 3) {
             $achievement = StudentActivity::selectRaw('sum(sks) as sks')
-            ->join('sub_activities', 'sub_activities.id', 'student_activities.sub_activity_id')
-            ->where('student_id', $user->student_id)
-            ->where('student_activities.status', '3')
-            ->first();
+                ->join('sub_activities', 'sub_activities.id', 'student_activities.sub_activity_id')
+                ->where('student_id', $user->student_id)
+                ->where('student_activities.status', '3')
+                ->first();
+
+            $a = $achievement->sks;
+            for($key = 0; $key < (count($ranges) - 1); ++$key) {
+                if($a <= $ranges[$key + 1]['value'] && $a > $ranges[$key]['value']) {
+                    $result = $ranges[$key]['show'];
+                } else if($a > $ranges[$key + 1]['value']) {
+                    $result = $ranges[$key + 1]['show'];
+                }
+            }
         }
 
         $studentActivities = StudentActivity::with([
@@ -47,7 +59,7 @@ class HomeController extends Controller
         ->get();
 
         return view('welcome', compact(
-            'active', 'sub_active', 'status', 'studentActivities', 
+            'active', 'sub_active', 'status', 'studentActivities', 'result',
             'needed', 'achievement'
         ));
     }
