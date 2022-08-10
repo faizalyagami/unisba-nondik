@@ -7,6 +7,7 @@ use App\Models\Reff;
 use App\Models\Student;
 use App\Models\StudentActivity;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -222,6 +223,53 @@ class HomeController extends Controller
             $request->session()->flash('error', 'Something wrong happend.');
             return redirect()->route('profile.index');
         }
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function printCertificate()
+    {
+        $active = "";
+        $sub_active = "";
+
+        $user = auth()->user();
+        $genders = Reff::select('value', 'show')->where('status', 1)->where('name', 'genders')->orderBy('value')->pluck('show', 'value')->toArray();
+        $religions = Reff::select('value', 'show')->where('status', 1)->where('name', 'religions')->orderBy('value')->pluck('show', 'value')->toArray();
+        $year = Reff::select('value', 'show')->where('status', 1)->where('name', 'tahunajaran')->orderBy('value')->first();
+        $ranges = Reff::select('value', 'show')->where('status', 1)->where('name', 'rangesks')->orderBy('id')->get()->toArray();
+        $date = Carbon::now()->format("d F Y");
+        $result = 'Belum Cukup';
+
+        $achievement = StudentActivity::selectRaw('sum(sks) as sks')
+            ->with(['student'])
+            ->join('sub_activities', 'sub_activities.id', 'student_activities.sub_activity_id')
+            ->where('student_id', $user->student_id)
+            ->where('student_activities.status', '3')
+            ->first();
+
+        $a = $achievement->sks;
+        for($key = 0; $key < (count($ranges) - 1); ++$key) {
+            if($a <= $ranges[$key + 1]['value'] && $a > $ranges[$key]['value']) {
+                $result = $ranges[$key]['show'];
+            } else if($a > $ranges[$key + 1]['value']) {
+                $result = $ranges[$key + 1]['show'];
+            }
+        }
+
+        if ($result === 'Belum Cukup') {
+            return redirect()->route('home');
+        }
+
+        $student = Student::where('id', $user->student_id)
+            ->first();
+
+        return view('pages.profiles.print-certificate', compact(
+            'active', 'sub_active', 'genders', 'religions', 'year', 
+            'achievement', 'student', 'date', 'result'
+        ));
     }
 
 }

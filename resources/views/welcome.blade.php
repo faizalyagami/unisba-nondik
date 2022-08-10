@@ -70,6 +70,27 @@
             <!-- widget-success-card end -->
         </div>
         <!-- table card-2 end -->
+        @if($result !== "Belum Cukup")
+            <!-- table card-3 start -->
+            <div class="col-md-12 col-xl-4">
+                <!-- widget-success-card start -->
+                <div class="card flat-card widget-purple-card">
+                    <div class="row-table">
+                        <div class="col-sm-3 card-body" style="background-color: rgb(13, 145, 222)">
+                            <a href="{{ route('profile.print-certificate') }}"><i class="fas fa-print"></i></a>
+                        </div>
+                        <div class="col-sm-9">
+                            <h4>
+                                Print
+                            </h4>
+                            <h6>Certificate</h6>
+                        </div>
+                    </div>
+                </div>
+                <!-- widget-success-card end -->
+            </div>
+            <!-- table card-3 end -->
+        @endif
 
         <!-- prject ,team member start -->
         <div class="col-xl-12 col-md-12">
