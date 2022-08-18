@@ -197,7 +197,7 @@
                                 $("#import-progressbar").attr("value", prog_val);
                                 var cur_prog_val = parseInt(prog_val) / parseInt(data_counts) * 100;
                                 var prog_percent = parseInt(cur_prog_val);
-                                $("#import-percent").val(prog_percent + "%");
+                                $("#progressbar-percent").html("Progress - " + prog_percent + "%");
                             }
                         });
                     }, 200 * saving);

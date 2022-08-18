@@ -47,7 +47,7 @@
                         @foreach ($activities as $item)
                             <optgroup label="{{ $item->name }}">
                                 @foreach ($item->subActivities as $subitem)
-                                    <option value="{{ $subitem->id }}" {{ (Input::old("subActivity") == $subitem->id ? "selected":"") }}>{{ $subitem->name .' ['. $subitem->sks .' SKS]' }}</option>
+                                    <option value="{{ $subitem->id }}" {{ (old("subActivity") == $subitem->id ? "selected":"") }}>{{ $subitem->name .' ['. $subitem->sks .' SKS]' }}</option>
                                 @endforeach
                             </optgroup>
                         @endforeach

@@ -21,7 +21,7 @@ class LoginController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
-            return redirect()->guest(route('daily-activity.index'));
+            return redirect()->guest(route('home'));
         }
 
         return back()->with('error', 'username atau password salah.');

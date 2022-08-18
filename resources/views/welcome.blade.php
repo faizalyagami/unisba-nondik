@@ -32,7 +32,13 @@
                         <i class="feather icon-star-on"></i>
                     </div>
                     <div class="col-sm-9">
-                        <h4>4000 +</h4>
+                        <h4>
+                            @if ($needed !== null)
+                                {{ $needed->value }} +
+                            @else
+                                0 +
+                            @endif
+                        </h4>
                         <h6>SKS Needed</h6>
                     </div>
                 </div>
@@ -46,11 +52,17 @@
             <!-- widget-success-card start -->
             <div class="card flat-card widget-purple-card">
                 <div class="row-table">
-                    <div class="col-sm-3 card-body">
+                    <div class="col-sm-3 card-body" @if($result === "Belum Cukup") style="background-color: crimson" @endif>
                         <i class="fas fa-trophy"></i>
                     </div>
                     <div class="col-sm-9">
-                        <h4>17</h4>
+                        <h4>
+                            @if ($achievement !== null && $achievement->sks !== null)
+                                {{ $achievement->sks .' ('. $result .')' }}
+                            @else
+                                0 (Belum Cukup)
+                            @endif
+                        </h4>
                         <h6>Achievements</h6>
                     </div>
                 </div>
@@ -58,6 +70,27 @@
             <!-- widget-success-card end -->
         </div>
         <!-- table card-2 end -->
+        @if($result !== "Belum Cukup")
+            <!-- table card-3 start -->
+            <div class="col-md-12 col-xl-4">
+                <!-- widget-success-card start -->
+                <div class="card flat-card widget-purple-card">
+                    <div class="row-table">
+                        <div class="col-sm-3 card-body" style="background-color: rgb(13, 145, 222)">
+                            <a href="{{ route('profile.print-certificate') }}"><i class="fas fa-print"></i></a>
+                        </div>
+                        <div class="col-sm-9">
+                            <h4>
+                                Print
+                            </h4>
+                            <h6>Certificate</h6>
+                        </div>
+                    </div>
+                </div>
+                <!-- widget-success-card end -->
+            </div>
+            <!-- table card-3 end -->
+        @endif
 
         <!-- prject ,team member start -->
         <div class="col-xl-12 col-md-12">
@@ -79,74 +112,47 @@
                 </div>
                 <div class="card-body p-0">
                     <div class="table-responsive">
-                        <table class="table table-hover mb-0">
+                        <table class="table table-hover">
                             <thead>
                                 <tr>
-                                    <th>
-                                        Assigned
-                                    </th>
-                                    <th>Name</th>
-                                    <th>Due Date</th>
-                                    <th class="text-right">Priority</th>
+                                    <th>#</th>
+                                    @if(auth()->user()->level != 3)
+                                        <th>Mahasiswa</th>
+                                    @endif
+                                    <th>Nama Aktivitas</th>
+                                    <th>Tanggal Buat</th>
+                                    <th>Attachment</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>
-                                        <div class="d-inline-block align-middle">
-                                            <img src="assets/images/user/avatar-4.jpg" alt="user image" class="img-radius wid-40 align-top m-r-15">
-                                            <div class="d-inline-block">
-                                                <h6>John Deo</h6>
-                                                <p class="text-muted m-b-0">Graphics Designer</p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>Able Pro</td>
-                                    <td>Jun, 26</td>
-                                    <td class="text-right"><label class="badge badge-light-danger">Low</label></td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="d-inline-block align-middle">
-                                            <img src="assets/images/user/avatar-2.jpg" alt="user image" class="img-radius wid-40 align-top m-r-15">
-                                            <div class="d-inline-block">
-                                                <h6>Jenifer Vintage</h6>
-                                                <p class="text-muted m-b-0">Web Designer</p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>Mashable</td>
-                                    <td>March, 31</td>
-                                    <td class="text-right"><label class="badge badge-light-primary">high</label></td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="d-inline-block align-middle">
-                                            <img src="assets/images/user/avatar-3.jpg" alt="user image" class="img-radius wid-40 align-top m-r-15">
-                                            <div class="d-inline-block">
-                                                <h6>William Jem</h6>
-                                                <p class="text-muted m-b-0">Developer</p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>Flatable</td>
-                                    <td>Aug, 02</td>
-                                    <td class="text-right"><label class="badge badge-light-success">medium</label></td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="d-inline-block align-middle">
-                                            <img src="assets/images/user/avatar-2.jpg" alt="user image" class="img-radius wid-40 align-top m-r-15">
-                                            <div class="d-inline-block">
-                                                <h6>David Jones</h6>
-                                                <p class="text-muted m-b-0">Developer</p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>Guruable</td>
-                                    <td>Sep, 22</td>
-                                    <td class="text-right"><label class="badge badge-light-primary">high</label></td>
-                                </tr>
+                                @if (count($studentActivities))
+                                    @php($key = 0)
+                                    @foreach ($studentActivities as $studentActivity)
+                                        <tr>
+                                            <td>{{ ++$key }}</td>
+                                            @if(auth()->user()->level != 3)
+                                                <td>{{ $studentActivity->student->name }}</td>
+                                            @endif
+                                            <td>{{ $studentActivity->subActivity->name }}</td>
+                                            <td>{{ date("d F Y", strtotime($studentActivity->created_at)) }}</td>
+                                            <td>
+                                                @if($studentActivity->attachment !== null && $studentActivity->attachment != '')
+                                                    <a href="/uploads/attachments/{{ $studentActivity->attachment }}" download><span class="btn btn-sm btn-info">{{ $studentActivity->attachment }} </span></a>
+                                                @endif
+                                            </td>
+                                            <td>{{ $status[$studentActivity->status] }}</td>
+                                            <td>
+                                                <a href="{{ route('student.activity.show', [$studentActivity->id]) }}" class="btn btn-sm btn-primary" title="Show"><i class="feather icon-search"></i></a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @else
+                                    <tr>
+                                        <td colspan="4">Data Not Found</td>
+                                    </tr>
+                                @endif
                             </tbody>
                         </table>
                     </div>

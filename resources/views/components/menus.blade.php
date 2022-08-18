@@ -6,10 +6,12 @@
 				<div class="">
 					<div class="main-menu-header">
 						<img class="img-radius" src="/assets/images/user/avatar-2.jpg" alt="User-Profile-Image">
-						<div class="user-details">
-							<span>John Doe</span>
-							<div id="more-details">UX Designer</div>
-						</div>
+						<a href="{{ route('profile.index') }}">
+							<div class="user-details">
+								<span>{{ auth()->user()->name }}</span>
+								<div id="more-details">{{ auth()->user()->username }}</div>
+							</div>
+						</a>
 					</div>
 				</div>
 				
@@ -18,32 +20,34 @@
 						<label>Navigation</label>
 					</li>
 					<li class="nav-item">
-						<a href="index.html" class="nav-link "><span class="pcoded-micon"><i class="feather icon-home"></i></span><span class="pcoded-mtext">Dashboard</span></a>
+						<a href="{{ route('home') }}" class="nav-link "><span class="pcoded-micon"><i class="feather icon-home"></i></span><span class="pcoded-mtext">Dashboard</span></a>
 					</li>
 					
-					<li class="nav-item pcoded-menu-caption">
-						<label>Activities</label>
-					</li>
-					<li class="nav-item {{ $active == 'student-activities' ? 'active' : '' }}">
-						<a href="{{ route('student.activity.index') }}" class="nav-link "><span class="pcoded-micon"><i class="feather icon-file-text"></i></span><span class="pcoded-mtext">Activities</span></a>
-					</li>
-
-					<li class="nav-item pcoded-menu-caption">
-						<label>Administration</label>
-					</li>
-					<li class="nav-item {{ $active == 'users' ? 'active' : '' }}">
-						<a href="{{ route('user.index') }}" class="nav-link "><span class="pcoded-micon"><i class="feather icon-users"></i></span><span class="pcoded-mtext">Users</span></a>
-					</li>
-					<li class="nav-item {{ $active == 'students' ? 'active' : '' }}">
-						<a href="{{ route('student.index') }}" class="nav-link"><span class="pcoded-micon"><i class="feather icon-users"></i></span><span class="pcoded-mtext">Mahasiswa</span></a>
-					</li>
-					<li class="nav-item pcoded-hasmenu {{ $active == 'activities' ? 'active pcoded-trigger' : '' }}">
-						<a href="javascript:void(0)" class="nav-link "><span class="pcoded-micon"><i class="feather icon-file-text"></i></span><span class="pcoded-mtext">Activities</span></a>
-					    <ul class="pcoded-submenu">
-					        <li class="{{ $sub_active == 'activities' ? 'active' : '' }}"><a href="{{ route('activity.index') }}">Activities</a></li>
-					        <li><a href="">Student Activities</a></li>
-					    </ul>
-					</li>
+					@if(in_array($user->level, [1, 2, 3]))
+						<li class="nav-item pcoded-menu-caption">
+							<label>Activities</label>
+						</li>
+						<li class="nav-item {{ $active == 'student-activities' ? 'active' : '' }}">
+							<a href="{{ route('student.activity.index') }}" class="nav-link "><span class="pcoded-micon"><i class="feather icon-file-text"></i></span><span class="pcoded-mtext">Activities</span></a>
+						</li>
+						@if(in_array($user->level, [1]))
+							<li class="nav-item pcoded-menu-caption">
+								<label>Administration</label>
+							</li>
+							<li class="nav-item {{ $active == 'users' ? 'active' : '' }}">
+								<a href="{{ route('user.index') }}" class="nav-link "><span class="pcoded-micon"><i class="feather icon-users"></i></span><span class="pcoded-mtext">Users</span></a>
+							</li>
+							<li class="nav-item {{ $active == 'students' ? 'active' : '' }}">
+								<a href="{{ route('student.index') }}" class="nav-link"><span class="pcoded-micon"><i class="feather icon-users"></i></span><span class="pcoded-mtext">Mahasiswa</span></a>
+							</li>
+							<li class="nav-item pcoded-hasmenu {{ $active == 'activities' ? 'active pcoded-trigger' : '' }}">
+								<a href="javascript:void(0)" class="nav-link "><span class="pcoded-micon"><i class="feather icon-file-text"></i></span><span class="pcoded-mtext">Activities</span></a>
+								<ul class="pcoded-submenu">
+									<li class="{{ $sub_active == 'activities' ? 'active' : '' }}"><a href="{{ route('activity.index') }}">Activities</a></li>
+								</ul>
+							</li>
+						@endif
+					@endif
 				</ul>
 				
 				<div class="card text-center">
