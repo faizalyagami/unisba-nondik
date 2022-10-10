@@ -5,7 +5,7 @@
 				
 				<div class="">
 					<div class="main-menu-header">
-						<img class="img-radius" src="/assets/images/user/avatar-2.jpg" alt="User-Profile-Image">
+						<!-- <img class="img-radius" src="/assets/images/user/avatar-2.jpg" alt="User-Profile-Image"> -->
 						<a href="{{ route('profile.index') }}">
 							<div class="user-details">
 								<span>{{ auth()->user()->name }}</span>
@@ -50,14 +50,14 @@
 					@endif
 				</ul>
 				
-				<div class="card text-center">
+				<!-- <div class="card text-center">
 					<div class="card-block">
 						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
 						<i class="feather icon-sunset f-40"></i>
 						<h6 class="mt-3">Flat Able</h6>
 						<p>Please contact us on our email for need any support</p>
 					</div>
-				</div>
+				</div> -->
 				
 			</div>
 		</div>

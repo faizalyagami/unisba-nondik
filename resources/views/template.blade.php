@@ -16,7 +16,7 @@
 				
 				<div class="">
 					<div class="main-menu-header">
-						<img class="img-radius" src="assets/images/user/avatar-2.jpg" alt="User-Profile-Image">
+						<!-- <img class="img-radius" src="assets/images/user/avatar-2.jpg" alt="User-Profile-Image"> -->
 						<div class="user-details">
 							<span>John Doe</span>
 							<div id="more-details">UX Designer<i class="fa fa-chevron-down m-l-5"></i></div>
@@ -123,8 +123,8 @@
 					<a class="mobile-menu" id="mobile-collapse" href="#!"><span></span></a>
 					<a href="#!" class="b-brand">
 						<!-- ========   change your logo hear   ============ -->
-						<img src="assets/images/logo.png" alt="" class="logo">
-						<img src="assets/images/logo-icon.png" alt="" class="logo-thumb">
+						<img src="assets/images/icon-unisba.png" alt="" class="logo">
+						<img src="assets/images/icon-unisba.png" alt="" class="logo-thumb">
 					</a>
 					<a href="#!" class="mob-toggler">
 						<i class="feather icon-more-vertical"></i>

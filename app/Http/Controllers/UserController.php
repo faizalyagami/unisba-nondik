@@ -27,8 +27,8 @@ class UserController extends Controller
 
         $users = User::select('id', 'name', 'username', 'email', 'level', 'status')
             ->where(function ($q) use($search_text) {
-                $q->whereRaw('name ilike ?', ['%'. $search_text .'%'])
-                ->orWhereRaw('username ilike ?', ['%'. $search_text .'%']);
+                $q->whereRaw('name like ?', ['%'. $search_text .'%'])
+                ->orWhereRaw('username like ?', ['%'. $search_text .'%']);
             })
             ->when($search_level != 0, function($q) use($search_level) {
                 $q->where('level', $search_level);

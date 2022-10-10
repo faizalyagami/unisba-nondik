@@ -43,7 +43,7 @@
                 <div class="form-group">
                     <label for="sub-activity">Aktivitas</label>
                     <select class="form-control @error('subActivity')  is-invalid @enderror" name="subActivity" id="sub-activity">
-                        <option value="">--- Ativitas ---</option>
+                        <option value="">--- Aktivitas ---</option>
                         @foreach ($activities as $item)
                             <optgroup label="{{ $item->name }}">
                                 @foreach ($item->subActivities as $subitem)

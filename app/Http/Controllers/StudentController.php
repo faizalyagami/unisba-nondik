@@ -42,8 +42,8 @@ class StudentController extends Controller
 
         $students = Student::select('id', 'npm', 'name', 'phone', 'gender', 'status')
             ->where(function ($q) use($search_text) {
-                $q->whereRaw('name ilike ?', ['%'. $search_text .'%'])
-                ->orWhereRaw('npm ilike ?', ['%'. $search_text .'%']);
+                $q->whereRaw('name like ?', ['%'. $search_text .'%'])
+                ->orWhereRaw('npm like ?', ['%'. $search_text .'%']);
             })
             ->when($search_gender != 0, function($q) use($search_gender) {
                 $q->where('gender', $search_gender);

@@ -55,7 +55,7 @@
 										<input type="password" class="form-control" id="password" name="password" placeholder="Password">
 									</div>
 									<button class="btn btn-block btn-primary mb-4" type="submit">Login</button>
-									<p class="mt-5 mb-3 text-muted text-center">© 2021–2022</p>
+									<p class="mt-5 mb-3 text-muted text-center">© Fakultas Psikologi 2021–2022</p>
 								</form>
 							</div>
 						</div>

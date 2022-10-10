@@ -4,8 +4,8 @@
 			<a class="mobile-menu" id="mobile-collapse" href="#!"><span></span></a>
 			<a href="#!" class="b-brand">
 				<!-- ========   change your logo hear   ============ -->
-				{{-- <img src="assets/images/logo.png" alt="" class="logo">
-				<img src="assets/images/logo-icon.png" alt="" class="logo-thumb"> --}}
+				{{-- <img src="assets/images/icon-unisba.png" alt="" class="logo">
+				<img src="assets/images/icon-unisba.png" alt="" class="logo-thumb"> --}}
 				<span style="font-size: 27px; font-weight: bold;">SKSNONDIK</span>
 			</a>
 			<a href="#!" class="mob-toggler">
@@ -21,7 +21,7 @@
 						</a>
 						<div class="dropdown-menu dropdown-menu-right profile-notification">
 							<div class="pro-head">
-								<img src="/assets/images/user/avatar-2.jpg" class="img-radius" alt="User-Profile-Image">
+								<!-- <img src="/assets/images/user/avatar-2.jpg" class="img-radius" alt="User-Profile-Image"> -->
 								<span>{{ auth()->user()->name }}</span>
 								<a href="{{ route('logout') }}" class="dud-logout" title="Logout">
 									<i class="feather icon-log-out"></i>
