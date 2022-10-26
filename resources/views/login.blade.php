@@ -41,10 +41,12 @@
 		<div class="auth-wrapper">
 			<div class="auth-content text-center">
 				<div class="card borderless">
+					<div class="logo">
+						<img src="assets/images/auth/logo-unisba.png" width="80">
 					<div class="row align-items-center ">
 						<div class="col-md-12">
 							<div class="card-body">
-								<h4 class="mb-3 f-w-400">Login</h4>
+								<h4 class="mb-3 f-w-400">Login Sistem SKS Non Akademik</h4>
 								<hr>
 								<form action="/login" method="post" name="formLogin" id="form-login">
 									@csrf
@@ -53,6 +55,7 @@
 									</div>
 									<div class="form-group mb-4">
 										<input type="password" class="form-control" id="password" name="password" placeholder="Password">
+									</div>
 									</div>
 									<button class="btn btn-block btn-primary mb-4" type="submit">Login</button>
 									<p class="mt-5 mb-3 text-muted text-center">© Fakultas Psikologi 2021–2022</p>

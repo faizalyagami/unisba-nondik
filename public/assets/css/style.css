@@ -27731,7 +27731,7 @@ text.highcharts-drilldown-data-label {
 }
 
 .auth-wrapper .auth-content:not(.container) .card-body {
-    padding: 40px 35px;
+    padding: 20px 35px;
 }
 
 @media (-ms-high-contrast: none), (-ms-high-contrast: active) {
