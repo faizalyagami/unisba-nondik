@@ -46,6 +46,9 @@
 									<li class="{{ $sub_active == 'activities' ? 'active' : '' }}"><a href="{{ route('activity.index') }}">Activities</a></li>
 								</ul>
 							</li>
+							<li class="nav-item {{ $active == 'informations' ? 'active' : '' }}">
+								<a href="{{ route('information.index') }}" class="nav-link"><span class="pcoded-micon"><i class="feather icon-users"></i></span><span class="pcoded-mtext">Informations</span></a>
+							</li>
 						@endif
 					@endif
 				</ul>
