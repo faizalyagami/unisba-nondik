@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\Helpers;
+use App\Models\Information;
 use App\Models\Reff;
 use App\Models\Student;
 use App\Models\StudentActivity;
@@ -59,9 +60,13 @@ class HomeController extends Controller
         ->limit(50)
         ->get();
 
+        $information = Information::where('status', 1)
+            ->orderBy('created_at', 'desc')
+            ->first();
+
         return view('welcome', compact(
             'active', 'sub_active', 'status', 'studentActivities', 'result',
-            'needed', 'achievement'
+            'needed', 'achievement', 'information'
         ));
     }
 

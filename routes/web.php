@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\InformationController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\StudentActivityController;
 use App\Http\Controllers\StudentController;
@@ -87,4 +88,13 @@ Route::prefix('user')->name('user.')->middleware('admin')->group(function () {
 	Route::get('/edit/{user}', [UserController::class, 'edit'])->name('edit');
 	Route::post('/update/{user}', [UserController::class, 'update'])->name('update');
 	Route::post('/reset-password', [UserController::class, 'resetPassword'])->name('reset-password');
+});
+
+Route::prefix('information')->name('information.')->middleware('admin')->group(function () {
+	Route::get('/', [InformationController::class, 'index'])->name('index');
+	Route::post('/', [InformationController::class, 'store'])->name('store');
+	Route::get('/create', [InformationController::class, 'create'])->name('create');
+	Route::get('/show/{information}', [InformationController::class, 'show'])->name('show');
+	Route::get('/edit/{information}', [InformationController::class, 'edit'])->name('edit');
+	Route::post('/update/{information}', [InformationController::class, 'update'])->name('update');
 });

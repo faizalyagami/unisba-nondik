@@ -258,9 +258,9 @@
                             Periode {{ $year !== null ? $year->show : "" }}
                             <br><br><br><br><br>
                             <br><br><br><br><br>
-                            Disa Aurea Annisa Nureffa
+                            Firda Damayanti
                             <hr style="width: 213px;">
-                            NPM. 10050018146
+                            NPM. 10050019168
                             <br>
                         </td>
                         <td width="145px">&nbsp;</td>

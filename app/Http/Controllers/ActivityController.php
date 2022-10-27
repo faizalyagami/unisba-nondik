@@ -22,7 +22,7 @@ class ActivityController extends Controller
         $search_status = $request->search_status !== null ? $request->search_status : 1;
 
         $activities = Activity::select('id', 'name', 'status')
-            ->whereRaw('name ilike ?', ['%'. $search_text .'%'])
+            ->whereRaw('name like ?', ['%'. $search_text .'%'])
             ->when($search_status != 0, function($q) use($search_status) {
                 $q->where('status', $search_status);
             })
