@@ -10585,7 +10585,7 @@ a.text-dark:hover, a.text-dark:focus {
   h3 {
         page-break-after: avoid;
     }
-  @    page {
+  @page {
         size: a3;
     }
 
@@ -17308,7 +17308,7 @@ a.text-dark:hover, a.text-dark:focus {
 }
 
 @media screen and (-webkit-min-device-pixel-ratio: 0) {
-  @    font-face {
+  @font-face {
         font-family: "Flaticon";
         src: url("../fonts/Flaticon.svg#Flaticon") format("svg");
     }
