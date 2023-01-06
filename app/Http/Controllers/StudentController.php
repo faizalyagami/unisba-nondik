@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\ExportFormatStudent;
+use App\Exports\ExportStudents;
 use App\Imports\DataImport;
 use App\Models\Reff;
 use App\Models\Student;
@@ -28,19 +29,27 @@ class StudentController extends Controller
         $sub_active = "students";
         $genders = Reff::select('value', 'show')->where('status', 1)->where('name', 'genders')->orderBy('value')->pluck('show', 'value');
         $genders = [0 => 'Semua'] + $genders->toArray();
-        $religions = Reff::select('value', 'show')->where('status', 1)->where('name', 'religions')->orderBy('value')->pluck('show', 'value');
-        $religions = [0 => 'Semua'] + $religions->toArray();
+        $classofs = Student::select('class_of')->groupBy('class_of')->pluck('class_of');
+        $classofs = [0 => 'Semua'] + $classofs->toArray();
         $status = [0 => 'Semua', 1 => 'Aktif', 'Tidak Aktif'];
         $pansus = [0 => 'Semua', 'No', 'Yes'];
 
 
         $search_text = $request->search_text;
         $search_gender = $request->search_gender ? $request->search_gender : 0;
-        $search_religion = $request->search_religion ? $request->search_religion : 0;
-        $search_pansus = $request->search_pansus !== null ? $request->search_pansus : 1;
+        $search_classof = $request->search_classof ? $request->search_classof : 'Semua';
+        $search_pansus = $request->search_pansus !== null ? $request->search_pansus : 0;
         $search_status = $request->search_status !== null ? $request->search_status : 1;
 
-        $students = Student::select('id', 'npm', 'name', 'phone', 'gender', 'status')
+        $needed = Reff::select('value', 'show')->where('status', 1)->where('name', 'minimalsks')->orderBy('value')->first();
+        $user = auth()->user();
+
+        $students = Student::select('id', 'npm', 'name', 'phone', 'gender', 'class_of', 'period', 'certificate_approve', 'status')
+            ->selectRaw('(
+                select sum(sks) 
+                from student_activities 
+                join sub_activities on sub_activities.id = student_activities.sub_activity_id 
+                where student_activities.student_id = students.id and  student_activities.status = 3) as sumsks')
             ->where(function ($q) use($search_text) {
                 $q->whereRaw('name like ?', ['%'. $search_text .'%'])
                 ->orWhereRaw('npm like ?', ['%'. $search_text .'%']);
@@ -48,8 +57,8 @@ class StudentController extends Controller
             ->when($search_gender != 0, function($q) use($search_gender) {
                 $q->where('gender', $search_gender);
             })
-            ->when($search_religion != 0, function($q) use($search_religion) {
-                $q->where('religion', $search_religion);
+            ->when($search_classof != 'Semua', function($q) use($search_classof) {
+                $q->where('class_of', $search_classof);
             })
             ->when($search_pansus != 0, function($q) use($search_pansus) {
                 $q->where('pansus', $search_pansus);
@@ -57,13 +66,14 @@ class StudentController extends Controller
             ->when($search_status != 0, function($q) use($search_status) {
                 $q->where('status', $search_status);
             })
+            ->withCount('studentActivities')
             ->orderBy('name')
             ->paginate(20)
             ->withQueryString();
 
         return view('pages.students.index', compact(
-            'active', 'sub_active', 'genders', 'religions', 'students', 'status', 'pansus', 
-            'search_text', 'search_gender', 'search_religion', 'search_status', 'search_pansus'
+            'active', 'sub_active', 'genders', 'classofs', 'students', 'status', 'pansus', 'user', 
+            'search_text', 'search_gender', 'search_classof', 'search_status', 'search_pansus', 'needed'
         ));
     }
 
@@ -78,8 +88,11 @@ class StudentController extends Controller
         $sub_active = "students";
         $genders = Reff::select('value', 'show')->where('status', 1)->where('name', 'genders')->orderBy('value')->get();
         $religions = Reff::select('value', 'show')->where('status', 1)->where('name', 'religions')->orderBy('value')->get();
+        $years = collect(range(0, 10))->map(function ($item) {
+            return (string) date('Y') - $item;
+        });
 
-        return view('pages.students.create', compact('active', 'sub_active', 'genders', 'religions'));
+        return view('pages.students.create', compact('active', 'sub_active', 'genders', 'religions', 'years'));
     }
 
     /**
@@ -99,14 +112,17 @@ class StudentController extends Controller
             'gender' => ['required'], 
             'religion' => ['required'], 
             'date_of_birth' => ['required'], 
+            'class_of' => ['required'], 
+            'period' => ['required'], 
         ]);
 
         try {
             DB::transaction(function() use($request) {
-                if($request->photo) {
-                    $value = $request->photo;
+                $file = $request->file('photo');
+                if($file) {
+                    $value = $file;
                     $file_name = date('YmdHis') .'.'. $value->getClientOriginalExtension();
-                    $folder_path = public_path('uploads');
+                    $folder_path = public_path('uploads/profiles');
                 }
 
                 $message = new Student();
@@ -120,14 +136,16 @@ class StudentController extends Controller
                 if($request->date_of_birth) {
                     $message->date_of_birth = $request->date_of_birth;
                 }
-                if($request->photo) {
+                if($file) {
                     $message->photo = $file_name;
                 }
+                $message->class_of = $request->class_of;
+                $message->period = $request->period;
                 $message->creator = auth()->user()->username;
                 $message->editor = auth()->user()->username;
                 $message->save();
 
-                if($request->photo) {
+                if($file) {
                     $fileSystem = new Filesystem();
                     if (!$fileSystem->exists($folder_path)) {
                         $fileSystem->makeDirectory($folder_path, 0777, true, true);
@@ -168,9 +186,12 @@ class StudentController extends Controller
         $religions = Reff::select('value', 'show')->where('status', 1)->where('name', 'religions')->orderBy('value')->pluck('show', 'value')->toArray();
         $status = [1 => 'Aktif', 'Tidak Aktif'];
         $pansus = [1 => 'No', 'Yes'];
+        $years = collect(range(0, 10))->map(function ($item) {
+            return (string) date('Y') - $item;
+        });
 
         return view('pages.students.show', compact(
-            'active', 'sub_active', 'genders', 'religions', 'status', 'pansus', 'student'
+            'active', 'sub_active', 'genders', 'religions', 'status', 'pansus', 'student', 'years'
         ));
     }
 
@@ -188,9 +209,12 @@ class StudentController extends Controller
         $religions = Reff::select('value', 'show')->where('status', 1)->where('name', 'religions')->orderBy('value')->get();
         $status = [1 => 'Aktif', 'Tidak Aktif'];
         $pansus = [1 => 'No', 'Yes'];
+        $years = collect(range(0, 10))->map(function ($item) {
+            return (string) date('Y') - $item;
+        });
 
         return view('pages.students.edit', compact(
-            'active', 'sub_active', 'genders', 'religions', 'status', 'pansus', 'student'
+            'active', 'sub_active', 'genders', 'religions', 'status', 'pansus', 'student', 'years'
         ));
     }
 
@@ -212,14 +236,17 @@ class StudentController extends Controller
             'gender' => ['required'], 
             'religion' => ['required'], 
             'date_of_birth' => ['required'], 
+            'class_of' => ['required'], 
+            'period' => ['required'], 
         ]);
 
         try {
             DB::transaction(function() use($request, $student) {
-                if($request->photo) {
-                    $value = $request->photo;
+                $file = $request->file('photo');
+                if($file) {
+                    $value = $file;
                     $file_name = date('YmdHis') .'.'. $value->getClientOriginalExtension();
-                    $folder_path = public_path('uploads');
+                    $folder_path = public_path('uploads/profiles');
                 }
 
                 $message = Student::findOrFail($student->id);
@@ -233,15 +260,17 @@ class StudentController extends Controller
                 if($request->date_of_birth) {
                     $message->date_of_birth = $request->date_of_birth;
                 }
-                if($request->photo) {
+                if($file) {
                     $message->photo = $file_name;
                 }
                 $message->status = $request->status;
                 $message->pansus = $request->pansus;
+                $message->class_of = $request->class_of;
+                $message->period = $request->period;
                 $message->editor = auth()->user()->username;
                 $message->save();
 
-                if($request->photo) {
+                if($file) {
                     $fileSystem = new Filesystem();
                     if (!$fileSystem->exists($folder_path)) {
                         $fileSystem->makeDirectory($folder_path, 0777, true, true);
@@ -322,7 +351,7 @@ class StudentController extends Controller
                 if (count($rows) > 0) {
                     foreach ($rows as $row) {
                         $emptyflag = false;
-                        for ($cnt = 0; $cnt < 8; $cnt++) {
+                        for ($cnt = 0; $cnt < 10; $cnt++) {
                             if ($row[$cnt] !== null && $row[$cnt] !== '') {
                                 $emptyflag = true;
                             }
@@ -349,7 +378,7 @@ class StudentController extends Controller
             $rows = $request->session()->get('importStudents');
             $header = $rows[0];
 
-            if ($header[0] == 'NPM' && $header[1] == 'Nama' && $header[2] == 'Jenis Kelamin' && $header[3] == 'Agama' && $header[4] == 'Telepon' && $header[5] == 'Email' && $header[6] == 'Tanggal Lahir' && $header[7] == 'Alamat') {
+            if ($header[0] == 'NPM' && $header[1] == 'Nama' && $header[2] == 'Angkatan' && $header[3] == 'Jenis Kelamin' && $header[4] == 'Agama' && $header[5] == 'Telepon' && $header[6] == 'Email' && $header[7] == 'Tanggal Lahir' && $header[8] == 'Alamat' && $header[9] == 'Periode Pengisian') {
                 $table_contents = $index == 0 ? '<thead>' : ($index == 1 ? '<tbody>' : '');
 
                 if ($rows) {
@@ -359,21 +388,21 @@ class StudentController extends Controller
                     $flagNumber = true;
                     $flaginvalid = true;
 
-                    for($a = 0; $a < 6; ++$a) {
+                    for($a = 0; $a < 10; ++$a) {
                         if($contents[$a] === '' || $contents[$a] === null) {
                             $flagEmpty = false;
                         }
 
                         if($index > 0) {
-                            if(in_array($a, [2, 3])) {
+                            if(in_array($a, [3, 4])) {
                                 if(!is_numeric($contents[$a])) {
                                     $flagNumber = false;
                                 } else {
-                                    if(!in_array($contents[2], [1, 2])) {
+                                    if(!in_array($contents[3], [1, 2])) {
                                         $flaginvalid = false;
                                     }
 
-                                    if(!in_array($contents[3], [1, 2, 3, 4, 5, 6])) {
+                                    if(!in_array($contents[4], [1, 2, 3, 4, 5, 6])) {
                                         $flaginvalid = false;
                                     }
                                 }
@@ -383,15 +412,15 @@ class StudentController extends Controller
 
                     $dupliflag = true;
                     $coll = array_filter(array_column($rows, 0));
-                    $collemail = array_filter(array_column($rows, 5));
+                    $collemail = array_filter(array_column($rows, 6));
                     $dupli = $dupliemail = 0;
 
                     if($contents[0] !== null && $contents[0] !== '') {
                         $dupli = array_count_values($coll)[$contents[0]];
                     }
 
-                    if($contents[5] !== null && $contents[5] !== '') {
-                        $dupliemail = array_count_values($collemail)[$contents[5]];
+                    if($contents[6] !== null && $contents[6] !== '') {
+                        $dupliemail = array_count_values($collemail)[$contents[6]];
                     }
 
                     if($dupli > 1 || $dupliemail > 1) {
@@ -425,23 +454,23 @@ class StudentController extends Controller
                     $genders = ["1" => "Laki - Laki", "Perempuan"];
                     $religions = ["1" => "Islam", "Hindu", "Budha", "Kristen", "Protestan", "Kepercayaan"];
 
-                    for ($cnt = 0; $cnt < 8; $cnt++) {
+                    for ($cnt = 0; $cnt < 10; $cnt++) {
                         $tid = '';
                         if($cnt == 0) {
                             $tid = ' id="td-import-'. $index .'" ';
                         }
 
                         $toappear = $contents[$cnt];
-                        if($cnt == 6 && $index != 0) {
+                        if(in_array($cnt, [7, 9]) && $index != 0) {
                             $dt = Carbon::instance(Date::excelToDateTimeObject($contents[$cnt]));
                             $toappear = date("d F Y", strtotime($dt));
                         }
                         
-                        if($index != 0 && $cnt == 2) {
+                        if($index != 0 && $cnt == 3) {
                             if($contents[$cnt] != "" && is_numeric($contents[$cnt]) && $contents[$cnt] < 3) {
                                 $toappear = $genders[$contents[$cnt]];
                             }
-                        } elseif($index != 0 && $cnt == 3) {
+                        } elseif($index != 0 && $cnt == 4) {
                             if($contents[$cnt] != "" && is_numeric($contents[$cnt]) && $contents[$cnt] < 7) {
                                 $toappear = $religions[$contents[$cnt]];
                             }
@@ -481,21 +510,21 @@ class StudentController extends Controller
             $flagNumber = true;
             $flaginvalid = true;
 
-            for($a = 0; $a < 6; ++$a) {
+            for($a = 0; $a < 10; ++$a) {
                 if($contents[$a] === '' || $contents[$a] === null) {
                     $flagEmpty = false;
                 }
 
                 if($index > 0) {
-                    if(in_array($a, [2, 3])) {
+                    if(in_array($a, [3, 4])) {
                         if(!is_numeric($contents[$a])) {
                             $flagNumber = false;
                         } else {
-                            if(!in_array($contents[2], [1, 2])) {
+                            if(!in_array($contents[3], [1, 2])) {
                                 $flaginvalid = false;
                             }
 
-                            if(!in_array($contents[3], [1, 2, 3, 4, 5, 6])) {
+                            if(!in_array($contents[4], [1, 2, 3, 4, 5, 6])) {
                                 $flaginvalid = false;
                             }
                         }
@@ -507,15 +536,15 @@ class StudentController extends Controller
 
                 $dupliflag = true;
                 $coll = array_filter(array_column($rows, 0));
-                $collemail = array_filter(array_column($rows, 5));
+                $collemail = array_filter(array_column($rows, 6));
                 $dupli = $dupliemail = 0;
 
                 if($contents[0] !== null && $contents[0] !== '') {
                     $dupli = array_count_values($coll)[$contents[0]];
                 }
 
-                if($contents[5] !== null && $contents[5] !== '') {
-                    $dupliemail = array_count_values($collemail)[$contents[5]];
+                if($contents[6] !== null && $contents[6] !== '') {
+                    $dupliemail = array_count_values($collemail)[$contents[6]];
                 }
 
                 if($dupli > 1 || $dupliemail > 1) {
@@ -532,16 +561,21 @@ class StudentController extends Controller
                                         $message = new Student();
                                         $message->npm = $contents[0];
                                         $message->name = $contents[1];
-                                        $message->gender = $contents[2];
-                                        $message->religion = $contents[3];
-                                        $message->phone = $contents[4];
-                                        $message->email = $contents[5];
-                                        if($contents[6] !== null && $contents[6] != '') {
-                                            $dt = Carbon::instance(Date::excelToDateTimeObject($contents[6]));
+                                        $message->class_of = $contents[2];
+                                        $message->gender = $contents[3];
+                                        $message->religion = $contents[4];
+                                        $message->phone = $contents[5];
+                                        $message->email = $contents[6];
+                                        if($contents[7] !== null && $contents[7] != '') {
+                                            $dt = Carbon::instance(Date::excelToDateTimeObject($contents[7]));
                                             $message->date_of_birth = $dt;
                                         }
-                                        if($contents[6] !== null && $contents[6] != '') {
-                                            $message->address = $contents[6];
+                                        if($contents[8] !== null && $contents[8] != '') {
+                                            $message->address = $contents[8];
+                                        }
+                                        if($contents[9] !== null && $contents[9] != '') {
+                                            $dt = Carbon::instance(Date::excelToDateTimeObject($contents[9]));
+                                            $message->period = $dt;
                                         }
                                         $message->creator = auth()->user()->username;
                                         $message->editor = auth()->user()->username;
@@ -550,7 +584,7 @@ class StudentController extends Controller
                                         $user = New User();
                                         $user->name = $contents[1];
                                         $user->username = $contents[0];
-                                        $user->email = $contents[5];
+                                        $user->email = $contents[6];
                                         $user->password = Hash::make("passwordnyabelumdisetting");
                                         $user->creator = auth()->user()->username;
                                         $user->editor = auth()->user()->username;
@@ -582,5 +616,22 @@ class StudentController extends Controller
             return response()->json($result);
         }
         return Redirect::to('/');
+    }
+
+    public function exportStudents(Request $request) {
+        return FacadesExcel::download(new ExportStudents($request), 'students-by-'. auth()->user()->username .'.xlsx');
+    }
+
+    public function approveCertificate(Request $request) {
+
+        $student = Student::where("id", $request->id)->first();
+        if($student !== null) {
+            $student->certificate_approve = 1;
+            $student->save();
+
+            return response()->json(['status' => 'ok']);
+        }
+
+        return response()->json(['status' => 'fail']);
     }
 }

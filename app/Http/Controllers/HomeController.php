@@ -9,6 +9,7 @@ use App\Models\Student;
 use App\Models\StudentActivity;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -49,7 +50,7 @@ class HomeController extends Controller
                 }
             }
         }
-
+        
         $studentActivities = StudentActivity::with([
             'subActivity', 'student'
         ])
@@ -110,7 +111,7 @@ class HomeController extends Controller
 
         $user = auth()->user();
 
-        if($user->level == 1) {
+        if(in_array($user->level, [1, 4])) {
             return redirect()->route('user.edit', $user);
         }
 
@@ -147,10 +148,11 @@ class HomeController extends Controller
 
         try {
             DB::transaction(function() use($request, $user) {
-                if($request->photo) {
-                    $value = $request->photo;
+                $file = $request->file('photo');
+                if($file) {
+                    $value = $file;
                     $file_name = date('YmdHis') .'.'. $value->getClientOriginalExtension();
-                    $folder_path = public_path('uploads');
+                    $folder_path = public_path('uploads/profiles');
                 }
 
                 $message = Student::findOrFail($user->student_id);
@@ -163,13 +165,13 @@ class HomeController extends Controller
                 if($request->date_of_birth) {
                     $message->date_of_birth = $request->date_of_birth;
                 }
-                if($request->photo) {
+                if($file) {
                     $message->photo = $file_name;
                 }
                 $message->editor = auth()->user()->username;
                 $message->save();
 
-                if($request->photo) {
+                if($file) {
                     $fileSystem = new Filesystem();
                     if (!$fileSystem->exists($folder_path)) {
                         $fileSystem->makeDirectory($folder_path, 0777, true, true);
@@ -268,12 +270,32 @@ class HomeController extends Controller
             return redirect()->route('home');
         }
 
+        $months = [1 => "Januari", "Febuari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+        $date = Carbon::now()->format("d") ." ". $months[Carbon::now()->format("n")] ." ". Carbon::now()->format("Y");
+
         $student = Student::where('id', $user->student_id)
             ->first();
 
         return view('pages.profiles.print-certificate', compact(
             'active', 'sub_active', 'genders', 'religions', 'year', 
             'achievement', 'student', 'date', 'result'
+        ));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function template()
+    {
+        $active = "";
+        $sub_active = "";
+
+        $user = auth()->user();
+
+        return view('template', compact(
+            'active', 'sub_active'
         ));
     }
 

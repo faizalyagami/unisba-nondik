@@ -1,29 +1,8 @@
-<link rel="preconnect" href="https://fonts.googleapis.com"> 
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet">
-
 <style>
-    @font-face {
-        font-family: 'bellezac';
-        src: url('../assets/fonts/Belleza-Regular.ttf')
-    }
-
-    @font-face {
-        font-family: 'rasa-medium';
-        src: url('../assets/fonts/Rasa-Medium.ttf')
-    }
-    @font-face {
-        font-family: 'tttsars';
-        src: url('../assets/fonts/TTTsars.ttf')
-    }
-    @font-face {
-        font-family: 'greatvibes';
-        src: url('../assets/fonts/great-vibes.regular.ttf')
-    }
     html, body {
         margin: 0;
         padding: 0;
-        font-family: 'rasa-medium', 'Poppins', 'Trebuchet Ms', arial;
+        font-family: 'Poppins', 'Trebuchet Ms', arial;
         background: #eee;
     }
     .packing-label {
@@ -31,7 +10,6 @@
         z-index: 999999;
         width: 100%;
         background: #eee;
-        color: #334166
     }
     .packing-label form {
         margin: 0;
@@ -102,10 +80,10 @@
         margin-top: 40px;
         background: #fff;
         width: 100%;
-        max-width: 1000px;
-        height: 707px;
+        max-width: 11.69in;
+        height: 8.27in;
         outline: none;
-        background-image: url('/assets/images/profile/certificate-2.png');
+        background-image: url('/assets/images/profile/14140293_5439231.png');
         background-size: cover;
     }
     .packing-label .pl-area .pl-content {
@@ -113,7 +91,7 @@
         /* border-bottom: .05em dashed #000; */
         box-sizing: border-box;
         padding: 10px;
-        font-family: 'rasa-medium', 'Poppins', 'Trebuchet Ms', arial;
+        font-family: 'Poppins', 'Trebuchet Ms', arial;
     }
     .packing-label .pl-area .pl-content table {
         width: 100%;
@@ -130,35 +108,32 @@
         line-height: 9px;
         /* text-transform: uppercase; */
         outline: none;
-        color: #334166;
-    }
-
-    .title-certificate {
-        font-family: bellezac;
-        font-size: 49px;
-        letter-spacing: -1.3;
-        font-weight: 100;
+        color: #000;
     }
     .packing-label .pl-area .pl-content table tr td label {
         font-size: 33px;
+        font-weight: bolder;
         padding-top: 10px;
         padding-bottom: 15px;
         display: inline-block;
+        color: #03b3a4;
     }
     .tahun {
         font-size: 21px;
+        font-weight: bolder;
         padding-top: 10px;
         padding-bottom: 10px;
         display: inline-block;
         color: #000;
     }
     .nama {
-        font-family: greatvibes;
-        font-size: 109px;
-        padding-top: 37px;
+        font-size: 29px;
+        font-weight: bold;
+        padding-top: 10px;
         padding-bottom: 15px;
         display: inline-block;
-        color: #03989e;
+        text-transform: uppercase;
+        color: #000;
     }
     .packing-label .pl-area .pl-content table tr td img {
         display: block;
@@ -173,7 +148,7 @@
     .packing-label .pl-area .pl-content table tr td div {
         font-size: 8px;
         padding-top: 5px;
-        color: #865b34;;
+        color: #000;
         letter-spacing: .075em;
     }
     .packing-label .pl-footer {
@@ -190,7 +165,7 @@
     }
     .ttd {
         line-height: 15px !important;
-        font-size: 13px;
+        font-weight: bold;
     }
     @media print {
         body {
@@ -209,14 +184,6 @@
         }
         .packing-label .pl-footer { display: none; }
     }
-    table {
-        margin-top: 12px;
-    }
-    table tr td{
-        text-align: center;
-        color: #865b34;
-    }
-
 </style>
 
 <div class="packing-label">
@@ -230,52 +197,80 @@
     <div class="pl-area">
         <form action="" class="form-main" id="form-create-pickpack" method="post" enctype="multipart/form-data">
             <div class="pl-content">
-                @php($path = route("student.show", [$student->npm]) )
-                <p>
-                    <div style="text-align: center; margin-top: 126px; font-size: 41px; font-family: bellezac;">SERTIFIKAT SKS NON AKADEMIK</div>
-                    <div style="text-align: center; font-family: tttsars; font-size: 25px; color: #865b34; margin-top: 8px;"> NOMOR: 011/SNA/PSI/I/2023</div>
-                    <div style="text-align: center; margin-top: 16px; font-size: 28px;">Diberikan Kepada:</div>
-                    <div style="text-align: center; margin-top: 2px; font-family: greatvibes; color: #03989e; font-size: 68px;">{{ $student->name }}</div>
-                    <div style="text-align: center; font-size: 30px; margin-top: 15px;">
-                        NPM: {{ $student->npm }}
-                    </div>
-                    <div style="position: absolute; top: 411px; margin-left: 839px;">{!! DNS2D::getBarcodeHTML($path, 'QRCODE', 3, 3) !!}</div>
-                    <div style="text-align: center; font-size: 17px; margin-top: 9px;">
-                        yang telah aktif berkegiatan dalam bidang non-akademik selama masa perkuliahan di
-                    </div>
-                    <div style="text-align: center; font-size: 17px; margin-top: 3px;">
-                        @if ($achievement !== null && $achievement->sks !== null)
-                            {!! 'Fakultas Psikologi Unisba, dengan perolehan skor '. $achievement->sks .' SKS dan mendapat predikat <span style="text-transform: uppercase;">'. $result .'</span>'!!}
-                        @else
-                            Fakultas Psikologi Unisba, dengan perolehan skor 0 SKS dan mendapat predikat Belum Cukup
-                        @endif
-                    </div>
-                    <div style="text-align: center; font-size: 21px; margin-top: 22px;">Bandung, {{ $date }}</div>
-                    @if($student->certificate_approve == 1)
-                        <div style="position: absolute; top: 565px; margin-left: 143px;">
-                            <img width="231px" class="img-fluid d-block w-10" src="{{ asset("assets/images/wadek-3.png") }}" alt="">
-                        </div>
-                    @endif
-                    <table border="0" cellpadding="0" cellspacing="0">
-                        <tr>
-                            
-                            <td>
-                                <div style="font-size: 15px; letter-spacing: -0.01;">Wakil Dekan III</div>
-                                <div style="font-size: 15px; letter-spacing: -0.01; margin-top: 2px;">Fakultas Psikologi Unisba</div>
-                                <div style="font-size: 19px; letter-spacing: -0.01; margin-top: 78px; color: #334166;">Suhana, M.Psi., Psikolog</div>
-                                <div style="font-size: 15px; letter-spacing: -0.01; margin-top: 8px;">NIP. D.00.0.329</div>
-                            </td>
-                            <td width="35"></td>
-                            <td>
-                                <div style="font-size: 15px;">Ketua Pansus</div>
-                                <div style="font-size: 15px; letter-spacing: -0.01; margin-top: 2px;">Periode {{ $year !== null ? $year->show : "" }}</div>
-                                <div style="font-size: 19px; letter-spacing: -0.01; margin-top: 78px; color: #334166;">Firda Damayanti</div>
-                                <div style="font-size: 15px; letter-spacing: -0.01; margin-top: 8px;">NPM: 10050019168</div>
-                            </td>
-                            <td width="65"></td>
-                        </tr>
-                    </table>
-                </p>
+                <table border="0" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td colspan="4" align="center" style="vertical-align:middle;padding-left:20px;padding-right:15px; height: 75px">
+                            <div>&nbsp;</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" align="center" style="height: 75px"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" align="center">
+                            <label>SERTIFIKAT SKS NON AKADEMIK</label><br>
+                            <span class="tahun"> Tahun Akademik {{ $year !== null ? $year->show : "" }}</span><br>
+                            <span class="tahun"> diberikan kepada </span><br><br><br>
+                            <span class="nama">{{ $student->name }}</span><br>
+                            <span class="nama">{{ $student->npm }}</span><br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" align="center" style="height: 35px"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" align="center" style="vertical-align:middle;padding: 5px 0 5px 0;">
+                            yang telah aktif berkegiatan dalam bidang non akademik selama perkuliahan,
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" align="center" style="vertical-align:middle;padding: 5px 0 5px 0;">
+                            @if ($achievement !== null && $achievement->sks !== null)
+                                {{ 'dengan perolehan skor '. $achievement->sks .' SKS dan mendapatkan predikat '. $result }}
+                            @else
+                                dengan perolehan skor 0 SKS dan mendapatkan predikat Belum Cukup
+                            @endif
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" align="center">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" align="center" style="font-weight: bold;padding: 10px 0 10px 0;">Bandung, {{ $date }}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" align="center">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td width="145px">&nbsp;</td>
+                        <td colspan="" align="center" class="ttd">
+                            Wakil Dekan III
+                            <br>
+                            Fakultas Psikologi Unisba
+                            <br><br><br><br><br>
+                            <br><br><br><br><br>
+                            Suhana, S.Psi., M.Psi., Psikolog
+                            <hr style="width: 213px;">
+                            NIK. D.00.0.329
+                            <br>
+                        </td>
+                        <td colspan="" align="center" class="ttd">
+                            Ketua Pansus
+                            <br>
+                            Periode {{ $year !== null ? $year->show : "" }}
+                            <br><br><br><br><br>
+                            <br><br><br><br><br>
+                            Firda Damayanti
+                            <hr style="width: 213px;">
+                            NPM. 10050019168
+                            <br>
+                        </td>
+                        <td width="145px">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" align="center" style="height: 40px"></td>
+                    </tr>
+                </table>
             </div>
         </form>
     </div>

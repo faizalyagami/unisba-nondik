@@ -154,7 +154,7 @@ class StudentActivityController extends Controller
         $active = "student-activities";
         $sub_active = "student-activities";
         $status = [1 => 'Open', 'Review', 'Approve', 'Reject'];
-        $levels = [1 => 'Admin', 'Reveiewer', 'User'];
+        $levels = [1 => 'Admin', 'Reviewer', 'User', 'Wadek'];
         $user = auth()->user();
 
         return view('pages.students.activities.show', compact(

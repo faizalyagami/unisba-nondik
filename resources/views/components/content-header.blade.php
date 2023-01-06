@@ -21,7 +21,11 @@
 						</a>
 						<div class="dropdown-menu dropdown-menu-right profile-notification">
 							<div class="pro-head">
-								<!-- <img src="/assets/images/user/avatar-2.jpg" class="img-radius" alt="User-Profile-Image"> -->
+								@if(auth()->user()->load('student')->student)
+									<img src="{{ url("uploads/profiles/". auth()->user()->load('student')->student->photo) }}" alt="{{ auth()->user()->load('student')->name }}" class="img-radius profile-img cust-img">
+								@else
+									<img src="{{ url("assets/images/user/avatar-4.jpg") }}" alt="user image" class="img-radius profile-img cust-img">
+								@endif
 								<span>{{ auth()->user()->name }}</span>
 								<a href="{{ route('logout') }}" class="dud-logout" title="Logout">
 									<i class="feather icon-log-out"></i>

@@ -36,7 +36,7 @@
                         <i class="feather icon-more-horizontal"></i>
                     </button>
                     <ul class="list-unstyled card-option dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; transform: translate3d(-138px, 28px, 0px); top: 0px; left: 0px; will-change: transform;">
-                        <li class="dropdown-item"><a href="{{ route('student.export-format') }}" class=""><i class="feather mr-2 icon-log-in" style="transform: rotate(90deg);"></i> Download Format</a></li>
+                        <li class="dropdown-item"><a href="{{ route('student.export-format') }}" class=""><i class="feather mr-2 icon-log-in" style="transform: rotate(270deg);"></i> Download Format</a></li>
                     </ul>
                 </div>
             </div>
