@@ -39,7 +39,11 @@
             <div class="review-block">
                 <div class="row">
                     <div class="col-sm-auto p-r-0">
-                        <img src="assets/images/user/avatar-2.jpg" alt="user image" class="img-radius profile-img cust-img m-b-15">
+                        @if(auth()->user()->load('student')->student)
+                            <img src="{{ url("uploads/profiles/". auth()->user()->load('student')->student->photo) }}" alt="{{ auth()->user()->load('student')->name }}" class="img-radius profile-img cust-img">
+                        @else
+                            <img src="{{ url("assets/images/user/avatar-4.jpg") }}" alt="user image" class="img-radius profile-img cust-img">
+                        @endif
                     </div>
                     <div class="col">
                         @if ($student->student !== null)

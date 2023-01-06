@@ -16,4 +16,4 @@
 	<meta name="author" content="Phoenixcoded" />
 
 	<!-- Favicon icon -->
-	<link rel="icon" href="assets/images/logo-unisba.ico" type="image/x-icon">
+	<link rel="icon" href="{{ asset('assets/images/logo-unisba.ico') }}" type="image/x-icon">
