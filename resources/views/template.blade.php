@@ -1,6 +1,9 @@
-@extends('layouts.main')
-
-@section('contents')
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		@include('components.header')
+		@include('components.header-link')
+	</head>
 
 	<!-- [ Pre-loader ] start -->
 	<div class="loader-bg">
@@ -1003,4 +1006,5 @@
 <!-- custom-chart js -->
 <script src="{{ asset('assets/js/pages/dashboard-main.js') }}"></script>
 
-@endsection
+</body>
+</html>

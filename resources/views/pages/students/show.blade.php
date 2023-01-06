@@ -85,6 +85,23 @@
                     @endforeach
                 </div>
                 <div class="form-group">
+                    <label for="class_of">Angkatan</label>
+                    <select disabled class="form-control @error('class_of')  is-invalid @enderror" name="class_of" id="class_of">
+                        @foreach ($years as $year)
+                            <option value="{{ $year }}" {{  $student->class_of == $year ? "selected":"" }}>{{ $year }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="period">Periode Pengisian</label>
+                    <input readonly type="date" class="form-control form-control-sm @error('period')  is-invalid @enderror" name="period" id="period" placeholder="Tanggal Lahir" value="{{ $student->period }}">
+                    @error('period')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
+                <div class="form-group">
                     <label for="address">Status</label><br />
                     @foreach ($status as $key => $value)
                         <div class="custom-control custom-radio custom-control-inline">
@@ -103,7 +120,7 @@
                     @endforeach
                 </div>
                 <div class="">
-                    <img class="img-fluid d-block w-10" src="{{ url("uploads/". $student->photo) }}" alt="{{ $student->name }}">
+                    <img class="img-fluid d-block w-10" src="{{ url("uploads/profiles/". $student->photo) }}" alt="{{ $student->name }}">
                 </div>
             </form>
 

@@ -104,13 +104,30 @@
                     @endforeach
                 </div>
                 <div class="form-group">
-                    <label for="address">Agama</label><br />
+                    <label for="religion">Agama</label><br />
                     @foreach ($religions as $religion)
                         <div class="custom-control custom-radio custom-control-inline">
                             <input type="radio" {{ $religion->value == 1 ? 'checked' : '' }} id="religion-{{ $religion->value }}" name="religion" value="{{ $religion->value }}" class="custom-control-input">
                             <label class="custom-control-label" for="religion-{{ $religion->value }}">{{ $religion->show }}</label>
                         </div>
                     @endforeach
+                </div>
+                <div class="form-group">
+                    <label for="class_of">Angkatan</label>
+                    <select class="form-control @error('class_of')  is-invalid @enderror" name="class_of" id="class_of">
+                        @foreach ($years as $year)
+                            <option value="{{ $year }}" {{ (old("class_of") == $year ? "selected":"") }}>{{ $year }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="period">Periode Pengisian</label>
+                    <input type="date" class="form-control form-control-sm @error('period')  is-invalid @enderror" name="period" id="period" placeholder="Tanggal Lahir" value="{{ old("period") }}">
+                    @error('period')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
                 </div>
                 <div class="form-group">
                     <label for="photo">Photo</label>

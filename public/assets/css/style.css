@@ -20548,6 +20548,7 @@ pre[class*=language-]:before {
 
 .pcoded-header .dropdown .profile-notification .pro-head img {
     width: 40px;
+    height: 40px;
     margin-right: 10px;
 }
 
@@ -20772,6 +20773,7 @@ pre[class*=language-]:before {
 
 .pcoded-navbar .main-menu-header .img-radius {
     width: 40px;
+    height: 40px;
     transition: all 0.3s ease-in-out;
 }
 
@@ -30135,7 +30137,7 @@ new-task label input[type=checkbox] {
     justify-content: center;
 }
 
-.user-profile-list table tbody tr:hover {
+.user-profile-list table tbody tr:hover {$request->photo
     box-shadow: 0 0 6px 0 #1abc9c;
 }
 
@@ -30175,6 +30177,10 @@ new-task label input[type=checkbox] {
 }
 
 /**====== user card css end ======**/
+
+table a {
+    color: #84d1b8;
+}
 
 /**====== pagination start ======**/
 .paginate {

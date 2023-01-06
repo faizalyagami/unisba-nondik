@@ -14,4 +14,8 @@ class Student extends Model
     public function user() {
         return $this->hasOne('App\Models\User');
     }
+
+    public function studentActivities() {
+        return $this->hasMany('App\Models\StudentActivity');
+    }
 }
