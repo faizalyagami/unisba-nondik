@@ -163,6 +163,7 @@ class StudentActivityController extends Controller
         $this->validate($request, [
             'subActivity' => ['required'], 
             'notes' => ['required'], 
+<<<<<<< HEAD
             'organizer' => ['required'], 
             'place' => ['required'], 
             'held_date' => ['required'], 
@@ -172,6 +173,9 @@ class StudentActivityController extends Controller
             'place' => ['required'],
             'held_date' => ['required'],
             'participation' => ['required']
+=======
+            'attachment' => ['required'], 
+>>>>>>> 442fc85 (Fix student activity attachment)
         ]);
 
         $user = auth()->user();
@@ -280,6 +284,7 @@ class StudentActivityController extends Controller
         $this->validate($request, [
             'subActivity' => ['required'], 
             'notes' => ['required'], 
+<<<<<<< HEAD
             'organizer' => ['required'], 
             'place' => ['required'], 
             'held_date' => ['required'], 
@@ -289,6 +294,9 @@ class StudentActivityController extends Controller
             'place' => ['required'],
             'held_date' => ['required'],
             'participation' => ['required']
+=======
+            'attachment' => ['required'], 
+>>>>>>> 442fc85 (Fix student activity attachment)
         ]);
 
         try {
