@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\Helpers;
+use App\Models\Student;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -124,7 +125,10 @@ class UserController extends Controller
         $active = "users";
         $sub_active = "users";
         $status = [1 => 'Aktif', 'Tidak Aktif'];
-        $levels = [1 => 'Admin', 'Reviewer', 'User', 'Wadek'];
+        $levels = [1 => 'Admin', 4 => 'Wadek'];
+        if(in_array($user->level, [2, 3])) {
+            $levels = [2 => 'Reviewer', 3 => 'User'];
+        }
 
         return view('pages.users.edit', compact(
             'active', 'sub_active', 'status', 'levels', 'user'
@@ -156,9 +160,24 @@ class UserController extends Controller
             if($request->password !== null && $request->password != '') {
                 $message->password = Hash::make($request->password);
             }
-            if($user->level == 1){
-                $message->level = 1;
-                $message->student_id = 0;
+
+            if($request->level) {
+                $message->level = $request->level;
+                if($request->level == 1) {
+                    $message->student_id = 0;
+                }
+
+                if(in_array($request->level, [2, 3])) {
+                    $student = Student::where('id', $user->student_id)->first();
+                    if($student !== null) {
+                        $pansus = 1;
+                        if($request->level == 2) {
+                            $pansus = 2;
+                        }
+                        $student->pansus = $pansus;
+                        $student->save();
+                    }
+                }
             }
             $message->status = $request->status;
             $message->editor = auth()->user()->username;

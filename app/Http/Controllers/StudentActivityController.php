@@ -87,6 +87,7 @@ class StudentActivityController extends Controller
         $this->validate($request, [
             'subActivity' => ['required'], 
             'notes' => ['required'], 
+            'attachment' => ['required'], 
         ]);
 
         $user = auth()->user();
@@ -204,6 +205,7 @@ class StudentActivityController extends Controller
         $this->validate($request, [
             'subActivity' => ['required'], 
             'notes' => ['required'], 
+            'attachment' => ['required'], 
         ]);
 
         $user = auth()->user();

@@ -80,6 +80,11 @@
                     <div class="custom-file">
                         <label class="custom-file-label" for="attachment">Choose file</label>
                         <input type="file" class="custom-file-input" id="photo" name="attachment" onchange="fileUpload(this)">
+                        @error('attachment')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
                     </div>
                 </div>
 
