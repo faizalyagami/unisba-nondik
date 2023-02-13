@@ -29,8 +29,9 @@ class SubActivityController extends Controller
     {
         $active = "activities";
         $sub_active = "activities";
+        $needs = [0 => 'Tidak Wajib', 'Wajib'];
 
-        return view('pages.sub-activities.create', compact('active', 'sub_active', 'activity'));
+        return view('pages.sub-activities.create', compact('active', 'sub_active', 'activity', 'needs'));
     }
 
     /**
@@ -53,6 +54,7 @@ class SubActivityController extends Controller
             $message->name = $request->name;
             $message->sks = $request->sks;
             $message->notes = $request->notes;
+            $message->required = $request->required;
             $message->creator = auth()->user()->username;
             $message->editor = auth()->user()->username;
             $message->save();
@@ -77,9 +79,10 @@ class SubActivityController extends Controller
         $active = "activities";
         $sub_active = "activities";
         $status = [1 => 'Aktif', 'Tidak Aktif'];
+        $needs = [0 => 'Tidak Wajib', 'Wajib'];
 
         return view('pages.sub-activities.show', compact(
-            'active', 'sub_active', 'status', 'activity', 'subActivity'
+            'active', 'sub_active', 'status', 'activity', 'subActivity', 'needs'
         ));
     }
 
@@ -94,9 +97,10 @@ class SubActivityController extends Controller
         $active = "activities";
         $sub_active = "activities";
         $status = [1 => 'Aktif', 'Tidak Aktif'];
+        $needs = [0 => 'Tidak Wajib', 'Wajib'];
 
         return view('pages.sub-activities.edit', compact(
-            'active', 'sub_active', 'status', 'activity', 'subActivity'
+            'active', 'sub_active', 'status', 'activity', 'subActivity', 'needs'
         ));
     }
 
@@ -121,6 +125,7 @@ class SubActivityController extends Controller
             $message->name = $request->name;
             $message->sks = $request->sks;
             $message->notes = $request->notes;
+            $message->required = $request->required;
             $message->status = $request->status;
             $message->editor = auth()->user()->username;
             $message->save();

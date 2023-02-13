@@ -10,9 +10,10 @@
                         @else
                             <img src="{{ url("assets/images/user/avatar-4.jpg") }}" alt="user image" class="img-radius profile-img cust-img">
                         @endif
-						<a href="{{ route('profile.index') }}">
-							<div class="user-details">
-								<span>{{ auth()->user()->name }}</span>
+						<a href="{{ route('profile.index') }}" title="{{ auth()->user()->name }}">
+							<div class="user-details" >
+								@php($abbreviation = explode(' ', trim(auth()->user()->name))[0])
+								<span>{{ $abbreviation }}</span>
 								<div id="more-details">{{ auth()->user()->username }}</div>
 							</div>
 						</a>
@@ -32,7 +33,7 @@
 							<label>Activities</label>
 						</li>
 						<li class="nav-item {{ $active == 'student-activities' ? 'active' : '' }}">
-							<a href="{{ route('student.activity.index') }}" class="nav-link "><span class="pcoded-micon"><i class="feather icon-file-text"></i></span><span class="pcoded-mtext">Activities</span></a>
+							<a href="{{ $user->level == 3 ? route('student.activity.details') : route('student.activity.index') }}" class="nav-link "><span class="pcoded-micon"><i class="feather icon-file-text"></i></span><span class="pcoded-mtext">Activities</span></a>
 						</li>
 						@if(in_array($user->level, [1, 4]))
 							<li class="nav-item pcoded-menu-caption">
