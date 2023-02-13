@@ -164,6 +164,9 @@ class StudentActivityController extends Controller
             'subActivity' => ['required'], 
             'notes' => ['required'], 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 98ef804 (tambahan validasi sertifikat)
             'organizer' => ['required'], 
             'place' => ['required'], 
             'held_date' => ['required'], 
@@ -178,8 +181,11 @@ class StudentActivityController extends Controller
 >>>>>>> 442fc85 (Fix student activity attachment)
         ]);
 
+<<<<<<< HEAD
         $user = auth()->user();
 
+=======
+>>>>>>> 98ef804 (tambahan validasi sertifikat)
         try {
             DB::transaction(function() use($request, $user) {
                 $message = new StudentActivity();
@@ -193,11 +199,23 @@ class StudentActivityController extends Controller
                 $message->place = $request->place;
                 $message->held_date = $request->held_date;
                 $message->participation = $request->participation;
+<<<<<<< HEAD
                 $message->attachment = $request->attachment;
                 $message->organizer = $request->organizer;
                 $message->place = $request->place;
                 $message->held_date = $request->held_date;
                 $message->participation = $request->participation;
+=======
+
+                if($request->attachment) {
+                    $value = $request->attachment;
+                    $file_name = date('YmdHis') .'.'. $value->getClientOriginalExtension();
+                    $folder_path = public_path('uploads/attachments');
+
+                    $message->attachment = $file_name;
+                }
+
+>>>>>>> 98ef804 (tambahan validasi sertifikat)
                 $message->creator = auth()->user()->username;
                 $message->editor = auth()->user()->username;
                 $message->save();
@@ -285,16 +303,22 @@ class StudentActivityController extends Controller
             'subActivity' => ['required'], 
             'notes' => ['required'], 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 98ef804 (tambahan validasi sertifikat)
             'organizer' => ['required'], 
             'place' => ['required'], 
             'held_date' => ['required'], 
             'participation' => ['required'], 
+<<<<<<< HEAD
             'attachment' => ['required'], 
             'organizer' => ['required'],
             'place' => ['required'],
             'held_date' => ['required'],
             'participation' => ['required']
 =======
+=======
+>>>>>>> 98ef804 (tambahan validasi sertifikat)
             'attachment' => ['required'], 
 >>>>>>> 442fc85 (Fix student activity attachment)
         ]);
@@ -308,11 +332,23 @@ class StudentActivityController extends Controller
                 $message->place = $request->place;
                 $message->held_date = $request->held_date;
                 $message->participation = $request->participation;
+<<<<<<< HEAD
                 $message->attachment = $request->attachment;
                 $message->organizer = $request->organizer;
                 $message->place = $request->place;
                 $message->held_date = $request->held_date;
                 $message->participation = $request->participation;
+=======
+
+                if($request->attachment) {
+                    $value = $request->attachment;
+                    $file_name = date('YmdHis') .'.'. $value->getClientOriginalExtension();
+                    $folder_path = public_path('uploads/attachments');
+
+                    $message->attachment = $file_name;
+                }
+                
+>>>>>>> 98ef804 (tambahan validasi sertifikat)
                 $message->editor = auth()->user()->username;
                 $message->save();
 

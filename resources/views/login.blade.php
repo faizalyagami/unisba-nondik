@@ -58,7 +58,11 @@
 									</div>
 									<button class="btn btn-block btn-primary mb-4" type="submit">Login</button>
 									<hr>
+<<<<<<< HEAD
 									<p class="mb-2 text-muted">Lupa password? <a href="/forgot-password">Reset</a></p>
+=======
+									<p class="mb-2 text-muted">Lupa password? <a href="javascript:void(0)" class="f-w-400" data-toggle="modal" data-target="#exampleModalLive">Reset</a></p>
+>>>>>>> 98ef804 (tambahan validasi sertifikat)
 									<p class="mt-5 mb-3 text-muted text-center">© Fakultas Psikologi 2021–2022</p>
 								</form>
 							</div>
@@ -68,8 +72,12 @@
 			</div>
 		</div>
 
+<<<<<<< HEAD
 		<!--
 			<div id="exampleModalLive" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLiveLabel" style="display: none; " aria-hidden="true">
+=======
+		<div id="exampleModalLive" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLiveLabel" style="display: none; " aria-hidden="true">
+>>>>>>> 98ef804 (tambahan validasi sertifikat)
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
@@ -84,7 +92,10 @@
 				</div>
 			</div>
 		</div>
+<<<<<<< HEAD
 		  -->
+=======
+>>>>>>> 98ef804 (tambahan validasi sertifikat)
 
 		<script src="{{ asset('assets/js/vendor-all.min.js') }}"></script>
 		<script src="{{ asset('assets/js/plugins/bootstrap.min.js') }}"></script>

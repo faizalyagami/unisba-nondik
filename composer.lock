@@ -1845,6 +1845,9 @@
         },
         {
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 98ef804 (tambahan validasi sertifikat)
             "name": "masterminds/html5",
             "version": "2.7.6",
             "source": {
@@ -1914,8 +1917,11 @@
             "time": "2022-08-18T16:18:26+00:00"
         },
         {
+<<<<<<< HEAD
 =======
 >>>>>>> 75c4c6f ([1] Update sertificate and add level wadek)
+=======
+>>>>>>> 98ef804 (tambahan validasi sertifikat)
             "name": "milon/barcode",
             "version": "9.0.1",
             "source": {
