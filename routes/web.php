@@ -30,6 +30,7 @@ Route::prefix('profile')->name('profile.')->middleware('auth')->group(function (
 	Route::get('/edit-password', [HomeController::class, 'editPasswordProfile'])->name('edit-password');
 	Route::post('/update-password', [HomeController::class, 'updatePasswordProfile'])->name('update-password');
 	Route::get('/print-certificate', [HomeController::class, 'printCertificate'])->name('print-certificate');
+	Route::get('/generate-pdf', [HomeController::class, 'generatePDF'])->name('generate-pdf');
 });
 Route::get('/template', [HomeController::class, 'template'])->name('template');
 
@@ -57,6 +58,7 @@ Route::prefix('student')->name('student.')->middleware('auth')->group(function (
 
 	Route::prefix('activity')->name('activity.')->group(function () {
 		Route::get('/', [StudentActivityController::class, 'index'])->name('index');
+		Route::get('/details', [StudentActivityController::class, 'details'])->name('details');
 		Route::post('/', [StudentActivityController::class, 'store'])->name('store');
 		Route::get('/create', [StudentActivityController::class, 'create'])->name('create');
 		Route::get('/show/{studentActivity}', [StudentActivityController::class, 'show'])->name('show');

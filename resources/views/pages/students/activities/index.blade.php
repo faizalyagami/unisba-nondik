@@ -7,7 +7,7 @@
             <div class="row align-items-center">
                 <div class="col-md-12">
                     <div class="page-header-title">
-                        <h5 class="m-b-10">Activitas Mahasiswa</h5>
+                        <h5 class="m-b-10">Mahasiswa</h5>
                     </div>
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="index.html"><i class="feather icon-home"></i></a></li>
@@ -28,11 +28,7 @@
                         <i class="feather icon-more-horizontal"></i>
                     </button>
                     <ul class="list-unstyled card-option dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; transform: translate3d(-138px, 28px, 0px); top: 0px; left: 0px; will-change: transform;">
-                        <li class="dropdown-item"><a href="javascript:void(0)" class="" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo"><i class="feather mr-2 icon-search"></i> Search</a></li>
-                        @if(auth()->user()->level != 2)
-                            <li class="dropdown-item"><hr></li>
-                            <li class="dropdown-item"><a href="{{ route('student.activity.create') }}" class=""><i class="feather mr-2 icon-plus"></i> Tambah Baru</a></li>
-                        @endif
+                        <li class="dropdown-item"><a href="javascript:void(0)" class="" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo"><i class="feather mr-2 icon-search"></i> Search & Filter</a></li>
                     </ul>
                 </div>
             </div>
@@ -53,13 +49,12 @@
                                 <input type="text" class="form-control" name="search_text" id="search_text" value="{{  $search_text }}">
                             </div>
                             <div class="form-group">
-                                <label for="address">Status</label><br />
-                                @foreach ($status as $key => $value)
-                                    <div class="custom-control custom-radio custom-control-inline">
-                                        <input type="radio" {{ $key == $search_status ? 'checked' : '' }} id="status-{{ $key }}" name="search_status" value="{{ $key }}" class="custom-control-input">
-                                        <label class="custom-control-label" for="status-{{ $key }}">{{ $value }}</label>
-                                    </div>
-                                @endforeach
+                                <label for="class_of">Angkatan</label>
+                                <select class="form-control @error('class_of')  is-invalid @enderror" name="search_classof" id="class_of">
+                                    @foreach ($classofs as $year)
+                                        <option value="{{ $year }}" {{ ($search_classof == $year ? "selected":"") }}>{{ $year }}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -76,34 +71,34 @@
                     <thead>
                         <tr>
                             <th>#</th>
-                            @if(auth()->user()->level != 3)
-                                <th>Mahasiswa</th>
-                            @endif
-                            <th>Nama Aktivitas</th>
-                            <th>Tanggal Buat</th>
-                            <th>Attachment</th>
-                            <th>Status</th>
-                            <th>Action</th>
+                            <th>NPM</th>
+                            <th>Nama</th>
+                            <th>Angkatan</th>
+                            <th>Periode Pengisian</th>
+                            <th>Activities</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @if (count($studentActivities))
-                            @foreach ($studentActivities as $key => $studentActivity)
+                        @if (count($students))
+                            @foreach ($students as $key => $student)
                                 <tr>
-                                    <td>{{ $studentActivities->firstItem() + $key }}</td>
-                                    @if(auth()->user()->level != 3)
-                                        <td>{{ $studentActivity->student->name }}</td>
-                                    @endif
-                                    <td>{{ $studentActivity->subActivity->name }}</td>
-                                    <td>{{ date("d F Y", strtotime($studentActivity->created_at)) }}</td>
+                                    <td style="width: 25px;">{{ $students->firstItem() + $key }}</td>
+                                    <td style="width: 95px;">{{ $student->npm }}</td>
                                     <td>
-                                        @if($studentActivity->attachment !== null && $studentActivity->attachment != '')
-                                            <a href="/uploads/attachments/{{ $studentActivity->attachment }}" download><span class="btn btn-sm btn-info">{{ $studentActivity->attachment }} </span></a>
+                                        @if ($student->photo !== null && $student->photo !== '')
+                                            <img src="/uploads/{{ $student->photo }}" alt="{{ $student->name }}" class="img-radius wid-40 align-top m-r-15">
                                         @endif
+                                        <div class="d-inline-block">
+                                            <h6>{{ $student->name }}</h6>
+                                        </div>
                                     </td>
-                                    <td>{{ $status[$studentActivity->status] }}</td>
+                                    <td>{{ $student->class_of }}</td>
+                                    <td>{{ date("d F Y", strtotime($student->period)) }}</td>
                                     <td>
-                                        <a href="{{ route('student.activity.show', [$studentActivity->id]) }}" class="btn btn-sm btn-primary" title="Show"><i class="feather icon-search"></i></a>
+                                        <a href="{{ route("student.activity.details") }}?search_text={{ $student->name }}&search_status=1" class="badge badge-primary">Open <span class="badge badge-light">{{ $student->open }}</span></a>
+                                        <a href="{{ route("student.activity.details") }}?search_text={{ $student->name }}&search_status=2" class="badge badge-info">Review <span class="badge badge-light">{{ $student->review }}</span></a>
+                                        <a href="{{ route("student.activity.details") }}?search_text={{ $student->name }}&search_status=3" class="badge badge-success">Approve <span class="badge badge-light">{{ $student->approve }}</span></a>
+                                        <a href="{{ route("student.activity.details") }}?search_text={{ $student->name }}&search_status=4" class="badge badge-danger">Reject <span class="badge badge-light">{{ $student->reject }}</span></a>
                                     </td>
                                 </tr>
                             @endforeach
@@ -115,9 +110,88 @@
                     </tbody>
                 </table>
 
-                {{ $studentActivities->links('vendor.pagination.custom-default') }}
+                {{ $students->links('vendor.pagination.custom-default') }}
+            </div>
+        </div>
+
+        <div id="exampleModalCenter" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" style="display: none;" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalCenterTitle">Approve Sertifikat</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="mb-0">
+                            Periksa kembali kesesuaian data.
+                            <br>
+                            Apakah anda yakin akan memproses data tersebut?
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn  btn-secondary" data-dismiss="modal">Tidak</button>
+                        <button type="button" class="btn  btn-primary" id="btn-ya" data-id="" data-dismiss="modal">Ya</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="exampleModalAlert" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalAlertTitle" style="display: none;" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalAlertTitle">Approve Sertifikat</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closemodal(this)"><span aria-hidden="true">×</span></button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="mb-0">
+                            Terjadi kesalahan, data mahasiswa tidak ditemukan.
+                            <br>
+                            Silkan coba lagi!
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn  btn-primary" data-dismiss="modal" onclick="closemodal(this)">Ok</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+
+    <script>
+        window.showmodal = function (id) {
+            $("#btn-ya").data("id", id);
+        }
+
+        window.closemodal = function (th) {
+            $("#exampleModalAlert").removeClass("show");
+            $("#exampleModalAlert").css({"display":"none"});
+        }
+
+        $("#btn-ya").on("click", function(){
+            var id = $(this).data("id");
+
+            var ajaxurl = "{{ route('student.approve-certificate') }}";
+            $.ajax({
+                url: ajaxurl, 
+                type: "POST", 
+                data: {
+                    _token : '{{ csrf_token() }}',
+                    id : id,
+                },
+                success: function(data) {
+                    if(data.status == 'ok') {
+                        $("#crtf-td-"+ id +"").html(`<span style="color: #1abc9c;"><i class="feather icon-check" title="Approved"></i></span>`);
+                    } else {
+                        $("#exampleModalAlert").addClass("show");
+                        $("#exampleModalAlert").css({"display":"block"});
+                    }
+                }, 
+                error: function(xhr, textStatus, errorThrown) {
+                    console.log(xhr.responseText);
+                }
+            });
+        });
+    </script>
 
 @endsection

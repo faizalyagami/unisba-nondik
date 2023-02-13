@@ -5,12 +5,12 @@
 <style>
     @font-face {
         font-family: 'bellezac';
-        src: url('../assets/fonts/Belleza-Regular.ttf')
+        src: url({{ storage_path('fonts/Belleza-Regular.ttf') }})
     }
 
     @font-face {
         font-family: 'rasa-medium';
-        src: url('../assets/fonts/Rasa-Medium.ttf')
+        src: url({{ storage_path('fonts/Rasa-Medium.ttf') }})
     }
     @font-face {
         font-family: 'tttsars';
@@ -18,7 +18,7 @@
     }
     @font-face {
         font-family: 'greatvibes';
-        src: url('../assets/fonts/great-vibes.regular.ttf')
+        src: url({{ storage_path('fonts/great-vibes.regular.ttf') }})
     }
     html, body {
         margin: 0;
@@ -99,13 +99,12 @@
     .packing-label .pl-area {
         display: table;
         margin: auto;
-        margin-top: 40px;
         background: #fff;
         width: 100%;
         max-width: 1000px;
         height: 707px;
         outline: none;
-        background-image: url('/assets/images/profile/certificate-2.png1');
+        background-image: url('/assets/images/profile/certificate-21.png');
         background-size: cover;
     }
     .packing-label .pl-area .pl-content {
@@ -220,30 +219,22 @@
 </style>
 
 <div class="packing-label">
-    <div class="pl-head">
-        <strong>Certificate</strong>
-        <div>
-            <a href="{{ route('profile.generate-pdf') }}">Download PDF</a>
-            <a href="javascript:void(0)" onclick="window.print()">Print Sekarang</a>
-            <a href="{{ route('home') }}">Keluar</a>
-        </div>
-    </div>
     <div class="pl-area">
         <form action="" class="form-main" id="form-create-pickpack" method="post" enctype="multipart/form-data" style="position: relative;">
             <div style="position: absolute;">
                 <img width="100%" class="img-fluid d-block w-10" src="{{ asset("assets/images/profile/certificate-2.png") }}" alt="">
             </div>
-            <div class="pl-content" style="    position: absolute; top: 0; text-align: center; width: 100%;">
+            <div class="pl-content" style="position: absolute; top: 0; text-align: center; width: 100%;">
                 @php($path = route("student.show", [$student->npm]) )
                 <p>
                     <div style="text-align: center; margin-top: 126px; font-size: 41px; font-family: bellezac;">SERTIFIKAT SKS NON AKADEMIK</div>
                     <div style="text-align: center; font-family: tttsars; font-size: 25px; color: #865b34; margin-top: 8px;"> NOMOR: {{ sprintf("%'.03d", $student->order) }}/SNA/PSI/{{ $month_rome }}/{{ $current_year }}</div>
                     <div style="text-align: center; margin-top: 16px; font-size: 28px;">Diberikan Kepada:</div>
-                    <div style="text-align: center; margin-top: 2px; font-family: greatvibes; color: #03989e; font-size: 68px;">{{ $student->name }}</div>
-                    <div style="text-align: center; font-size: 30px; margin-top: 15px;">
+                    <div style="text-align: center; margin-top: -21px; font-family: greatvibes; color: #03989e; font-size: 68px;">{{ $student->name }}</div>
+                    <div style="text-align: center; font-size: 30px; margin-top: 5px;">
                         NPM: {{ $student->npm }}
                     </div>
-                    <div style="position: absolute; top: 405px; margin-left: 839px;">{!! DNS2D::getBarcodeHTML($path, 'QRCODE', 3, 3) !!}</div>
+                    <div style="position: absolute; top: 455px; margin-left: 939px;">{!! DNS2D::getBarcodeHTML($path, 'QRCODE', 3, 3) !!}</div>
                     <div style="text-align: center; font-size: 17px; margin-top: 9px;">
                         yang telah aktif berkegiatan dalam bidang non-akademik selama masa perkuliahan di
                     </div>
@@ -254,9 +245,9 @@
                             Fakultas Psikologi Unisba, dengan perolehan skor 0 SKS dan mendapat predikat Belum Cukup
                         @endif
                     </div>
-                    <div style="text-align: center; font-size: 21px; margin-top: 22px;">Bandung, {{ $date }}</div>
+                    <div style="text-align: center; font-size: 21px; margin-top: 22px; margin-bottom: 5px;">Bandung, {{ $date }}</div>
                     @if($student->certificate_approve == 1)
-                        <div style="position: absolute; top: 521px; margin-left: 107px;">
+                        <div style="position: absolute; top: 597px; margin-left: 137px;">
                             <img width="231px" class="img-fluid d-block w-10" src="{{ asset("assets/images/wadek-3.png") }}" alt="">
                         </div>
                     @endif
