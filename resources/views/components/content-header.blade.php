@@ -15,6 +15,16 @@
 		<div class="collapse navbar-collapse">
 			<ul class="navbar-nav ml-auto">
 				<li>
+					@if(auth()->user()->load('student')->student)
+						<div class="dropdown">
+							@php($now = time())
+							@php($your_date = strtotime(auth()->user()->load('student')->student->period))
+							@php($datediff = $your_date - $now)
+							<div class="blink_me" style="color: #1abc9c">Peridode pengisian sisa {{ round($datediff / (60 * 60 * 24)) }} hari lagi.</div>
+						</div>
+					@endif
+				</li>
+				<li>
 					<div class="dropdown drp-user">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 							<i class="feather icon-user"></i>
@@ -26,7 +36,9 @@
 								@else
 									<img src="{{ url("assets/images/user/avatar-4.jpg") }}" alt="user image" class="img-radius profile-img cust-img">
 								@endif
-								<span>{{ auth()->user()->name }}</span>
+
+								@php($abbreviation = explode(' ', trim(auth()->user()->name))[0])
+								<span title="{{ auth()->user()->name }}">{{ $abbreviation }}</span>
 								<a href="{{ route('logout') }}" class="dud-logout" title="Logout">
 									<i class="feather icon-log-out"></i>
 								</a>

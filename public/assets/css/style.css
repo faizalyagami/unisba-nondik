@@ -18370,7 +18370,7 @@ strong {
 
 /* Example modals */
 .modal {
-    z-index: 1072;
+    z-index: 1072 !important;
 }
 
 .modal .popover,
@@ -30266,3 +30266,13 @@ table a {
     background-size: 100% 28px;
 }
 /**====== pagination start ======**/
+
+.blink_me {
+    animation: blinker 2s linear infinite;
+}
+
+@keyframes blinker {
+    50% {
+      opacity: 0;
+    }
+}
