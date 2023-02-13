@@ -45,6 +45,15 @@
                     @enderror
                 </div>
                 <div class="form-group">
+                    <label for="required">Wajib</label><br />
+                    @foreach ($needs as $key => $need)
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input type="radio" {{ $key == $subActivity->required ? 'checked' : '' }} id="required-{{ $key }}" name="required" value="{{ $key }}" class="custom-control-input">
+                            <label class="custom-control-label" for="required-{{ $key }}">{{ $need }}</label>
+                        </div>
+                    @endforeach
+                </div>
+                <div class="form-group">
                     <label for="notes">Notes</label>
                     <textarea class="form-control form-control-sm @error('notes')  is-invalid @enderror" name="notes" id="notes" rows="3"> {{ $subActivity->notes }}</textarea>
                     @error('notes')

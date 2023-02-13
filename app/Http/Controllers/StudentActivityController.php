@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Activity;
+use App\Models\Reff;
+use App\Models\Student;
 use App\Models\StudentActivity;
 use App\Models\StudentActivityLog;
 use Illuminate\Filesystem\Filesystem;
@@ -19,9 +21,71 @@ class StudentActivityController extends Controller
      */
     public function index(Request $request)
     {
+
+        $user = auth()->user();
+        if($user->level == 3) {
+            abort(403);
+        }
+
+        $active = "student-activities";
+        $sub_active = "student-activities";
+        $classofs = Student::select('class_of')->groupBy('class_of')->pluck('class_of');
+        $classofs = [0 => 'Semua'] + $classofs->toArray();
+
+
+        $search_text = $request->search_text;
+        $search_classof = $request->search_classof ? $request->search_classof : 'Semua';
+
+        $needed = Reff::select('value', 'show')->where('status', 1)->where('name', 'minimalsks')->orderBy('value')->first();
+
+        $students = Student::select('id', 'npm', 'name', 'phone', 'gender', 'class_of', 'period', 'certificate_approve', 'status')
+            ->selectRaw('(
+                select sum(sks) 
+                from student_activities 
+                join sub_activities on sub_activities.id = student_activities.sub_activity_id 
+                where student_activities.student_id = students.id and  student_activities.status = 3) as sumsks')
+            ->where(function ($q) use($search_text) {
+                $q->whereRaw('name like ?', ['%'. $search_text .'%'])
+                ->orWhereRaw('npm like ?', ['%'. $search_text .'%']);
+            })
+            ->when($search_classof != 'Semua', function($q) use($search_classof) {
+                $q->where('class_of', $search_classof);
+            })
+            ->where('status', 1)
+            ->withCount(['studentActivities as open' => function($q) {
+                    $q->where('status', 1);
+                },
+                'studentActivities as review' => function($q) {
+                    $q->where('status', 2);
+                }, 
+                'studentActivities as approve' => function($q) {
+                    $q->where('status', 3);
+                }, 
+                'studentActivities as reject' => function($q) {
+                    $q->where('status', 4);
+                }
+            ])
+            ->orderBy('name')
+            ->paginate(20)
+            ->withQueryString();
+
+        return view('pages.students.activities.index', compact(
+            'active', 'sub_active', 'classofs', 'students', 'user', 
+            'search_text', 'search_classof', 'needed'
+        ));
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function details(Request $request)
+    {
         $active = "student-activities";
         $sub_active = "student-activities";
         $status = [0 => 'Semua', 'Open', 'Review', 'Approve', 'Reject'];
+        $required = Reff::select('value', 'show')->where('status', 1)->where('name', 'RequiredActivity')->orderBy('value')->first();
 
         $user = auth()->user();
 
@@ -40,8 +104,19 @@ class StudentActivityController extends Controller
             ->paginate(20)
             ->withQueryString();
 
-        return view('pages.students.activities.index', compact(
-            'active', 'sub_active', 'status', 
+        $requiredHas = 0;
+        if(in_array($user->level, [2, 3])) {
+            $req = StudentActivity::whereHas('subActivity', function($q) {
+                    $q->whereRequired(true);
+                })
+                ->count();
+
+            $requiredHas = $req;
+        }
+
+
+        return view('pages.students.activities.details', compact(
+            'active', 'sub_active', 'status', 'required', 'requiredHas', 
             'search_text', 'search_status', 'studentActivities'
         ));
     }
@@ -57,9 +132,6 @@ class StudentActivityController extends Controller
         $sub_active = "student-activities";
 
         $user = auth()->user();
-        if($user->level == 2) {
-            abort(403);
-        }
 
         $activities = Activity::with([
                 'subActivities' => function($q) {
@@ -71,7 +143,7 @@ class StudentActivityController extends Controller
             ->get();
 
         return view('pages.students.activities.create', compact(
-            'active', 'sub_active', 
+            'active', 'sub_active', 'user', 
             'activities'
         ));
     }
@@ -87,13 +159,12 @@ class StudentActivityController extends Controller
         $this->validate($request, [
             'subActivity' => ['required'], 
             'notes' => ['required'], 
+            'organizer' => ['required'], 
+            'place' => ['required'], 
+            'held_date' => ['required'], 
+            'participation' => ['required'], 
             'attachment' => ['required'], 
         ]);
-
-        $user = auth()->user();
-        if($user->level == 2) {
-            abort(403);
-        }
 
         try {
             DB::transaction(function() use($request, $user) {
@@ -103,6 +174,11 @@ class StudentActivityController extends Controller
                 if($request->notes) {
                     $message->notes = $request->notes;
                 }
+
+                $message->organizer = $request->organizer;
+                $message->place = $request->place;
+                $message->held_date = $request->held_date;
+                $message->participation = $request->participation;
 
                 if($request->attachment) {
                     $value = $request->attachment;
@@ -175,9 +251,6 @@ class StudentActivityController extends Controller
         $sub_active = "student-activities";
 
         $user = auth()->user();
-        if($user->level == 2) {
-            abort(403);
-        }
         
         $activities = Activity::with([
             'subActivities' => function($q) {
@@ -189,7 +262,7 @@ class StudentActivityController extends Controller
         ->get();
 
         return view('pages.students.activities.edit', compact(
-            'active', 'sub_active', 'activities', 'studentActivity'
+            'active', 'sub_active', 'activities', 'studentActivity', 'user'
         ));
     }
 
@@ -205,19 +278,22 @@ class StudentActivityController extends Controller
         $this->validate($request, [
             'subActivity' => ['required'], 
             'notes' => ['required'], 
+            'organizer' => ['required'], 
+            'place' => ['required'], 
+            'held_date' => ['required'], 
+            'participation' => ['required'], 
             'attachment' => ['required'], 
         ]);
-
-        $user = auth()->user();
-        if($user->level == 2) {
-            abort(403);
-        }
 
         try {
             DB::transaction(function() use($request, $studentActivity) {
                 $message = StudentActivity::findOrFail($studentActivity->id);
                 $message->sub_activity_id = $request->subActivity;
                 $message->notes = $request->notes;
+                $message->organizer = $request->organizer;
+                $message->place = $request->place;
+                $message->held_date = $request->held_date;
+                $message->participation = $request->participation;
 
                 if($request->attachment) {
                     $value = $request->attachment;

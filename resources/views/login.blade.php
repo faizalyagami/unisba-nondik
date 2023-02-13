@@ -20,7 +20,7 @@
 		<title>Unisba</title>
     </head>
     <body>
-		<div style="top:27px; right:27px; position: fixed; z-index: 99999;">
+		<div style="top:27px; right:27px; position: fixed; z-index: 999;">
 			@if (session('success'))
 				<div class="alert alert-primary alert-dismissible fade show" role="alert">
 						{{ session('success') }}
@@ -56,12 +56,29 @@
 									<div class="form-group mb-4">
 										<input type="password" class="form-control" id="password" name="password" placeholder="Password">
 									</div>
-									</div>
 									<button class="btn btn-block btn-primary mb-4" type="submit">Login</button>
+									<hr>
+									<p class="mb-2 text-muted">Lupa password? <a href="javascript:void(0)" class="f-w-400" data-toggle="modal" data-target="#exampleModalLive">Reset</a></p>
 									<p class="mt-5 mb-3 text-muted text-center">© Fakultas Psikologi 2021–2022</p>
 								</form>
 							</div>
 						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="exampleModalLive" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLiveLabel" style="display: none; " aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLiveLabel"><i class="feather icon-info"></i> Lupa Password</h5>
+					</div>
+					<div class="modal-body" style="text-align: center;">
+						<p class="mb-0">Hubungi Unit Kerja Pengembangan Sistem Informasi dan Teknologi (Khusus Mahasiswa syarat membawa KTM)!</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn  btn-secondary" data-dismiss="modal">Ok, Saya Mengerti</button>
 					</div>
 				</div>
 			</div>

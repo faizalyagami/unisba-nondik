@@ -11,7 +11,7 @@
                     </div>
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="index.html"><i class="feather icon-home"></i></a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('student.activity.index') }}">Aktivitas Mahasiswa</a></li>
+                        <li class="breadcrumb-item"><a href="{{ $user->level == 3 ? route('student.activity.details') : route('student.activity.index') }}">Aktivitas Mahasiswa</a></li>
                         <li class="breadcrumb-item"><a href="javascript:void(0)">{{ $studentActivity->student->name ." - ". $studentActivity->subActivity->name }}</a></li>
                     </ul>
                 </div>

@@ -69,6 +69,15 @@
                         </div>
                     @enderror
                 </div>
+                <div class="form-group">
+                    <label for="required">Wajib</label><br />
+                    @foreach ($needs as $key => $need)
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input type="radio" {{ $key == 0 ? 'checked' : '' }} id="required-{{ $key }}" name="required" value="{{ $key }}" class="custom-control-input">
+                            <label class="custom-control-label" for="required-{{ $key }}">{{ $need }}</label>
+                        </div>
+                    @endforeach
+                </div>
 
                 <button type="submit" class="btn  btn-primary">Simpan</button>
             </form>
