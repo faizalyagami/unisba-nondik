@@ -95,6 +95,10 @@ class StudentActivityController extends Controller
         $studentActivities = StudentActivity::with([
                 'subActivity', 'student'
             ])
+            ->whereHas('student', function ($q) use($search_text) {
+                $q->whereRaw('name like ?', ['%'. $search_text .'%'])
+                ->orWhereRaw('npm like ?', ['%'. $search_text .'%']);
+            })
             ->when($user->level == 3, function($q) use($user) {
                 $q->where('student_id', $user->student_id);
             })
