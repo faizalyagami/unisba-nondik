@@ -19,8 +19,50 @@
 
 		<title>Unisba</title>
     </head>
+    <style>
+        body {
+            background: #d3d3d3;
+        }
+        .main {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items:center;
+        }
+        .form {
+            background: #fff;
+            padding: 50px 30px;
+        }
+    </style>
     <body>
-		<div style="top:27px; right:27px; position: fixed; z-index: 999;">
+    <div class="main">
+            <div class="form">
+                @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach($errors->all() as $error)
+                        <li>{{$error}}</li>
+                        @endforeach
+                    </ul>
+                </div>
+                @endif
+                @if(session()->has('status'))
+                <div class="alert alert-success">
+                    {{session()->get('status')}}
+                </div>
+                @endif
+                <h2>Forgot Your Password</h2>
+                <p>please enter your mail to password reset request</p>
+                <form action="{{route('password.email')}}" method="post">
+                @csrf
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" name="email">
+                <input type="submit" value="Request Password Reset" class="btn btn-primary w-100 mt-3">
+                </form>
+            </div>
+        </div>
+		
+        <!-- <div style="top:27px; right:27px; position: fixed; z-index: 999;">
 			@if (session('success'))
 				<div class="alert alert-primary alert-dismissible fade show" role="alert">
 						{{ session('success') }}
@@ -36,56 +78,15 @@
 					<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
 				</div>
 			@endif
-		</div>
-
-		<div class="auth-wrapper">
-			<div class="auth-content text-center">
-				<div class="card borderless">
-					<div class="logo">
-						<img src="assets/images/auth/logo-unisba.png" width="80">
-					<div class="row align-items-center ">
-						<div class="col-md-12">
-							<div class="card-body">
-								<h4 class="mb-3 f-w-400">Login Sistem SKS Non Akademik</h4>
-								<hr>
-								<form action="/login" method="post" name="formLogin" id="form-login">
-									@csrf
-									<div class="form-group mb-3">
-										<input type="text" class="form-control" id="username" name="username" placeholder="Username" autofocus>
-									</div>
-									<div class="form-group mb-4">
-										<input type="password" class="form-control" id="password" name="password" placeholder="Password">
-									</div>
-									<button class="btn btn-block btn-primary mb-4" type="submit">Login</button>
-									<hr>
-									<p class="mb-2 text-muted">Lupa password? <a href="/forgot-password">Reset</a></p>
-									<p class="mt-5 mb-3 text-muted text-center">© Fakultas Psikologi 2021–2022</p>
-								</form>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-
-		<!--
-			<div id="exampleModalLive" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLiveLabel" style="display: none; " aria-hidden="true">
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" id="exampleModalLiveLabel"><i class="feather icon-info"></i> Lupa Password</h5>
-					</div>
-					<div class="modal-body" style="text-align: center;">
-						<p class="mb-0">Hubungi Unit Kerja Pengembangan Sistem Informasi dan Teknologi (Khusus Mahasiswa syarat membawa KTM)!</p>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn  btn-secondary" data-dismiss="modal">Ok, Saya Mengerti</button>
-					</div>
-				</div>
-			</div>
-		</div>
-		  -->
-
+            <h2>Forgot Your Password</h2>
+                <p>please enter your mail to password reset request</p>
+                <form action="{{route('password.email')}}" method="post">
+                @csrf
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" name="email">
+                <input type="submit" value="Request Password Reset" class="btn btn-primary w-100 mt-3">
+                </form>
+		</div> -->
 		<script src="{{ asset('assets/js/vendor-all.min.js') }}"></script>
 		<script src="{{ asset('assets/js/plugins/bootstrap.min.js') }}"></script>
 		<script src="{{ asset('assets/js/pcoded.min.js') }}"></script>
