@@ -140,7 +140,6 @@ class StudentController extends Controller
                     $message->photo = $file_name;
                 }
                 $message->class_of = $request->class_of;
-                $message->order = $message->lastOrder($request->class_of) + 1;
                 $message->period = $request->period;
                 $message->creator = auth()->user()->username;
                 $message->editor = auth()->user()->username;
@@ -563,7 +562,6 @@ class StudentController extends Controller
                                         $message->npm = $contents[0];
                                         $message->name = $contents[1];
                                         $message->class_of = $contents[2];
-                                        $message->order = $message->lastOrder($contents[2]) + 1;
                                         $message->gender = $contents[3];
                                         $message->religion = $contents[4];
                                         $message->phone = $contents[5];
@@ -572,8 +570,12 @@ class StudentController extends Controller
                                             $dt = Carbon::instance(Date::excelToDateTimeObject($contents[7]));
                                             $message->date_of_birth = $dt;
                                         }
-                                        if($contents[6] !== null && $contents[6] != '') {
-                                            $message->address = $contents[6];
+                                        if($contents[8] !== null && $contents[8] != '') {
+                                            $message->address = $contents[8];
+                                        }
+                                        if($contents[9] !== null && $contents[9] != '') {
+                                            $dt = Carbon::instance(Date::excelToDateTimeObject($contents[9]));
+                                            $message->period = $dt;
                                         }
                                         $message->creator = auth()->user()->username;
                                         $message->editor = auth()->user()->username;
