@@ -572,12 +572,17 @@ class StudentController extends Controller
                                             $dt = Carbon::instance(Date::excelToDateTimeObject($contents[7]));
                                             $message->date_of_birth = $dt;
                                         }
+<<<<<<< HEAD
                                         if($contents[8] !== null && $contents[8] != '') {
                                             $message->address = $contents[8];
                                         }
                                         if($contents[9] !== null && $contents[9] != '') {
                                             $dt = Carbon::instance(Date::excelToDateTimeObject($contents[9]));
                                             $message->period = $dt;
+=======
+                                        if($contents[7] !== null && $contents[7] != '') {
+                                            $message->address = $contents[7];
+>>>>>>> 430aa7d (perubahan)
                                         }
                                         $message->creator = auth()->user()->username;
                                         $message->editor = auth()->user()->username;
