@@ -174,9 +174,13 @@
                     </div>
                 </div>
 <<<<<<< HEAD
+<<<<<<< HEAD
                 <br>
 =======
 >>>>>>> 98ef804 (tambahan validasi sertifikat)
+=======
+                <br>
+>>>>>>> 8be1dc7 (menambah fitur reset password)
                 <button type="submit" class="btn  btn-primary">Simpan</button>
             </form>
 
