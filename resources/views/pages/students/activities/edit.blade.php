@@ -106,6 +106,9 @@
                 </div>
                 <div class="form-group">
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 4ceb13d (Update Studen Activity)
                     <label for="attachment">Attachment ( G-Drive link )</label>
                     <input type="text" class="form-control" @error('attachment') required @enderror name="attachment" id="attachment" rows="3" value="{{ $studentActivity->attachment }}">
                     @error('attachment')
@@ -113,6 +116,7 @@
                             {{ $message }}
                         </div>
                     @enderror
+<<<<<<< HEAD
 =======
                     <label for="attachment">Attachment</label>
                     <br>
@@ -132,6 +136,8 @@
                         @enderror
                     </div>
 >>>>>>> 442fc85 (Fix student activity attachment)
+=======
+>>>>>>> 4ceb13d (Update Studen Activity)
                 </div>
 
                 <button type="submit" name="update" class="btn btn-primary">Update</button>

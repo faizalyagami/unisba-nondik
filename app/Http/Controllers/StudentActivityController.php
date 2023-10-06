@@ -176,9 +176,12 @@ class StudentActivityController extends Controller
             'place' => ['required'],
             'held_date' => ['required'],
             'participation' => ['required']
+<<<<<<< HEAD
 =======
             'attachment' => ['required'], 
 >>>>>>> 442fc85 (Fix student activity attachment)
+=======
+>>>>>>> 4ceb13d (Update Studen Activity)
         ]);
 
 <<<<<<< HEAD
@@ -200,11 +203,15 @@ class StudentActivityController extends Controller
                 $message->held_date = $request->held_date;
                 $message->participation = $request->participation;
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 4ceb13d (Update Studen Activity)
                 $message->attachment = $request->attachment;
                 $message->organizer = $request->organizer;
                 $message->place = $request->place;
                 $message->held_date = $request->held_date;
                 $message->participation = $request->participation;
+<<<<<<< HEAD
 =======
 
                 if($request->attachment) {
@@ -216,6 +223,8 @@ class StudentActivityController extends Controller
                 }
 
 >>>>>>> 98ef804 (tambahan validasi sertifikat)
+=======
+>>>>>>> 4ceb13d (Update Studen Activity)
                 $message->creator = auth()->user()->username;
                 $message->editor = auth()->user()->username;
                 $message->save();
@@ -320,7 +329,14 @@ class StudentActivityController extends Controller
 =======
 >>>>>>> 98ef804 (tambahan validasi sertifikat)
             'attachment' => ['required'], 
+<<<<<<< HEAD
 >>>>>>> 442fc85 (Fix student activity attachment)
+=======
+            'organizer' => ['required'],
+            'place' => ['required'],
+            'held_date' => ['required'],
+            'participation' => ['required']
+>>>>>>> 4ceb13d (Update Studen Activity)
         ]);
 
         try {
@@ -333,11 +349,15 @@ class StudentActivityController extends Controller
                 $message->held_date = $request->held_date;
                 $message->participation = $request->participation;
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 4ceb13d (Update Studen Activity)
                 $message->attachment = $request->attachment;
                 $message->organizer = $request->organizer;
                 $message->place = $request->place;
                 $message->held_date = $request->held_date;
                 $message->participation = $request->participation;
+<<<<<<< HEAD
 =======
 
                 if($request->attachment) {
@@ -349,6 +369,8 @@ class StudentActivityController extends Controller
                 }
                 
 >>>>>>> 98ef804 (tambahan validasi sertifikat)
+=======
+>>>>>>> 4ceb13d (Update Studen Activity)
                 $message->editor = auth()->user()->username;
                 $message->save();
 
