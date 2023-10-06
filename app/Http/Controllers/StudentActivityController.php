@@ -168,6 +168,10 @@ class StudentActivityController extends Controller
             'held_date' => ['required'], 
             'participation' => ['required'], 
             'attachment' => ['required'], 
+            'organizer' => ['required'],
+            'place' => ['required'],
+            'held_date' => ['required'],
+            'participation' => ['required']
         ]);
 
         try {
@@ -183,15 +187,11 @@ class StudentActivityController extends Controller
                 $message->place = $request->place;
                 $message->held_date = $request->held_date;
                 $message->participation = $request->participation;
-
-                if($request->attachment) {
-                    $value = $request->attachment;
-                    $file_name = date('YmdHis') .'.'. $value->getClientOriginalExtension();
-                    $folder_path = public_path('uploads/attachments');
-
-                    $message->attachment = $file_name;
-                }
-
+                $message->attachment = $request->attachment;
+                $message->organizer = $request->organizer;
+                $message->place = $request->place;
+                $message->held_date = $request->held_date;
+                $message->participation = $request->participation;
                 $message->creator = auth()->user()->username;
                 $message->editor = auth()->user()->username;
                 $message->save();
@@ -205,14 +205,6 @@ class StudentActivityController extends Controller
                 $log->creator = auth()->user()->username;
                 $log->editor = auth()->user()->username;
                 $message->studentActivityLogs()->save($log);
-
-                if($request->attachment) {
-                    $fileSystem = new Filesystem();
-                    if (!$fileSystem->exists($folder_path)) {
-                        $fileSystem->makeDirectory($folder_path, 0777, true, true);
-                    }
-                    $value->move($folder_path, $file_name);
-                }
             });
 
             $request->session()->flash('success', 'Data has been added successfully');
@@ -287,6 +279,10 @@ class StudentActivityController extends Controller
             'held_date' => ['required'], 
             'participation' => ['required'], 
             'attachment' => ['required'], 
+            'organizer' => ['required'],
+            'place' => ['required'],
+            'held_date' => ['required'],
+            'participation' => ['required']
         ]);
 
         try {
@@ -298,15 +294,11 @@ class StudentActivityController extends Controller
                 $message->place = $request->place;
                 $message->held_date = $request->held_date;
                 $message->participation = $request->participation;
-
-                if($request->attachment) {
-                    $value = $request->attachment;
-                    $file_name = date('YmdHis') .'.'. $value->getClientOriginalExtension();
-                    $folder_path = public_path('uploads/attachments');
-
-                    $message->attachment = $file_name;
-                }
-                
+                $message->attachment = $request->attachment;
+                $message->organizer = $request->organizer;
+                $message->place = $request->place;
+                $message->held_date = $request->held_date;
+                $message->participation = $request->participation;
                 $message->editor = auth()->user()->username;
                 $message->save();
 
@@ -318,19 +310,6 @@ class StudentActivityController extends Controller
                 $log->creator = auth()->user()->username;
                 $log->editor = auth()->user()->username;
                 $log->save();
-
-                if($request->attachment) {
-                    $fileSystem = new Filesystem();
-                    if (!$fileSystem->exists($folder_path)) {
-                        $fileSystem->makeDirectory($folder_path, 0777, true, true);
-                    }
-                    $value->move($folder_path, $file_name);
-
-                    $path = public_path() .'/uploads/attachments/'. $studentActivity->attachment;
-                    if (file_exists($path)) {
-                        unlink($path);
-                    }
-                }
             });
 
             $request->session()->flash('success', 'Data has been updated.');
