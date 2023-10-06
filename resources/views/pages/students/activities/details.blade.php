@@ -109,7 +109,7 @@
                                     <td>{{ $studentActivity->participation }}</td>
                                     <td>
                                         @if($studentActivity->attachment !== null && $studentActivity->attachment != '')
-                                            <a href="/uploads/attachments/{{ $studentActivity->attachment }}" download><span class="btn btn-sm btn-info">{{ $studentActivity->attachment }} </span></a>
+                                            <a href="{{ $studentActivity->attachment }}"><span class="btn btn-sm btn-info"><i class="feather icon-paperclip"></i></span></a>
                                         @endif
                                     </td>
                                     <td>{{ $status[$studentActivity->status] }}</td>
