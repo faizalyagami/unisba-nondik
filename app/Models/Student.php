@@ -14,4 +14,19 @@ class Student extends Model
     public function user() {
         return $this->hasOne('App\Models\User');
     }
+
+    public function studentActivities() {
+        return $this->hasMany('App\Models\StudentActivity');
+    }
+
+    public static function lastOrder($clas_of) {
+        $student = static::select('order')
+            ->where('class_of', $clas_of)
+            ->orderBy('id', 'desc')
+            ->first();
+
+        $last = $student->order;
+
+        return $last;
+    }
 }

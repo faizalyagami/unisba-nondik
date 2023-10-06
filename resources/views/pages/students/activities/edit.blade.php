@@ -11,7 +11,7 @@
                     </div>
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="index.html"><i class="feather icon-home"></i></a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('student.activity.index') }}">Aktivitas Mahasiswa</a></li>
+                        <li class="breadcrumb-item"><a href="{{ $user->level == 3 ? route('student.activity.details') : route('student.activity.index') }}">Aktivitas Mahasiswa</a></li>
                         <li class="breadcrumb-item"><a href="{{ route('student.activity.show', [$studentActivity->id]) }}">{{ $studentActivity->student->name ." - ". $studentActivity->subActivity->name }}</a></li>
                         <li class="breadcrumb-item"><a href="javascript:void(0)">Edit</a></li>
                     </ul>
@@ -60,6 +60,42 @@
                     @enderror
                 </div>
                 <div class="form-group">
+                    <label for="organizer">Penyelenggara</label>
+                    <input type="text" class="form-control" @error('organizer') required @enderror name="organizer" id="organizer" rows="3" value="{{ $studentActivity->organizer }}">
+                    @error('organizer')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
+                <div class="form-group">
+                    <label for="place">Tempat</label>
+                    <input type="text" class="form-control" @error('place') required @enderror name="place" id="place" rows="3" value="{{ $studentActivity->place }}">
+                    @error('place')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
+                <div class="form-group">
+                    <label for="held_date">Tanggal</label>
+                    <input type="date" class="form-control" @error('held_date') required @enderror name="held_date" id="held_date" rows="3" value="{{ $studentActivity->held_date }}">
+                    @error('held_date')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
+                <div class="form-group">
+                    <label for="participation">Peran</label>
+                    <input type="text" class="form-control" @error('participation') required @enderror name="participation" id="participation" rows="3" value="{{ $studentActivity->participation }}">
+                    @error('participation')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
+                <div class="form-group">
                     <label for="notes">Keterangan</label>
                     <textarea class="form-control @error('notes')  is-invalid @enderror" name="notes" id="notes" rows="3">{{ $studentActivity->notes }}</textarea>
                     @error('notes')
@@ -69,18 +105,13 @@
                     @enderror
                 </div>
                 <div class="form-group">
-                    <label for="attachment">Attachment</label>
-                    <br>
-                    @if($studentActivity->attachment !== null && $studentActivity->attachment != '')
-                        <a href="javascript:void(0)" download><span class="btn btn-sm btn-info">{{ $studentActivity->attachment }} </span></a>
-                    @endif
-                </div>
-                <div class="form-group">
-                    <label for="attachment">Attachment</label>
-                    <div class="custom-file">
-                        <label class="custom-file-label" for="attachment">Choose file</label>
-                        <input type="file" class="custom-file-input" id="photo" name="attachment" onchange="fileUpload(this)">
-                    </div>
+                    <label for="attachment">Attachment ( G-Drive link )</label>
+                    <input type="text" class="form-control" @error('attachment') required @enderror name="attachment" id="attachment" rows="3" value="{{ $studentActivity->attachment }}">
+                    @error('attachment')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
                 </div>
 
                 <button type="submit" name="update" class="btn btn-primary">Update</button>

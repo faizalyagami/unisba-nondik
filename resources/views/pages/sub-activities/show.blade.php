@@ -68,6 +68,15 @@
                         </div>
                     @endforeach
                 </div>
+                <div class="form-group">
+                    <label for="required">Wajib</label><br />
+                    @foreach ($needs as $key => $need)
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input disabled type="radio" {{ $key == $subActivity->required ? 'checked' : '' }} id="required-{{ $key }}" name="required" value="{{ $key }}" class="custom-control-input">
+                            <label class="custom-control-label" for="required-{{ $key }}">{{ $need }}</label>
+                        </div>
+                    @endforeach
+                </div>
             </form>
         </div>
     </div>

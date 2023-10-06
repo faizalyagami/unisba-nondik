@@ -30,7 +30,9 @@ Route::prefix('profile')->name('profile.')->middleware('auth')->group(function (
 	Route::get('/edit-password', [HomeController::class, 'editPasswordProfile'])->name('edit-password');
 	Route::post('/update-password', [HomeController::class, 'updatePasswordProfile'])->name('update-password');
 	Route::get('/print-certificate', [HomeController::class, 'printCertificate'])->name('print-certificate');
+	Route::get('/generate-pdf', [HomeController::class, 'generatePDF'])->name('generate-pdf');
 });
+Route::get('/template', [HomeController::class, 'template'])->name('template');
 
 Route::get('/login', [LoginController::class, 'index'])->name('login')->middleware('guest');
 Route::post('/login', [LoginController::class, 'authenticate']);
@@ -46,6 +48,9 @@ Route::prefix('student')->name('student.')->middleware('auth')->group(function (
 	Route::post('/update/{student}', [StudentController::class, 'update'])->name('update')->middleware('review');
 	
 	Route::get('/export-format', [StudentController::class, 'exportFormatStudent'])->name('export-format')->middleware('review');
+	Route::get('/export-students', [StudentController::class, 'exportStudents'])->name('export-students')->middleware('review');
+
+	Route::post('/approve-certificate', [StudentController::class, 'approveCertificate'])->name('approve-certificate')->middleware('review');
 
 	Route::get('/import', [StudentController::class, 'import'])->name('import')->middleware('review');
 	Route::post('/import/read', [StudentController::class, 'read'])->name('read')->middleware('review');
@@ -53,6 +58,7 @@ Route::prefix('student')->name('student.')->middleware('auth')->group(function (
 
 	Route::prefix('activity')->name('activity.')->group(function () {
 		Route::get('/', [StudentActivityController::class, 'index'])->name('index');
+		Route::get('/details', [StudentActivityController::class, 'details'])->name('details');
 		Route::post('/', [StudentActivityController::class, 'store'])->name('store');
 		Route::get('/create', [StudentActivityController::class, 'create'])->name('create');
 		Route::get('/show/{studentActivity}', [StudentActivityController::class, 'show'])->name('show');
@@ -80,13 +86,13 @@ Route::prefix('activity')->name('activity.')->middleware('admin')->group(functio
 	});
 });
 
-Route::prefix('user')->name('user.')->middleware('admin')->group(function () {
+Route::prefix('user')->name('user.')->middleware('wadek')->group(function () {
 	Route::get('/', [UserController::class, 'index'])->name('index');
 	Route::post('/', [UserController::class, 'store'])->name('store');
 	Route::get('/create', [UserController::class, 'create'])->name('create');
-	Route::get('/show/{user}', [UserController::class, 'show'])->name('show');
-	Route::get('/edit/{user}', [UserController::class, 'edit'])->name('edit');
-	Route::post('/update/{user}', [UserController::class, 'update'])->name('update');
+	Route::get('/show/{user}', [UserController::class, 'show'])->name('show')->middleware('wadek');
+	Route::get('/edit/{user}', [UserController::class, 'edit'])->name('edit')->middleware('wadek');
+	Route::post('/update/{user}', [UserController::class, 'update'])->name('update')->middleware('wadek');
 	Route::post('/reset-password', [UserController::class, 'resetPassword'])->name('reset-password');
 });
 

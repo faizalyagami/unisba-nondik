@@ -11,7 +11,7 @@
                     </div>
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="index.html"><i class="feather icon-home"></i></a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('student.activity.index') }}">Aktivitas Mahasiswa</a></li>
+                        <li class="breadcrumb-item"><a href="{{ $user->level == 3 ? route('student.activity.details') : route('student.activity.index') }}">Aktivitas Mahasiswa</a></li>
                         <li class="breadcrumb-item"><a href="javascript:void(0)">{{ $studentActivity->student->name ." - ". $studentActivity->subActivity->name }}</a></li>
                     </ul>
                 </div>
@@ -51,6 +51,22 @@
                     <input readonly type="text" class="form-control form-control-sm" name="subActivity" id="sub-activity" placeholder="Sub Activity..." value="{{ $studentActivity->subActivity->name }}">
                 </div>
                 <div class="form-group">
+                    <label for="organizer">Penyelenggara</label>
+                    <input readonly type="text" class="form-control" @error('organizer') required @enderror name="organizer" id="organizer" rows="3" value="{{ $studentActivity->organizer }}">
+                </div>
+                <div class="form-group">
+                    <label for="place">Tempat</label>
+                    <input readonly type="text" class="form-control" @error('place') required @enderror name="place" id="place" rows="3" value="{{ $studentActivity->place }}">
+                </div>
+                <div class="form-group">
+                    <label for="held_date">Tanggal</label>
+                    <input readonly type="date" class="form-control" @error('held_date') required @enderror name="held_date" id="held_date" rows="3" value="{{ $studentActivity->held_date }}">
+                </div>
+                <div class="form-group">
+                    <label for="participation">Peran</label>
+                    <input readonly type="text" class="form-control" @error('participation') required @enderror name="participation" id="participation" rows="3" value="{{ $studentActivity->participation }}">
+                </div>
+                <div class="form-group">
                     <label for="notes">Keterangan</label>
                     <textarea readonly class="form-control" name="notes" id="notes" rows="3">{{ $studentActivity->notes }}</textarea>
                 </div>
@@ -58,7 +74,7 @@
                     <label for="attachment">Attachment</label>
                     <br>
                     @if($studentActivity->attachment !== null && $studentActivity->attachment != '')
-                        <a href="javascript:void(0)" download><span class="btn btn-sm btn-info">{{ $studentActivity->attachment }} </span></a>
+                        <a href="{{ $studentActivity->attachment }}"><span class="btn btn-sm btn-info">{{ $studentActivity->attachment }} </span></a>
                     @endif
                 </div>
 

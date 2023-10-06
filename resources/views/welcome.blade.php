@@ -70,7 +70,7 @@
             <!-- widget-success-card end -->
         </div>
         <!-- table card-2 end -->
-        @if($result !== "Belum Cukup")
+        @if($result !== "Belum Cukup" && $requiredHas >= $required->value)
             <!-- table card-3 start -->
             <div class="col-md-12 col-xl-4">
                 <!-- widget-success-card start -->
@@ -108,6 +108,12 @@
             <div class="card table-card">
                 <div class="card-header">
                     <h5>Projects</h5>
+                    @if(in_array(auth()->user()->level, [2, 3]))
+                        @if($requiredHas < $required->value)
+                            {{-- <span class="blink_me" style="color: #fb786e">Ada {{ ($required->value - $requiredHas) }} aktivitas wajib yang harus diisi.</span> --}}
+                            <span class="blink_me" style="color: #fb786e">Anda belum mengikuti kegiatan yang wajib.</span>
+                        @endif
+                    @endif
                     <div class="card-header-right">
                         <div class="btn-group card-option">
                             <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -130,7 +136,11 @@
                                         <th>Mahasiswa</th>
                                     @endif
                                     <th>Nama Aktivitas</th>
-                                    <th>Tanggal Buat</th>
+                                    {{-- <th>Tanggal Buat</th> --}}
+                                    <th>Penyelenggara</th>
+                                    <th>Tempat</th>
+                                    <th>Tanggal</th>
+                                    <th>Peran</th>
                                     <th>Attachment</th>
                                     <th>Status</th>
                                     <th>Action</th>
@@ -146,7 +156,11 @@
                                                 <td>{{ $studentActivity->student->name }}</td>
                                             @endif
                                             <td>{{ $studentActivity->subActivity->name }}</td>
-                                            <td>{{ date("d F Y", strtotime($studentActivity->created_at)) }}</td>
+                                            {{-- <td>{{ date("d F Y", strtotime($studentActivity->created_at)) }}</td> --}}
+                                            <td>{{ $studentActivity->organizer }}</td>
+                                            <td>{{ $studentActivity->place }}</td>
+                                            <td>{{ $studentActivity->held_date ? date("d F Y", strtotime($studentActivity->held_date)) : '' }}</td>
+                                            <td>{{ $studentActivity->participation }}</td>
                                             <td>
                                                 @if($studentActivity->attachment !== null && $studentActivity->attachment != '')
                                                     <a href="/uploads/attachments/{{ $studentActivity->attachment }}" download><span class="btn btn-sm btn-info">{{ $studentActivity->attachment }} </span></a>
