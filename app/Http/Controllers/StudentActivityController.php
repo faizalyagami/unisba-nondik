@@ -185,10 +185,15 @@ class StudentActivityController extends Controller
         ]);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         $user = auth()->user();
 
 =======
 >>>>>>> 98ef804 (tambahan validasi sertifikat)
+=======
+        $user = auth()->user();
+
+>>>>>>> 61ec2dc (Fix student activity)
         try {
             DB::transaction(function() use($request, $user) {
                 $message = new StudentActivity();
