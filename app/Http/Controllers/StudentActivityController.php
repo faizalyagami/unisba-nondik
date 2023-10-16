@@ -174,6 +174,8 @@ class StudentActivityController extends Controller
             'participation' => ['required']
         ]);
 
+        $user = auth()->user();
+
         try {
             DB::transaction(function() use($request, $user) {
                 $message = new StudentActivity();
@@ -208,7 +210,11 @@ class StudentActivityController extends Controller
             });
 
             $request->session()->flash('success', 'Data has been added successfully');
-            return redirect()->route('student.activity.index');
+            if($user->level == 3) {
+                return redirect()->route('student.activity.details');
+            } else {
+                return redirect()->route('student.activity.index');
+            }
         } catch (\Throwable $th) {
             $request->session()->flash('error', 'Something wrong happend.');
             return redirect()->route('student.activity.create');

@@ -161,13 +161,13 @@
                                             <td>{{ $studentActivity->place }}</td>
                                             <td>{{ $studentActivity->held_date ? date("d F Y", strtotime($studentActivity->held_date)) : '' }}</td>
                                             <td>{{ $studentActivity->participation }}</td>
-                                            <td>
+                                            <td align="center">
                                                 @if($studentActivity->attachment !== null && $studentActivity->attachment != '')
-                                                    <a href="/uploads/attachments/{{ $studentActivity->attachment }}" download><span class="btn btn-sm btn-info">{{ $studentActivity->attachment }} </span></a>
+                                                    <a href="/uploads/attachments/{{ $studentActivity->attachment }}" download><span class="btn btn-sm btn-info"><i class="feather icon-paperclip"></i></span></a>
                                                 @endif
                                             </td>
                                             <td>{{ $status[$studentActivity->status] }}</td>
-                                            <td>
+                                            <td align="center">
                                                 <a href="{{ route('student.activity.show', [$studentActivity->id]) }}" class="btn btn-sm btn-primary" title="Show"><i class="feather icon-search"></i></a>
                                             </td>
                                         </tr>
