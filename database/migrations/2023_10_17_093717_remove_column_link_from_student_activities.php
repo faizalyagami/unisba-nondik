@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddLinkColumnToStudentActivities extends Migration
+class RemoveColumnLinkFromStudentActivities extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class AddLinkColumnToStudentActivities extends Migration
     public function up()
     {
         Schema::table('student_activities', function (Blueprint $table) {
-            $table->string('link', 100)->nullable();
+            $table->dropColumn('link');
         });
     }
 
@@ -26,7 +26,7 @@ class AddLinkColumnToStudentActivities extends Migration
     public function down()
     {
         Schema::table('student_activities', function (Blueprint $table) {
-            //
+            $table->dropColumn('link');
         });
     }
 }
