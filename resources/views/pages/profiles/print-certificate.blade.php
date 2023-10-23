@@ -239,7 +239,7 @@
                     <div style="text-align: center; margin-top: 126px; font-size: 41px; font-family: bellezac;">SERTIFIKAT SKS NON AKADEMIK</div>
                     <div style="text-align: center; font-family: tttsars; font-size: 25px; color: #865b34; margin-top: 8px;"> NOMOR: {{ sprintf("%'.03d", $student->order) }}/SNA/PSI/{{ $month_rome }}/{{ $current_year }}</div>
                     <div style="text-align: center; margin-top: 16px; font-size: 28px;">Diberikan Kepada:</div>
-                    <div style="text-align: center; margin-top: 2px; font-family: greatvibes; color: #03989e; font-size: 68px;">{{ $student->name }}</div>
+                    <div style="text-align: center; margin-top: 2px; font-family: greatvibes; color: #03989e; font-size: 68px;">{{ ucwords(strtolower($student->name)) }}</div>
                     <div style="text-align: center; font-size: 30px; margin-top: 15px;">
                         NPM: {{ $student->npm }}
                     </div>
