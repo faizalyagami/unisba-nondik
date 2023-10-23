@@ -77,6 +77,8 @@ class HomeController extends Controller
             $requiredHas = $req;
         }
 
+        // dd($result, $requiredHas, $required->value);
+
         return view('welcome', compact(
             'active', 'sub_active', 'status', 'studentActivities', 'result',
             'needed', 'achievement', 'information', 'required', 'requiredHas'
