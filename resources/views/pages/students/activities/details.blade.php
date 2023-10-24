@@ -109,15 +109,7 @@
                                     <td>{{ $studentActivity->participation }}</td>
                                     <td>
                                         @if($studentActivity->attachment !== null && $studentActivity->attachment != '')
-<<<<<<< HEAD
-<<<<<<< HEAD
                                             <a href="{{ $studentActivity->attachment }}"><span class="btn btn-sm btn-info"><i class="feather icon-paperclip"></i></span></a>
-=======
-                                            <a href="/uploads/attachments/{{ $studentActivity->attachment }}" download><span class="btn btn-sm btn-info">{{ $studentActivity->attachment }} </span></a>
->>>>>>> 98ef804 (tambahan validasi sertifikat)
-=======
-                                            <a href="{{ $studentActivity->attachment }}"><span class="btn btn-sm btn-info"><i class="feather icon-paperclip"></i></span></a>
->>>>>>> 4ceb13d (Update Studen Activity)
                                         @endif
                                     </td>
                                     <td>{{ $status[$studentActivity->status] }}</td>
