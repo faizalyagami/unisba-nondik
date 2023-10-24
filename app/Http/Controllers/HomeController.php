@@ -77,6 +77,16 @@ class HomeController extends Controller
             $requiredHas = $req;
         }
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+        // dd($result, $requiredHas, $required->value);
+
+=======
+>>>>>>> 98ef804 (tambahan validasi sertifikat)
+=======
+        // dd($result, $requiredHas, $required->value);
+
+>>>>>>> f2fd81a (fix certificate name)
         return view('welcome', compact(
             'active', 'sub_active', 'status', 'studentActivities', 'result',
             'needed', 'achievement', 'information', 'required', 'requiredHas'

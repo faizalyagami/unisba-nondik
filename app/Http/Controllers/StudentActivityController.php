@@ -163,13 +163,37 @@ class StudentActivityController extends Controller
         $this->validate($request, [
             'subActivity' => ['required'], 
             'notes' => ['required'], 
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 98ef804 (tambahan validasi sertifikat)
             'organizer' => ['required'], 
             'place' => ['required'], 
             'held_date' => ['required'], 
             'participation' => ['required'], 
             'attachment' => ['required'], 
+            'organizer' => ['required'],
+            'place' => ['required'],
+            'held_date' => ['required'],
+            'participation' => ['required']
+<<<<<<< HEAD
+=======
+            'attachment' => ['required'], 
+>>>>>>> 442fc85 (Fix student activity attachment)
+=======
+>>>>>>> 4ceb13d (Update Studen Activity)
         ]);
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+        $user = auth()->user();
+
+=======
+>>>>>>> 98ef804 (tambahan validasi sertifikat)
+=======
+        $user = auth()->user();
+
+>>>>>>> 61ec2dc (Fix student activity)
         try {
             DB::transaction(function() use($request, $user) {
                 $message = new StudentActivity();
@@ -183,6 +207,17 @@ class StudentActivityController extends Controller
                 $message->place = $request->place;
                 $message->held_date = $request->held_date;
                 $message->participation = $request->participation;
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 4ceb13d (Update Studen Activity)
+                $message->attachment = $request->attachment;
+                $message->organizer = $request->organizer;
+                $message->place = $request->place;
+                $message->held_date = $request->held_date;
+                $message->participation = $request->participation;
+<<<<<<< HEAD
+=======
 
                 if($request->attachment) {
                     $value = $request->attachment;
@@ -192,6 +227,9 @@ class StudentActivityController extends Controller
                     $message->attachment = $file_name;
                 }
 
+>>>>>>> 98ef804 (tambahan validasi sertifikat)
+=======
+>>>>>>> 4ceb13d (Update Studen Activity)
                 $message->creator = auth()->user()->username;
                 $message->editor = auth()->user()->username;
                 $message->save();
@@ -205,18 +243,14 @@ class StudentActivityController extends Controller
                 $log->creator = auth()->user()->username;
                 $log->editor = auth()->user()->username;
                 $message->studentActivityLogs()->save($log);
-
-                if($request->attachment) {
-                    $fileSystem = new Filesystem();
-                    if (!$fileSystem->exists($folder_path)) {
-                        $fileSystem->makeDirectory($folder_path, 0777, true, true);
-                    }
-                    $value->move($folder_path, $file_name);
-                }
             });
 
             $request->session()->flash('success', 'Data has been added successfully');
-            return redirect()->route('student.activity.index');
+            if($user->level == 3) {
+                return redirect()->route('student.activity.details');
+            } else {
+                return redirect()->route('student.activity.index');
+            }
         } catch (\Throwable $th) {
             $request->session()->flash('error', 'Something wrong happend.');
             return redirect()->route('student.activity.create');
@@ -282,11 +316,32 @@ class StudentActivityController extends Controller
         $this->validate($request, [
             'subActivity' => ['required'], 
             'notes' => ['required'], 
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 98ef804 (tambahan validasi sertifikat)
             'organizer' => ['required'], 
             'place' => ['required'], 
             'held_date' => ['required'], 
             'participation' => ['required'], 
+<<<<<<< HEAD
             'attachment' => ['required'], 
+            'organizer' => ['required'],
+            'place' => ['required'],
+            'held_date' => ['required'],
+            'participation' => ['required']
+=======
+=======
+>>>>>>> 98ef804 (tambahan validasi sertifikat)
+            'attachment' => ['required'], 
+<<<<<<< HEAD
+>>>>>>> 442fc85 (Fix student activity attachment)
+=======
+            'organizer' => ['required'],
+            'place' => ['required'],
+            'held_date' => ['required'],
+            'participation' => ['required']
+>>>>>>> 4ceb13d (Update Studen Activity)
         ]);
 
         try {
@@ -298,6 +353,17 @@ class StudentActivityController extends Controller
                 $message->place = $request->place;
                 $message->held_date = $request->held_date;
                 $message->participation = $request->participation;
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 4ceb13d (Update Studen Activity)
+                $message->attachment = $request->attachment;
+                $message->organizer = $request->organizer;
+                $message->place = $request->place;
+                $message->held_date = $request->held_date;
+                $message->participation = $request->participation;
+<<<<<<< HEAD
+=======
 
                 if($request->attachment) {
                     $value = $request->attachment;
@@ -307,6 +373,9 @@ class StudentActivityController extends Controller
                     $message->attachment = $file_name;
                 }
                 
+>>>>>>> 98ef804 (tambahan validasi sertifikat)
+=======
+>>>>>>> 4ceb13d (Update Studen Activity)
                 $message->editor = auth()->user()->username;
                 $message->save();
 
@@ -318,19 +387,6 @@ class StudentActivityController extends Controller
                 $log->creator = auth()->user()->username;
                 $log->editor = auth()->user()->username;
                 $log->save();
-
-                if($request->attachment) {
-                    $fileSystem = new Filesystem();
-                    if (!$fileSystem->exists($folder_path)) {
-                        $fileSystem->makeDirectory($folder_path, 0777, true, true);
-                    }
-                    $value->move($folder_path, $file_name);
-
-                    $path = public_path() .'/uploads/attachments/'. $studentActivity->attachment;
-                    if (file_exists($path)) {
-                        unlink($path);
-                    }
-                }
             });
 
             $request->session()->flash('success', 'Data has been updated.');
