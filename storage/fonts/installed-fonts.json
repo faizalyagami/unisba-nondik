@@ -1,19 +1,19 @@
 {
     "open sans": {
-        "300_italic": "\/var\/www\/html\/unisba-nondik\/storage\/fonts\/open_sans_300_italic_b4a7d925e086ad148b06e87bfa6cda0e",
-        "italic": "\/var\/www\/html\/unisba-nondik\/storage\/fonts\/open_sans_italic_e9604750f83ae7f38d39e13a06017607",
-        "bold_italic": "\/var\/www\/html\/unisba-nondik\/storage\/fonts\/open_sans_bold_italic_23785369150dc0c2a80d84888c973652",
-        "300": "\/var\/www\/html\/unisba-nondik\/storage\/fonts\/open_sans_300_8eafd575bbaef3821514b2ae187a32c3",
-        "normal": "\/var\/www\/html\/unisba-nondik\/storage\/fonts\/open_sans_normal_0de70c49c12ad3d5b30897be0764f760",
-        "bold": "open_sans_bold_307c8b05e5c1ebed4511274cd14c5aa1"
+        "300_italic": "D:\\Unisba\\unisba-nondik\\storage\\fonts\/open_sans_300_italic_54c67a410fca3ed6a82c331ec0184ef9",
+        "italic": "D:\\Unisba\\unisba-nondik\\storage\\fonts\/open_sans_italic_67bdd4a47b171988efc0a4ba996a68e0",
+        "bold_italic": "D:\\Unisba\\unisba-nondik\\storage\\fonts\/open_sans_bold_italic_762aac4dcb9c01f1ca640da86dd8d4ad",
+        "300": "D:\\Unisba\\unisba-nondik\\storage\\fonts\/open_sans_300_0885c5810a008bcb7c54e9d1bf54fb2c",
+        "normal": "D:\\Unisba\\unisba-nondik\\storage\\fonts\/open_sans_normal_f9f1b653d87c168097eaa958ffde3cdf",
+        "bold": "open_sans_bold_9f0e3c1c8c0fab5db8d6ce31e4104d18"
     },
     "bellezac": {
-        "normal": "bellezac_normal_43531c2ca4765c4d05acb7fc29be1f53"
+        "normal": "bellezac_normal_940758ede33253fc1b0f450d46e8fa49"
     },
     "rasa-medium": {
-        "normal": "rasa_medium_normal_441784a8598427a21d52cecb15184bee"
+        "normal": "rasa_medium_normal_fe046e86216a9abf04c66a0988b72b6d"
     },
     "greatvibes": {
-        "normal": "greatvibes_normal_ac71bc248c128f2217cf9c590a5d03bf"
+        "normal": "greatvibes_normal_538eb847e4319f7eb5e054fba998f4f4"
     }
 }
