@@ -260,9 +260,9 @@
                             Periode {{ $year !== null ? $year->show : "" }}
                             <br><br><br><br><br>
                             <br><br><br><br><br>
-                            Firda Damayanti
+                            Nuha Dzakiyyah
                             <hr style="width: 213px;">
-                            NPM. 10050019168
+                            NPM. 10050020071
                             <br>
                         </td>
                         <td width="145px">&nbsp;</td>

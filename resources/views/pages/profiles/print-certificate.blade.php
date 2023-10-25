@@ -273,8 +273,8 @@
                             <td>
                                 <div style="font-size: 15px;">Ketua Pansus</div>
                                 <div style="font-size: 15px; letter-spacing: -0.01; margin-top: 2px;">Periode {{ $year !== null ? $year->show : "" }}</div>
-                                <div style="font-size: 19px; letter-spacing: -0.01; margin-top: 78px; color: #334166;">Firda Damayanti</div>
-                                <div style="font-size: 15px; letter-spacing: -0.01; margin-top: 8px;">NPM: 10050019168</div>
+                                <div style="font-size: 19px; letter-spacing: -0.01; margin-top: 78px; color: #334166;">Nuha Dzakiyyah</div>
+                                <div style="font-size: 15px; letter-spacing: -0.01; margin-top: 8px;">NPM: 10050020071</div>
                             </td>
                             <td width="65"></td>
                         </tr>
