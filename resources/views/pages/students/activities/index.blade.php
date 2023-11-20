@@ -49,6 +49,14 @@
                                 <input type="text" class="form-control" name="search_text" id="search_text" value="{{  $search_text }}">
                             </div>
                             <div class="form-group">
+                                <label for="people">student</label>
+                                <select class="form-control @error('people')  is-invalid @enderror" name="search_people" id="people">
+                                    @foreach ($peoples as $key => $val)
+                                        <option value="{{ $key }}" {{ ($search_people == $key ? "selected":"") }}>{{ $val }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group">
                                 <label for="class_of">Angkatan</label>
                                 <select class="form-control @error('class_of')  is-invalid @enderror" name="search_classof" id="class_of">
                                     @foreach ($classofs as $year)
