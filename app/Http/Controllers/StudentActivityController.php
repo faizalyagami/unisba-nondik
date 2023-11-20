@@ -31,10 +31,13 @@ class StudentActivityController extends Controller
         $sub_active = "student-activities";
         $classofs = Student::select('class_of')->groupBy('class_of')->pluck('class_of');
         $classofs = [0 => 'Semua'] + $classofs->toArray();
+        $peoples = Student::orderBy('name')->pluck('name', 'id');
+        $peoples = [0 => 'Semua'] + $peoples->toArray();
 
 
         $search_text = $request->search_text;
         $search_classof = $request->search_classof ? $request->search_classof : 'Semua';
+        $search_people = $request->search_people ? $request->search_people : 'Semua';
 
         $needed = Reff::select('value', 'show')->where('status', 1)->where('name', 'minimalsks')->orderBy('value')->first();
 
@@ -50,6 +53,9 @@ class StudentActivityController extends Controller
             })
             ->when($search_classof != 'Semua', function($q) use($search_classof) {
                 $q->where('class_of', $search_classof);
+            })
+            ->when($search_people != 'Semua', function($q) use($search_people) {
+                $q->where('id', $search_people);
             })
             ->where('status', 1)
             ->withCount(['studentActivities as open' => function($q) {
@@ -71,7 +77,7 @@ class StudentActivityController extends Controller
 
         return view('pages.students.activities.index', compact(
             'active', 'sub_active', 'classofs', 'students', 'user', 
-            'search_text', 'search_classof', 'needed'
+            'search_text', 'search_classof', 'needed', 'peoples', 'search_people'
         ));
     }
 
