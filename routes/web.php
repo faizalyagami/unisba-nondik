@@ -89,7 +89,7 @@ Route::prefix('activity')->name('activity.')->middleware('admin')->group(functio
 	});
 });
 
-Route::prefix('user')->name('user.')->middleware('wadek')->group(function () {
+Route::prefix('user')->name('user.')->middleware(['wadek'])->group(function () {
 	Route::get('/', [UserController::class, 'index'])->name('index');
 	Route::post('/', [UserController::class, 'store'])->name('store');
 	Route::get('/create', [UserController::class, 'create'])->name('create');
