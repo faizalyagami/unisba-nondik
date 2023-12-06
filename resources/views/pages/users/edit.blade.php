@@ -56,8 +56,8 @@
                     <label for="address">Level</label><br />
                     @foreach ($levels as $key => $value)
                         <div class="custom-control custom-radio custom-control-inline">
-                            <input type="radio" {{ $key == $user->level ? 'checked' : '' }} id="status-{{ $key }}" name="level" value="{{ $key }}" class="custom-control-input">
-                            <label class="custom-control-label" for="status-{{ $key }}">{{ $value }}</label>
+                            <input type="radio" {{ $key == $user->level ? 'checked' : '' }} id="level-{{ $key }}" name="level" value="{{ $key }}" class="custom-control-input">
+                            <label class="custom-control-label" for="level-{{ $key }}">{{ $value }}</label>
                         </div>
                     @endforeach
                 </div>

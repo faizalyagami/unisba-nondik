@@ -123,7 +123,7 @@ class HomeController extends Controller
 
         $user = auth()->user();
 
-        if(in_array($user->level, [1, 4])) {
+        if(in_array($user->level, [1, 2, 4])) {
             return redirect()->route('user.edit', $user);
         }
 

@@ -16,7 +16,7 @@ class Wadek
      */
     public function handle(Request $request, Closure $next)
     {
-		if(!auth()->check() || (auth()->user()->level !== 1 && (auth()->user()->level !== 4))) {
+		if(!auth()->check() || (auth()->user()->level !== 1 && (auth()->user()->level !== 2) && (auth()->user()->level !== 4))) {
 			abort(403);
 		}
 
