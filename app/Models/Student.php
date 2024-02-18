@@ -25,7 +25,8 @@ class Student extends Model
             ->orderBy('id', 'desc')
             ->first();
 
-        $last = $student->order;
+        //$last = $student->order;
+        $last = $student ? $student->order : 0;
 
         return $last;
     }
