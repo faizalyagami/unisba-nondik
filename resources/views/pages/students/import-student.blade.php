@@ -4,6 +4,7 @@
             <th>#</th>
             <th>NPM</th>
             <th>Nama</th>
+            <th>Email</th>
             <th>Telepon</th>
             <th>Jenis Kelamin</th>
             <th>Angkatan</th>
@@ -19,6 +20,7 @@
                     <td style="width: 25px;">{{ 1 + $key }}</td>
                     <td style="width: 95px;">{{ $student->npm }}</td>
                     <td>{{ $student->name }}</td>
+                    <td>{{ $student->email }}</td>
                     <td>{{ $student->phone }}</td>
                     <td>{{ $genders[$student->gender] }}</td>
                     <td>{{ $student->class_of }}</td>

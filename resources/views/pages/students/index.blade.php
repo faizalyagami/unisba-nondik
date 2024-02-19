@@ -104,6 +104,7 @@
                             <th>#</th>
                             <th>NPM</th>
                             <th>Nama</th>
+                            <th>Email</th>
                             <th>Telepon</th>
                             <th>Jenis Kelamin</th>
                             <th>Angkatan</th>
@@ -126,6 +127,7 @@
                                             <h6>{{ $student->name }}</h6>
                                         </div>
                                     </td>
+                                    <td>{{ $student->email }}</td>
                                     <td>{{ $student->phone }}</td>
                                     <td>{{ $genders[$student->gender] }}</td>
                                     <td>{{ $student->class_of }}</td>
@@ -193,7 +195,7 @@
                         <p class="mb-0">
                             Terjadi kesalahan, data mahasiswa tidak ditemukan.
                             <br>
-                            Silkan coba lagi!
+                            Silahkan coba lagi!
                         </p>
                     </div>
                     <div class="modal-footer">
