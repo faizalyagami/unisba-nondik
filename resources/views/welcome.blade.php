@@ -98,13 +98,13 @@
             @if($information !== null)
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
                     <h4 class="alert-heading">{{ $information->title }}</h4>
-                    <p>{{ $information->description }}</p>
+                    <p>{!! $information->description !!}</p>
                     <p class="mb-0">&nbsp;</p>
 
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
                 </div>
             @endif
-
+                
             <div class="card table-card">
                 <div class="card-header">
                     <h5>Projects</h5>
