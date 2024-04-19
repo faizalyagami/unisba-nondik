@@ -21,7 +21,7 @@ class StudentActivityController extends Controller
      */
     public function index(Request $request)
     {
-
+        //dd($request);
         $user = auth()->user();
         if($user->level == 3) {
             abort(403);
@@ -33,11 +33,13 @@ class StudentActivityController extends Controller
         $classofs = [0 => 'Semua'] + $classofs->toArray();
         $peoples = Student::orderBy('name')->pluck('name', 'id');
         $peoples = [0 => 'Semua'] + $peoples->toArray();
-
+        //$statusActivity = StudentActivity::select('status')->groupBy('status')->pluck('status');
+        $statusActivity = [0 => 'Semua', 'Open', 'Review', 'Approve', 'Reject'];
 
         $search_text = $request->search_text;
         $search_classof = $request->search_classof ? $request->search_classof : 'Semua';
         $search_people = $request->search_people ? $request->search_people : 'Semua';
+        $search_statusActivity = $request->search_statusActivity !==null ? $request->search_statusActivity : 0;
 
         $needed = Reff::select('value', 'show')->where('status', 1)->where('name', 'minimalsks')->orderBy('value')->first();
 
@@ -57,7 +59,10 @@ class StudentActivityController extends Controller
             ->when($search_people != 'Semua', function($q) use($search_people) {
                 $q->where('id', $search_people);
             })
-            ->where('status', 1)
+            ->when($search_statusActivity != 0, function($q) use($search_statusActivity){
+                $q->where('status', $search_statusActivity);
+            })
+            //->where('status', 1)
             ->withCount(['studentActivities as open' => function($q) {
                     $q->where('status', 1);
                 },
@@ -77,8 +82,10 @@ class StudentActivityController extends Controller
 
         return view('pages.students.activities.index', compact(
             'active', 'sub_active', 'classofs', 'students', 'user', 
-            'search_text', 'search_classof', 'needed', 'peoples', 'search_people'
+            'search_text', 'search_classof', 'needed', 'peoples', 'search_people','statusActivity','search_statusActivity'
         ));
+
+        
     }
 
     /**
