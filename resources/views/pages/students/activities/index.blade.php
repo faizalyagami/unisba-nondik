@@ -49,13 +49,24 @@
                                 <input type="text" class="form-control" name="search_text" id="search_text" value="{{  $search_text }}">
                             </div>
                             <div class="form-group">
-                                <label for="people">student</label>
+                                <label for="people">Student</label>
                                 <select class="form-control @error('people')  is-invalid @enderror" name="search_people" id="people">
                                     @foreach ($peoples as $key => $val)
                                         <option value="{{ $key }}" {{ ($search_people == $key ? "selected":"") }}>{{ $val }}</option>
                                     @endforeach
                                 </select>
                             </div>
+
+                            <div class="form-group">
+                                <label for="activities">Activities</label><br />
+                                @foreach($statusActivity as $key => $value)
+                                <div class="custom-control custom-radio custom-control-inline">
+                                    <input type="radio" {{ $key == $search_statusActivity ? 'checked': '' }}id="statusActivity-{{ $key }}" name="search_statusActivity" value="{{ $key }}" class="custom-control-input">
+                                    <label class="custom-control-label" for="statusActivity-{{ $key }}">{{ $value }}</label>
+                                </div>
+                                @endforeach
+                            </div>
+
                             <div class="form-group">
                                 <label for="class_of">Angkatan</label>
                                 <select class="form-control @error('class_of')  is-invalid @enderror" name="search_classof" id="class_of">
@@ -155,7 +166,7 @@
                         <p class="mb-0">
                             Terjadi kesalahan, data mahasiswa tidak ditemukan.
                             <br>
-                            Silkan coba lagi!
+                            Silahkan coba lagi!
                         </p>
                     </div>
                     <div class="modal-footer">
