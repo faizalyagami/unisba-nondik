@@ -17606,6 +17606,10 @@ a.text-dark:hover, a.text-dark:focus {
 .card .card-header .card-header-right .dropdown-menu li a {
     font-size: 14px;
     text-transform: capitalize;
+    /*
+    non aktif link tambah baru
+    */
+    pointer-events: none;
 }
 
 .card .card-header .card-header-right .btn.dropdown-toggle {
