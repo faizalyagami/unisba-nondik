@@ -17608,8 +17608,8 @@ a.text-dark:hover, a.text-dark:focus {
     text-transform: capitalize;
     /*
     non aktif link tambah baru
-    */
     pointer-events: none;
+    */
 }
 
 .card .card-header .card-header-right .btn.dropdown-toggle {
