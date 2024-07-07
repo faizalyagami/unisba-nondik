@@ -153,7 +153,7 @@
                                         <tr>
                                             <td>{{ ++$key }}</td>
                                             @if(auth()->user()->level != 3)
-                                                <td>{{ $studentActivity->student->name }}</td>
+                                                <td>{{ $studentActivity->student ? $studentActivity->student->name : '' }}</td>
                                             @endif
                                             <td>{{ $studentActivity->subActivity->name }}</td>
                                             {{-- <td>{{ date("d F Y", strtotime($studentActivity->created_at)) }}</td> --}}
