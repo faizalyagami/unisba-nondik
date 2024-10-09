@@ -32,7 +32,7 @@ Route::prefix('profile')->name('profile.')->middleware('auth')->group(function (
 	Route::post('/update', [HomeController::class, 'updateProfile'])->name('update');
 	Route::get('/edit-password', [HomeController::class, 'editPasswordProfile'])->name('edit-password');
 	Route::post('/update-password', [HomeController::class, 'updatePasswordProfile'])->name('update-password');
-	Route::get('/print-certificate', [HomeController::class, 'printCertificate'])->name('print-certificate');
+	// Route::get('/print-certificate', [HomeController::class, 'printCertificate'])->name('print-certificate');
 	Route::get('/generate-pdf', [HomeController::class, 'generatePDF'])->name('generate-pdf');
 });
 Route::get('/template', [HomeController::class, 'template'])->name('template');
