@@ -2,7 +2,13 @@
 
 namespace App\Http\Controllers;
 
+<<<<<<< HEAD
+use App\Exports\ExportFormatStudent;
+use App\Exports\ExportStudents;
+use App\Imports\DataImport;
+=======
 use Carbon\Carbon;
+>>>>>>> feature_2
 use App\Models\Reff;
 use App\Models\User;
 use App\Models\Student;
@@ -45,7 +51,11 @@ class StudentController extends Controller
         $needed = Reff::select('value', 'show')->where('status', 1)->where('name', 'minimalsks')->orderBy('value')->first();
         $user = auth()->user();
 
+<<<<<<< HEAD
+        $students = Student::select('id', 'npm', 'name', 'phone', 'gender', 'class_of', 'period', 'certificate_approve', 'status')
+=======
         $students = Student::select('id', 'npm', 'name', 'email', 'phone', 'gender', 'class_of', 'period', 'certificate_approve', 'status')
+>>>>>>> feature_2
             ->selectRaw('(
                 select sum(sks) 
                 from student_activities 
@@ -141,6 +151,10 @@ class StudentController extends Controller
                     $message->photo = $file_name;
                 }
                 $message->class_of = $request->class_of;
+<<<<<<< HEAD
+                $message->order = $message->lastOrder($request->class_of) + 1;
+=======
+>>>>>>> feature_2
                 $message->period = $request->period;
                 $message->creator = auth()->user()->username;
                 $message->editor = auth()->user()->username;
@@ -563,6 +577,7 @@ class StudentController extends Controller
                                         $message->npm = $contents[0];
                                         $message->name = $contents[1];
                                         $message->class_of = $contents[2];
+                                        $message->order = $message->lastOrder($contents[2]) + 1;
                                         $message->gender = $contents[3];
                                         $message->religion = $contents[4];
                                         $message->phone = $contents[5];
