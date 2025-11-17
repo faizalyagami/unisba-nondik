@@ -2,19 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Exports\ExportFormatStudent;
-use App\Exports\ExportStudents;
-use App\Imports\DataImport;
-use App\Models\Reff;
-use App\Models\Student;
-use App\Models\User;
 use Carbon\Carbon;
-use Illuminate\Filesystem\Filesystem;
+use App\Models\Reff;
+use App\Models\User;
+use App\Models\Student;
+use App\Imports\DataImport;
 use Illuminate\Http\Request;
+use App\Exports\ExportStudents;
 use Illuminate\Support\Facades\DB;
+use App\Exports\ExportFormatStudent;
 use Illuminate\Support\Facades\Hash;
-use Maatwebsite\Excel\Facades\Excel as FacadesExcel;
+use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Facades\Redirect;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
+use Maatwebsite\Excel\Facades\Excel as FacadesExcel;
 
 class StudentController extends Controller
 {
@@ -44,7 +45,7 @@ class StudentController extends Controller
         $needed = Reff::select('value', 'show')->where('status', 1)->where('name', 'minimalsks')->orderBy('value')->first();
         $user = auth()->user();
 
-        $students = Student::select('id', 'npm', 'name', 'phone', 'gender', 'class_of', 'period', 'certificate_approve', 'status')
+        $students = Student::select('id', 'npm', 'name', 'email', 'phone', 'gender', 'class_of', 'period', 'certificate_approve', 'status')
             ->selectRaw('(
                 select sum(sks) 
                 from student_activities 
@@ -140,7 +141,6 @@ class StudentController extends Controller
                     $message->photo = $file_name;
                 }
                 $message->class_of = $request->class_of;
-                $message->order = $message->lastOrder($request->class_of) + 1;
                 $message->period = $request->period;
                 $message->creator = auth()->user()->username;
                 $message->editor = auth()->user()->username;
@@ -563,7 +563,6 @@ class StudentController extends Controller
                                         $message->npm = $contents[0];
                                         $message->name = $contents[1];
                                         $message->class_of = $contents[2];
-                                        $message->order = $message->lastOrder($contents[2]) + 1;
                                         $message->gender = $contents[3];
                                         $message->religion = $contents[4];
                                         $message->phone = $contents[5];

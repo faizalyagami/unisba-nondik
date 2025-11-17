@@ -239,7 +239,7 @@
                     <div style="text-align: center; margin-top: 126px; font-size: 41px; font-family: bellezac;">SERTIFIKAT SKS NON AKADEMIK</div>
                     <div style="text-align: center; font-family: tttsars; font-size: 25px; color: #865b34; margin-top: 8px;"> NOMOR: {{ sprintf("%'.03d", $student->order) }}/SNA/PSI/{{ $month_rome }}/{{ $current_year }}</div>
                     <div style="text-align: center; margin-top: 16px; font-size: 28px;">Diberikan Kepada:</div>
-                    <div style="text-align: center; margin-top: 2px; font-family: greatvibes; color: #03989e; font-size: 68px;">{{ $student->name }}</div>
+                    <div style="text-align: center; margin-top: 2px; font-family: greatvibes; color: #03989e; font-size: 68px;">{{ ucwords(strtolower($student->name)) }}</div>
                     <div style="text-align: center; font-size: 30px; margin-top: 15px;">
                         NPM: {{ $student->npm }}
                     </div>
@@ -273,8 +273,8 @@
                             <td>
                                 <div style="font-size: 15px;">Ketua Pansus</div>
                                 <div style="font-size: 15px; letter-spacing: -0.01; margin-top: 2px;">Periode {{ $year !== null ? $year->show : "" }}</div>
-                                <div style="font-size: 19px; letter-spacing: -0.01; margin-top: 78px; color: #334166;">Firda Damayanti</div>
-                                <div style="font-size: 15px; letter-spacing: -0.01; margin-top: 8px;">NPM: 10050019168</div>
+                                <div style="font-size: 19px; letter-spacing: -0.01; margin-top: 78px; color: #334166;">Nuha Dzakiyyah</div>
+                                <div style="font-size: 15px; letter-spacing: -0.01; margin-top: 8px;">NPM: 10050020071</div>
                             </td>
                             <td width="65"></td>
                         </tr>

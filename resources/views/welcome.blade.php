@@ -77,7 +77,8 @@
                 <div class="card flat-card widget-purple-card">
                     <div class="row-table">
                         <div class="col-sm-3 card-body" style="background-color: rgb(13, 145, 222)">
-                            <a href="{{ route('profile.print-certificate') }}"><i class="fas fa-print"></i></a>
+                            <a href="{{ route('profile.print-certificate') }}">
+                                <i class="fas fa-print"></i></a>
                         </div>
                         <div class="col-sm-9">
                             <h4>
@@ -98,13 +99,13 @@
             @if($information !== null)
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
                     <h4 class="alert-heading">{{ $information->title }}</h4>
-                    <p>{{ $information->description }}</p>
+                    <p>{!! $information->description !!}</p>
                     <p class="mb-0">&nbsp;</p>
 
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
                 </div>
             @endif
-
+                
             <div class="card table-card">
                 <div class="card-header">
                     <h5>Projects</h5>
