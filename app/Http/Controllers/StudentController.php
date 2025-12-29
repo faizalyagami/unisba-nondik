@@ -653,6 +653,21 @@ class StudentController extends Controller
         $student = Student::where("id", $request->id)->first();
         if ($student !== null) {
             $student->certificate_approve = 1;
+            $student->certificate_approve_date = now();
+            $student->save();
+
+            return response()->json(['status' => 'ok']);
+        }
+
+        return response()->json(['status' => 'fail']);
+    }
+
+    public function rejectCertificate(Request $request)
+    {
+        $student = Student::where("id", $request->id)->first();
+        if ($student !== null) {
+            $student->certificate_approve = 0; // atau status reject
+            $student->certificate_approve_date = null; // kosongkan tanggal
             $student->save();
 
             return response()->json(['status' => 'ok']);

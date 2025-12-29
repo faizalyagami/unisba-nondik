@@ -288,8 +288,15 @@ class HomeController extends Controller
         
         $student = Student::where('id', $user->student_id)
         ->first();
+
+        if ($student->certificate_approve_date) {
+            $date = Carbon::parse($student->certificate_approve_date)->translatedFormat('d F Y');
+        } else {
+            $date = Carbon::now()->translatedFormat('d F Y');
+        }
+
         
-        $date = date("d", strtotime($student->certificate_approve_date)) ." ". $months[date("n", strtotime($student->certificate_approve_date))] ." ". date("Y", strtotime($student->certificate_approve_date));
+        // $date = date("d", strtotime($student->certificate_approve_date)) ." ". $months[date("n", strtotime($student->certificate_approve_date))] ." ". date("Y", strtotime($student->certificate_approve_date));
         
         if($request->has('download')) {
             $pdf = PDF::loadView('pages.profiles.print-certificate', compact(
@@ -363,6 +370,12 @@ class HomeController extends Controller
         $student = Student::where('id', $user->student_id)
         ->first();
         
+        if ($student->certificate_approve_date) {
+            $date = Carbon::parse($student->certificate_approve_date)->translatedFormat('d F Y');
+        } else {
+            $date = Carbon::now()->translatedFormat('d F Y');
+        }
+
         $date = date("d", strtotime($student->certificate_approve_date)) ." ". $months[date("n", strtotime($student->certificate_approve_date))] ." ". date("Y", strtotime($student->certificate_approve_date));
           
         $pdf = Pdf::loadView('pages.profiles.print-certificate-pdf', compact(
