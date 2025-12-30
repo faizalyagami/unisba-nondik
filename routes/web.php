@@ -26,6 +26,16 @@ use App\Http\Controllers\StudentActivityController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home')->middleware('auth');
 
+Route::get('/student/{student}/kartu-sks', [StudentController::class, 'kartuSKS'])->name('student.kartu-sks');
+Route::get('/student/{student}/kartu-sks/pdf', [StudentController::class, 'kartuSKSPDF'])->name('student.kartu-sks.pdf');
+
+Route::get('/test-kartu-sks/{npm}', function($npm) {
+    $student = \App\Models\Student::where('npm', $npm)->first();
+    if (!$student) return "Student not found";
+    
+    return app()->make(\App\Http\Controllers\StudentController::class)->kartuSKS($student);
+});
+
 Route::prefix('profile')->name('profile.')->middleware('auth')->group(function () {
 	Route::get('/', [HomeController::class, 'profile'])->name('index');
 	Route::get('/edit', [HomeController::class, 'editProfile'])->name('edit');

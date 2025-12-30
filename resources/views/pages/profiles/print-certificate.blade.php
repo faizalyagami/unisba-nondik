@@ -325,7 +325,7 @@
                 <img width="100%" class="img-fluid d-block w-10" src="{{ asset("assets/images/profile/certificate-4.png") }}" alt="">
             </div>
             <div class="pl-content" style="position: absolute; top: 0; text-align: center; width: 100%;">
-                @php($path = route("student.show", [$student->npm]) )
+                @php($path = route("student.kartu-sks", [$student->id]) )
                 <p>
                     <div style="text-align: center; margin-top: 117px; font-size: 30px; font-family: hussar-bold; color: #000">SERTIFIKAT SKS NON - AKADEMIK</div>
                     <div style="text-align: center; font-family: poppins-reguler; font-size: 27px; color: #000; letter-spacing: 0.5px;"> NOMOR: {{ sprintf("%'.03d", $student->order) }}/SNA/PSI/{{ $month_rome }}/{{ $current_year }}</div>

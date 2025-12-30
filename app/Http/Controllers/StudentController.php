@@ -11,6 +11,8 @@ use Illuminate\Http\Request;
 use App\Exports\ExportStudents;
 use Illuminate\Support\Facades\DB;
 use App\Exports\ExportFormatStudent;
+use App\Models\StudentActivity;
+use App\Models\SubActivity;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Redirect;
@@ -674,5 +676,175 @@ class StudentController extends Controller
         }
 
         return response()->json(['status' => 'fail']);
+    }
+
+    /**
+ * Mengumpulkan data untuk kartu SKS
+ */
+private function getKartuSKSData(Student $student)
+{
+    // 1. Total SKS yang sudah disetujui
+    $totalSks = StudentActivity::selectRaw('sum(sub_activities.sks) as total_sks')
+        ->join('sub_activities', 'sub_activities.id', 'student_activities.sub_activity_id')
+        ->where('student_id', $student->id)
+        ->where('student_activities.status', 3) // Status Approve
+        ->first()->total_sks ?? 0;
+    
+    // 2. Minimal SKS dari reff
+    $minimalSks = Reff::where('name', 'minimalsks')
+        ->where('status', 1)
+        ->first()->value ?? 100;
+    
+    // 3. Ambil semua kegiatan WAJIB dari database
+    $kegiatanWajib = SubActivity::where('name', 'like', '%(WAJIB)%')
+        ->where('status', 1)
+        ->get();
+    
+    // 4. Ambil kegiatan yang sudah dilakukan (disetujui)
+    $kegiatanDilakukan = StudentActivity::where('student_id', $student->id)
+        ->where('status', 3)
+        ->with('subActivity')
+        ->get();
+    
+    // 5. Buat array untuk melacak kegiatan wajib yang sudah terpenuhi
+    $kegiatanWajibTerpenuhi = [];
+    $kegiatanDilakukanNames = [];
+    $jumlahKegiatanWajibTerpenuhi = 0;
+    $totalKegiatanWajib = $kegiatanWajib->count();
+    
+    // 6. Ambil nama-nama kegiatan yang sudah dilakukan
+    foreach ($kegiatanDilakukan as $kegiatan) {
+        $kegiatanDilakukanNames[] = $kegiatan->subActivity->name;
+    }
+    
+    // 7. Cek setiap kegiatan wajib apakah sudah dilakukan
+    foreach ($kegiatanWajib as $kegiatan) {
+        // Bersihkan nama dari "(WAJIB)" untuk pencocokan
+        $namaBersih = str_replace('(WAJIB)', '', trim($kegiatan->name));
+        $namaBersih = trim($namaBersih);
+        
+        // Cek apakah ada kegiatan yang cocok (dengan atau tanpa (WAJIB))
+        $terpenuhi = false;
+        foreach ($kegiatanDilakukanNames as $namaDilakukan) {
+            if (str_contains($namaDilakukan, $namaBersih) || 
+                str_contains($namaBersih, str_replace('(WAJIB)', '', trim($namaDilakukan)))) {
+                $terpenuhi = true;
+                break;
+            }
+        }
+        
+        $kegiatanWajibTerpenuhi[] = [
+            'nama' => $kegiatan->name,
+            'nama_bersih' => $namaBersih,
+            'terpenuhi' => $terpenuhi,
+            'sks' => $kegiatan->sks
+        ];
+        
+        if ($terpenuhi) {
+            $jumlahKegiatanWajibTerpenuhi++;
+        }
+    }
+    
+    $kegiatanWajibSemuaTerpenuhi = ($jumlahKegiatanWajibTerpenuhi == $totalKegiatanWajib);
+    
+    // 8. Kelompokkan kegiatan berdasarkan kategori untuk tampilan
+    $kegiatanKelompok = [];
+    
+    // 8a. Kelompokkan kegiatan yang sudah dilakukan
+    foreach ($kegiatanDilakukan as $kegiatan) {
+        $activity = $kegiatan->subActivity->activity;
+        $activityName = $activity->name;
+        
+        if (!isset($kegiatanKelompok[$activityName])) {
+            $kegiatanKelompok[$activityName] = [
+                'nama' => $activityName,
+                'kegiatan' => []
+            ];
+        }
+        
+        $kegiatanKelompok[$activityName]['kegiatan'][] = [
+            'nama' => $kegiatan->subActivity->name,
+            'sks' => $kegiatan->subActivity->sks,
+            'status' => 'TERPENUHI'
+        ];
+    }
+    
+    // 8b. Tambahkan kegiatan wajib yang belum dilakukan
+    foreach ($kegiatanWajib as $kegiatan) {
+        $activity = $kegiatan->activity;
+        $activityName = $activity->name;
+        $terpenuhi = in_array($kegiatan->name, $kegiatanDilakukanNames);
+        
+        if (!isset($kegiatanKelompok[$activityName])) {
+            $kegiatanKelompok[$activityName] = [
+                'nama' => $activityName,
+                'kegiatan' => []
+            ];
+        }
+        
+        // Cek apakah kegiatan sudah ada di array
+        $exists = false;
+        foreach ($kegiatanKelompok[$activityName]['kegiatan'] as $existing) {
+            if ($existing['nama'] === $kegiatan->name) {
+                $exists = true;
+                break;
+            }
+        }
+        
+        if (!$exists) {
+            $kegiatanKelompok[$activityName]['kegiatan'][] = [
+                'nama' => $kegiatan->name,
+                'sks' => $kegiatan->sks,
+                'status' => $terpenuhi ? 'TERPENUHI' : 'BELUM TERPENUHI'
+            ];
+        }
+    }
+    
+    return [
+        'totalSks' => $totalSks,
+        'minimalSks' => $minimalSks,
+        'kegiatanWajib' => $kegiatanWajibTerpenuhi,
+        'jumlahKegiatanWajibTerpenuhi' => $jumlahKegiatanWajibTerpenuhi,
+        'totalKegiatanWajib' => $totalKegiatanWajib,
+        'kegiatanWajibSemuaTerpenuhi' => $kegiatanWajibSemuaTerpenuhi,
+        'kegiatanKelompok' => $kegiatanKelompok,
+        'kegiatanDilakukanNames' => $kegiatanDilakukanNames
+    ];
+}
+
+/**
+ * Menampilkan kartu SKS non-akademik (HTML View)
+ */
+    public function kartuSKS(Student $student)
+    {
+        $active = "students";
+        $sub_active = "kartu-sks";
+        
+        $data = $this->getKartuSKSData($student);
+        
+        return view('students.kartu-sks', array_merge($data, [
+            'active' => $active,
+            'sub_active' => $sub_active,
+            'student' => $student
+        ]));
+    }
+
+    /**
+     * Generate PDF kartu SKS
+     */
+    public function kartuSKSPDF(Student $student)
+    {
+        $data = $this->getKartuSKSData($student);
+        
+        // Load view ke PDF
+        $pdf = \PDF::loadView('students.kartu-sks-pdf', array_merge($data, [
+            'student' => $student
+        ]));
+        
+        // Set paper size dan orientation
+        $pdf->setPaper('A4', 'portrait');
+        
+        // Return PDF untuk di-download
+        return $pdf->download('kartu-sks-' . $student->npm . '.pdf');
     }
 }
