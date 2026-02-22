@@ -1,4 +1,4 @@
-<link rel="preconnect" href="https://fonts.googleapis.com"> 
+<link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet">
 
@@ -45,12 +45,14 @@
         font-style: normal;
     }
 
-    html, body {
+    html,
+    body {
         margin: 0;
         padding: 0;
         font-family: 'rasa-medium', 'Poppins', 'Trebuchet Ms', arial;
         background: #eee;
     }
+
     .packing-label {
         display: block;
         z-index: 999999;
@@ -58,10 +60,12 @@
         background: #eee;
         color: #334166
     }
+
     .packing-label form {
         margin: 0;
         padding: 0;
     }
+
     .packing-label .pl-head {
         display: block;
         width: 100%;
@@ -72,6 +76,7 @@
         top: 0;
         left: 0;
     }
+
     .packing-label .pl-head strong {
         float: left;
         display: flex;
@@ -80,6 +85,7 @@
         height: 34px;
         padding: 0 10px;
     }
+
     .packing-label .pl-head div {
         float: right;
         display: flex;
@@ -88,6 +94,7 @@
         height: 34px;
         padding: 0 10px;
     }
+
     .packing-label .pl-head a,
     .packing-label .pl-head .pl-close {
         display: inline-block;
@@ -114,6 +121,7 @@
         -moz-border-radius: 3px;
         border-radius: 3px;
     }
+
     .packing-label .pl-head a:hover,
     .packing-label .pl-head .pl-close:hover {
         -webkit-filter: grayscale(0);
@@ -121,6 +129,7 @@
         filter: grayscale(0);
         cursor: pointer;
     }
+
     .packing-label .pl-area {
         display: table;
         margin: auto;
@@ -133,6 +142,7 @@
         background-image: url('/assets/images/profile/certificate-2.png1');
         background-size: cover;
     }
+
     .packing-label .pl-area .pl-content {
         display: block;
         /* border-bottom: .05em dashed #000; */
@@ -140,12 +150,14 @@
         padding: 10px;
         font-family: 'rasa-medium', 'Poppins', 'Trebuchet Ms', arial;
     }
+
     .packing-label .pl-area .pl-content table {
         width: 100%;
         /* border-left: .03em solid #000; */
         /* border-top: .03em solid #000; */
         outline: none;
     }
+
     .packing-label .pl-area .pl-content table tr td {
         /* border-right: .03em solid #000; */
         /* border-bottom: .03em solid #000; */
@@ -164,12 +176,14 @@
         letter-spacing: -0.5px;
         font-weight: 100;
     }
+
     .packing-label .pl-area .pl-content table tr td label {
         font-size: 33px;
         padding-top: 10px;
         padding-bottom: 15px;
         display: inline-block;
     }
+
     .tahun {
         font-size: 21px;
         padding-top: 10px;
@@ -177,6 +191,7 @@
         display: inline-block;
         color: #000;
     }
+
     .nama {
         font-family: georgia-pro;
         font-size: 109px;
@@ -185,22 +200,26 @@
         display: inline-block;
         color: #000;
     }
+
     .packing-label .pl-area .pl-content table tr td img {
         display: block;
         width: 100%;
         height: auto;
     }
+
     .packing-label .pl-area .pl-content table tr td svg {
         height: 21px;
         width: auto;
         margin: 17px 10px;
     }
+
     .packing-label .pl-area .pl-content table tr td div {
         font-size: 13px;
         padding-top: 5px;
         /* color: #865b34;; */
         letter-spacing: .075em;
     }
+
     .packing-label .pl-footer {
         display: block;
         position: fixed;
@@ -213,6 +232,7 @@
         font-size: 10px;
         width: 100%;
     }
+
     .ttd {
         line-height: 15px !important;
         font-size: 13px;
@@ -226,36 +246,44 @@
 
     /* Berikut modifikasi agar teks geser kiri dan garis bawah nama rapi */
     .ttd-georgia td {
-        text-align: center;         /* teks rata kiri */
-        padding-left: 20px;       /* geser ke kiri */
+        text-align: center;
+        /* teks rata kiri */
+        padding-left: 20px;
+        /* geser ke kiri */
         vertical-align: top;
         color: #334166;
     }
 
     .ttd-left {
         text-align: left;
-        padding-left: 130px; /* Ganti angka 50px sesuai kebutuhanmu */
+        padding-left: 130px;
+        /* Ganti angka 50px sesuai kebutuhanmu */
     }
 
     .ttd-right {
         text-align: right;
     }
-    .ttd-right .jabatan{
+
+    .ttd-right .jabatan {
         padding-right: 150px;
     }
-    .ttd-right .unit{
+
+    .ttd-right .unit {
         padding-right: 135px;
     }
-    .ttd-right .nama{
+
+    .ttd-right .nama {
         padding-right: 125px;
     }
-    .ttd-right .nomor{
+
+    .ttd-right .nomor {
         padding-right: 130px;
     }
 
-    .ttd-georgia .jabatan{
+    .ttd-georgia .jabatan {
         padding-left: 25px;
     }
+
     .ttd-georgia .unit {
         font-size: 15px;
         letter-spacing: -0.01em;
@@ -278,7 +306,8 @@
     .ttd-georgia .nomor {
         padding-left: 25px;
         font-size: 15px;
-        margin-top: 0;          /* hilangkan jarak atas */
+        margin-top: 0;
+        /* hilangkan jarak atas */
         line-height: 1.2;
         /* color: #334166; */
     }
@@ -287,27 +316,34 @@
         body {
             overflow: auto;
         }
+
         .packing-label {
             background: #fff;
         }
+
         .packing-label .pl-head {
             display: none;
         }
+
         .packing-label .pl-area {
             margin-top: 0;
             margin: 0 inherit;
             left: 0;
         }
-        .packing-label .pl-footer { display: none; }
+
+        .packing-label .pl-footer {
+            display: none;
+        }
     }
+
     table {
         margin-top: 12px;
     }
-    table tr td{
+
+    table tr td {
         text-align: center;
         color: #865b34;
     }
-
 </style>
 
 <div class="packing-label">
@@ -325,58 +361,58 @@
                 <img width="100%" class="img-fluid d-block w-10" src="{{ asset("assets/images/profile/certificate-4.png") }}" alt="">
             </div>
             <div class="pl-content" style="position: absolute; top: 0; text-align: center; width: 100%;">
-                @php($path = route("student.kartu-sks", [$student->id]) )
+                @php($path = route("students.kartu-sks", [$student->id]) )
                 <p>
-                    <div style="text-align: center; margin-top: 117px; font-size: 30px; font-family: hussar-bold; color: #000">SERTIFIKAT SKS NON - AKADEMIK</div>
-                    <div style="text-align: center; font-family: poppins-reguler; font-size: 27px; color: #000; letter-spacing: 0.5px;"> NOMOR: {{ sprintf("%'.03d", $student->order) }}/SNA/PSI/{{ $month_rome }}/{{ $current_year }}</div>
-                    <div style="text-align: center; margin-top: 16px; font-size: 28px; color: #000">Diberikan Kepada:</div>
-                    <div style="text-align: center; margin-top: 2px; font-family: stars-love-bottom-heavy; color: #593772; font-size: 50px;">{{ ucwords(strtolower($student->name)) }}</div>
-                    <div style="text-align: center; margin-top: 0px; font-size: 28px; color: #000">
-                        NPM: {{ $student->npm }}
-                    </div>
-                    <div style="position: absolute; top: 56%; left: 88%; transform: translate(-50%, -50%); width: 140px; height: 140px;">
-                        {!! DNS2D::getBarcodeHTML($path, 'QRCODE', 4, 4) !!}
-                    </div>
-                    <div style="text-align: center; font-size: 20px; margin-top: 9px; color: #000">
-                        Yang telah aktif berkegiatan dalam bidang non-akademik selama
-                    </div>
-                    <div style="text-align: center; font-size: 20px; margin-top: 3px; color: #000">
-                        @if ($achievement !== null && $achievement->sks !== null)
-                            {!! 'masa perkuliahan di Fakultas Psikologi Unisba, dengan perolehan <br> skor <strong>'. $achievement->sks .' SKS</strong> dan mendapat predikat <strong><span style="text-transform: uppercase;">'. $result .'</span></strong>'!!}
-                        @else
-                            Fakultas Psikologi Unisba, dengan perolehan skor <strong>0 SKS</strong> dan mendapat predikat <strong>Belum Cukup</strong>
-                        @endif
-                    </div>
-                    <div style="text-align: center; font-size: 21px; margin-top: 22px; poppins-reguler; color: #000">Bandung, {{ $date }}</div>
-                    @if($student->certificate_approve == 1)
-                        <div style="position: absolute; top: 500px; margin-left: 107px;">
-                            <img width="231px" class="img-fluid d-block w-10" src="{{ asset("assets/images/wadek-3.png") }}" alt="">
-                        </div>
+                <div style="text-align: center; margin-top: 117px; font-size: 30px; font-family: hussar-bold; color: #000">SERTIFIKAT SKS NON - AKADEMIK</div>
+                <div style="text-align: center; font-family: poppins-reguler; font-size: 27px; color: #000; letter-spacing: 0.5px;"> NOMOR: {{ sprintf("%'.03d", $student->order) }}/SNA/PSI/{{ $month_rome }}/{{ $current_year }}</div>
+                <div style="text-align: center; margin-top: 16px; font-size: 28px; color: #000">Diberikan Kepada:</div>
+                <div style="text-align: center; margin-top: 2px; font-family: stars-love-bottom-heavy; color: #593772; font-size: 50px;">{{ ucwords(strtolower($student->name)) }}</div>
+                <div style="text-align: center; margin-top: 0px; font-size: 28px; color: #000">
+                    NPM: {{ $student->npm }}
+                </div>
+                <div style="position: absolute; top: 56%; left: 88%; transform: translate(-50%, -50%); width: 140px; height: 140px;">
+                    {!! DNS2D::getBarcodeHTML($path, 'QRCODE', 4, 4) !!}
+                </div>
+                <div style="text-align: center; font-size: 20px; margin-top: 9px; color: #000">
+                    Yang telah aktif berkegiatan dalam bidang non-akademik selama
+                </div>
+                <div style="text-align: center; font-size: 20px; margin-top: 3px; color: #000">
+                    @if ($achievement !== null && $achievement->sks !== null)
+                    {!! 'masa perkuliahan di Fakultas Psikologi Unisba, dengan perolehan <br> skor <strong>'. $achievement->sks .' SKS</strong> dan mendapat predikat <strong><span style="text-transform: uppercase;">'. $result .'</span></strong>'!!}
+                    @else
+                    Fakultas Psikologi Unisba, dengan perolehan skor <strong>0 SKS</strong> dan mendapat predikat <strong>Belum Cukup</strong>
                     @endif
-                    <table border="0" cellpadding="0" cellspacing="0" class="ttd-georgia">
-                        <tr>
-                            <td>
-                                <div class="ttd-left">
-                                    <div class="jabatan">Wakil Dekan III</div>
-                                    <div class="unit">Fakultas Psikologi Unisba</div>
-                                    <div class="nama">Suhana, M.Psi., Psikolog</div>
-                                    <div class="nomor">NIP. D.00.0.329</div>
-                                </div>
-                            </td>
+                </div>
+                <div style="text-align: center; font-size: 21px; margin-top: 22px; poppins-reguler; color: #000">Bandung, {{ $date }}</div>
+                @if($student->certificate_approve == 1)
+                <div style="position: absolute; top: 500px; margin-left: 107px;">
+                    <img width="231px" class="img-fluid d-block w-10" src="{{ asset("assets/images/wadek-3.png") }}" alt="">
+                </div>
+                @endif
+                <table border="0" cellpadding="0" cellspacing="0" class="ttd-georgia">
+                    <tr>
+                        <td>
+                            <div class="ttd-left">
+                                <div class="jabatan">Wakil Dekan III</div>
+                                <div class="unit">Fakultas Psikologi Unisba</div>
+                                <div class="nama">Suhana, M.Psi., Psikolog</div>
+                                <div class="nomor">NIP. D.00.0.329</div>
+                            </div>
+                        </td>
 
-                            <td width="35"></td>
+                        <td width="35"></td>
 
-                            <td>
-                                <div class="ttd-right">
-                                    <div class="jabatan">Ketua Pansus</div>
-                                    <div class="unit">Periode {{ $year !== null ? $year->show : "" }}</div>
-                                    <div class="nama">Naira Ammara Putri R</div>
-                                    <div class="nomor">NPM: 10050022015</div>
-                                </div>
-                            </td>
+                        <td>
+                            <div class="ttd-right">
+                                <div class="jabatan">Ketua Pansus</div>
+                                <div class="unit">Periode {{ $year !== null ? $year->show : "" }}</div>
+                                <div class="nama">Naira Ammara Putri R</div>
+                                <div class="nomor">NPM: 10050022015</div>
+                            </div>
+                        </td>
 
-                        </tr>
-                    </table>
+                    </tr>
+                </table>
                 </p>
             </div>
         </form>

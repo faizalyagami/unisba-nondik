@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kartu SKS Non-Akademik - {{ $student->name }}</title>
     <style>
-        /* CSS untuk cetak PDF dengan format A4 PORTRAIT */
+        /* CSS untuk kartu SKS */
         @page {
             margin: 15mm;
             size: A4 portrait;
@@ -20,36 +20,28 @@
             margin: 0;
             padding: 0;
             background-color: #fff;
-            -webkit-print-color-adjust: exact;
-            print-color-adjust: exact;
         }
 
-        /* Container untuk setiap halaman - A4 PORTRAIT */
         .page {
             width: 190mm;
-            /* Lebar A4 portrait (210mm - margin) */
             min-height: 267mm;
-            /* Tinggi A4 portrait (297mm - margin) */
             padding: 10mm;
             page-break-after: always;
             box-sizing: border-box;
-            position: relative;
-            background-color: #fff;
             margin: 0 auto;
+            background-color: #fff;
         }
 
         .page:last-child {
             page-break-after: auto;
         }
 
-        /* Konten dengan lebar penuh */
         .content {
             width: 100%;
-            max-width: 100%;
             margin: 0 auto;
         }
 
-        /* HEADER DENGAN LOGO */
+        /* HEADER */
         .header {
             display: flex;
             align-items: center;
@@ -61,15 +53,26 @@
 
         .logo-container {
             width: 60px;
-            /* Lebih kecil untuk portrait */
             margin-right: 10px;
             flex-shrink: 0;
         }
 
         .logo-img {
-            width: 100px;
+            width: 50px;
             height: auto;
             display: block;
+        }
+
+        .logo-placeholder {
+            width: 50px;
+            height: 50px;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 8pt;
+            color: #666;
         }
 
         .header-text {
@@ -80,9 +83,7 @@
         .header-title {
             margin: 0;
             font-size: 12pt;
-            /* Lebih kecil */
             font-weight: bold;
-            line-height: 1.2;
         }
 
         .header-subtitle {
@@ -123,7 +124,7 @@
             background-color: #f0f0f0;
         }
 
-        /* STATUS WARNA */
+        /* STATUS */
         .status-terpenuhi {
             color: #006400;
             font-weight: bold;
@@ -141,7 +142,6 @@
             padding: 2px 6px;
             border-radius: 10px;
             display: inline-block;
-            font-size: 9pt;
         }
 
         .status-belum-lulus {
@@ -151,7 +151,6 @@
             padding: 2px 6px;
             border-radius: 10px;
             display: inline-block;
-            font-size: 9pt;
         }
 
         /* PROGRESS BAR */
@@ -202,7 +201,6 @@
             margin: 15px 0 8px 0;
             padding-bottom: 3px;
             border-bottom: 1px solid #000;
-            text-align: left;
         }
 
         /* TABEL SYARAT */
@@ -225,26 +223,6 @@
             background-color: #f0f0f0;
             font-weight: bold;
             text-align: center;
-        }
-
-        .requirements-table .no-col {
-            width: 5%;
-        }
-
-        .requirements-table .syarat-col {
-            width: 40%;
-        }
-
-        .requirements-table .status-col {
-            width: 15%;
-        }
-
-        .requirements-table .keterangan-col {
-            width: 20%;
-        }
-
-        .requirements-table .pengumpulan-col {
-            width: 15%;
         }
 
         /* KEGIATAN SECTION */
@@ -330,7 +308,6 @@
             border: 1px solid #dee2e6;
             border-radius: 5px;
             font-size: 7pt;
-            box-sizing: border-box;
             text-align: center;
         }
 
@@ -419,11 +396,6 @@
             padding-top: 8px;
         }
 
-        .qr-box {
-            display: inline-block;
-            text-align: center;
-        }
-
         .qr-placeholder {
             width: 60px;
             height: 60px;
@@ -433,15 +405,10 @@
             align-items: center;
             justify-content: center;
             font-size: 6pt;
-            margin: 0 auto;
+            margin-left: auto;
         }
 
-        .qr-text {
-            font-size: 6pt;
-            margin-top: 2px;
-        }
-
-        /* TOMBOL - HANYA UNTUK WEB */
+        /* TOMBOL */
         .action-buttons {
             margin-top: 25px;
             text-align: center;
@@ -468,8 +435,8 @@
             color: white;
         }
 
-        .btn-download {
-            background-color: #007bff;
+        .btn-pdf {
+            background-color: #dc3545;
             color: white;
         }
 
@@ -480,57 +447,12 @@
         }
 
         .no-print {
-            display: none;
+            display: block;
         }
 
-        /* TAMPILAN WEB */
-        @media screen {
-            .no-print {
-                display: block;
-            }
-
-            body {
-                background-color: #f5f5f5;
-                padding: 15px;
-                display: block;
-            }
-
-            .page {
-                background: white;
-                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-                border: 1px solid #ddd;
-                margin: 0 auto 15px auto;
-            }
-        }
-
-        /* TAMPILAN CETAK PDF */
         @media print {
             .no-print {
                 display: none;
-            }
-
-            body {
-                background-color: white;
-                padding: 0;
-            }
-
-            .page {
-                box-shadow: none;
-                border: none;
-                margin: 0 auto;
-                page-break-after: always;
-            }
-
-            /* Pastikan background warna tercetak */
-            .student-info td:first-child,
-            .requirements-table th,
-            .kegiatan-header,
-            .legend,
-            .ringkasan-section,
-            .summary-table th,
-            .notes {
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
             }
         }
     </style>
@@ -541,9 +463,7 @@
     <div class="page">
         <div class="content">
             <!-- Header dengan Logo -->
-            <!-- Header dengan Logo -->
             <div class="header">
-                <!-- GANTI BAGIAN LOGO dengan conditional dan ukuran lebih besar -->
                 <div class="logo-container">
                     @php
                     $logoPath = public_path('assets/images/profile/logo-pansus.png');
@@ -609,10 +529,10 @@
                 <div class="progress-item">
                     <div class="progress-label">
                         <span><strong>Progress Kegiatan Wajib</strong></span>
-                        <span>{{ $jumlahKegiatanWajibTerpenuhi }}/{{ $totalKegiatanWajib }} kegiatan ({{ round(($jumlahKegiatanWajibTerpenuhi / $totalKegiatanWajib) * 100) }}%)</span>
+                        <span>{{ $jumlahKegiatanWajibTerpenuhi }}/{{ $totalKegiatanWajib }} kegiatan ({{ $totalKegiatanWajib > 0 ? round(($jumlahKegiatanWajibTerpenuhi / $totalKegiatanWajib) * 100) : 0 }}%)</span>
                     </div>
                     <div class="progress-bar-bg">
-                        <div class="progress-bar-fill-blue" style="width: {{ ($totalKegiatanWajib > 0) ? ($jumlahKegiatanWajibTerpenuhi / $totalKegiatanWajib) * 100 : 0 }}%;"></div>
+                        <div class="progress-bar-fill-blue" style="width: {{ $totalKegiatanWajib > 0 ? ($jumlahKegiatanWajibTerpenuhi / $totalKegiatanWajib) * 100 : 0 }}%;"></div>
                     </div>
                 </div>
             </div>
@@ -622,31 +542,31 @@
             <table class="requirements-table">
                 <thead>
                     <tr>
-                        <th class="no-col">NO.</th>
-                        <th class="syarat-col">SYARAT PENGAJUAN SERTIFIKAT</th>
-                        <th class="status-col">STATUS</th>
-                        <th class="keterangan-col">KETERANGAN</th>
-                        <th class="pengumpulan-col">PENGUMPULAN</th>
+                        <th style="width:5%">NO.</th>
+                        <th style="width:40%">SYARAT PENGAJUAN SERTIFIKAT</th>
+                        <th style="width:15%">STATUS</th>
+                        <th style="width:20%">KETERANGAN</th>
+                        <th style="width:15%">PENGUMPULAN</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td class="no-col">1</td>
-                        <td class="syarat-col">MENCAPAI SKOR MINIMAL KELULUSAN SKS NON-AKADEMIK</td>
-                        <td class="status-col {{ $totalSks >= $minimalSks ? 'status-terpenuhi' : 'status-belum' }}">
+                        <td style="text-align:center">1</td>
+                        <td>MENCAPAI SKOR MINIMAL KELULUSAN SKS NON-AKADEMIK</td>
+                        <td class="{{ $totalSks >= $minimalSks ? 'status-terpenuhi' : 'status-belum' }}">
                             {{ $totalSks >= $minimalSks ? 'TERPENUHI' : 'BELUM TERPENUHI' }}
                         </td>
-                        <td class="keterangan-col">{{ $totalSks }} SKS</td>
-                        <td class="pengumpulan-col">WEBSITE</td>
+                        <td>{{ $totalSks }} SKS</td>
+                        <td>WEBSITE</td>
                     </tr>
                     <tr>
-                        <td class="no-col">2</td>
-                        <td class="syarat-col">MENGIKUTI SELURUH KEGIATAN YANG WAJIB DIIKUTI</td>
-                        <td class="status-col {{ $kegiatanWajibSemuaTerpenuhi ? 'status-terpenuhi' : 'status-belum' }}">
+                        <td style="text-align:center">2</td>
+                        <td>MENGIKUTI SELURUH KEGIATAN YANG WAJIB DIIKUTI</td>
+                        <td class="{{ $kegiatanWajibSemuaTerpenuhi ? 'status-terpenuhi' : 'status-belum' }}">
                             {{ $kegiatanWajibSemuaTerpenuhi ? 'TERPENUHI' : 'BELUM TERPENUHI' }}
                         </td>
-                        <td class="keterangan-col">{{ $jumlahKegiatanWajibTerpenuhi }}/{{ $totalKegiatanWajib }} kegiatan</td>
-                        <td class="pengumpulan-col">WEBSITE</td>
+                        <td>{{ $jumlahKegiatanWajibTerpenuhi }}/{{ $totalKegiatanWajib }} kegiatan</td>
+                        <td>WEBSITE</td>
                     </tr>
                 </tbody>
             </table>
@@ -666,11 +586,11 @@
 
             <!-- Detail Kegiatan -->
             @if(count($kegiatanKelompok) > 0)
-            @foreach($kegiatanKelompok as $kelompokIndex => $kelompok)
+            @foreach($kegiatanKelompok as $kelompok)
             <div class="kegiatan-section">
                 <div class="kegiatan-header">
-                    <h4>{{ strtoupper($kelompok['nama']) }}</h4>
-                    @if(isset($kelompok['min_wajib']) && $kelompok['min_wajib'] > 0)
+                    <h4>{{ $kelompok['nama'] }}</h4>
+                    @if($kelompok['min_wajib'] > 0)
                     <span class="min-wajib-badge">
                         Minimal {{ $kelompok['min_wajib'] }} kegiatan wajib
                     </span>
@@ -680,8 +600,7 @@
                 <table class="kegiatan-table">
                     @foreach($kelompok['kegiatan'] as $index => $kegiatan)
                     @php
-                    $isWajib = $kegiatan['required'] ?? str_contains($kegiatan['nama'], '(WAJIB)');
-                    $statusClass = $kegiatan['status'] == 'TERPENUHI' ? 'status-terpenuhi' : 'status-belum';
+                    $isWajib = $kegiatan['required'];
                     $namaBersih = str_replace('(WAJIB)', '', $kegiatan['nama']);
                     @endphp
                     <tr>
@@ -696,7 +615,7 @@
                                 {{ $kegiatan['status'] }}
                             </span>
                         </td>
-                        <td width="20%" style="text-align: right; font-weight: bold;">
+                        <td width="20%" style="text-align: right;">
                             @if($kegiatan['status'] == 'TERPENUHI')
                             {{ $kegiatan['sks'] }} SKS
                             @else
@@ -719,10 +638,8 @@
     <!-- HALAMAN 2 -->
     <div class="page">
         <div class="content">
-            <!-- Header dengan Logo -->
-            <!-- Header dengan Logo -->
+            <!-- Header Ringkasan -->
             <div class="header">
-                <!-- GANTI BAGIAN LOGO dengan conditional dan ukuran lebih besar -->
                 <div class="logo-container">
                     @php
                     $logoPath = public_path('assets/images/profile/logo-pansus.png');
@@ -739,11 +656,11 @@
                     <h1 class="header-title">PANITIA KHUSUS (PANSUS) FAKULTAS PSIKOLOGI</h1>
                     <h2 class="header-subtitle">UNIVERSITAS ISLAM BANDUNG</h2>
                     <h3 class="header-year">T.A 2025-2026</h3>
-                    <h2 class="header-card-title">KARTU SKS NON AKADEMIK (ANGKATAN {{ $student->class_of }})</h2>
+                    <h2 class="header-card-title">RINGKASAN KARTU SKS NON AKADEMIK</h2>
                 </div>
             </div>
 
-            <!-- Info Mahasiswa (ringkas) -->
+            <!-- Info Mahasiswa -->
             <table class="student-info">
                 <tr>
                     <td>NAMA / NPM</td>
@@ -838,47 +755,43 @@
                     <li>Status LULUS jika: Total SKS ≥ {{ $minimalSks }} <strong>DAN</strong> semua kegiatan wajib terpenuhi sesuai ketentuan per kategori</li>
                     <li>Kegiatan dengan label <span class="badge-wajib" style="margin-left: 0;">WAJIB</span> harus dipenuhi sesuai minimal per kategori</li>
                     <li>Untuk kategori dengan keterangan "Minimal X kegiatan wajib", cukup memenuhi X kegiatan dari sekian banyak pilihan</li>
-                    <li>Dokumen ini dicetak otomatis dari sistem pada {{ \Carbon\Carbon::now()->translatedFormat('d F Y H:i:s') }}</li>
-                    <li>Dokumen ini valid tanpa tanda tangan basah</li>
+                    <li>Dokumen ini dicetak pada: {{ \Carbon\Carbon::now()->translatedFormat('d F Y H:i:s') }}</li>
                 </ul>
             </div>
 
             <!-- QR Code -->
             <!-- <div class="qr-container">
-                <div class="qr-box">
-                    <div class="qr-placeholder">
-                        QR CODE
-                    </div>
-                    <div class="qr-text">Scan untuk verifikasi</div>
+                <div class="qr-placeholder">
+                    QR CODE
                 </div>
-            </div>
-        </div> -->
+            </div> -->
         </div>
+    </div>
 
-        <!-- Tombol Aksi (hanya tampil di web) -->
-        <div class="no-print action-buttons">
-            <button onclick="window.print()" class="btn btn-print">
-                🖨️ Cetak Kartu SKS
-            </button>
-            <!-- <a href="{{ route('students.kartu-sks.pdf', $student->id) }}" class="btn btn-download">
-                📥 Download PDF
-            </a> -->
-            <div class="timestamp">
-                Dokumen ini dicetak pada: {{ \Carbon\Carbon::now()->translatedFormat('d F Y H:i:s') }}
-            </div>
+    <!-- Tombol Aksi -->
+    <div class="no-print action-buttons">
+        <button onclick="window.print()" class="btn btn-print">
+            🖨️ Cetak Kartu SKS
+        </button>
+        <!-- <a href="{{ route('students.kartu-sks.pdf', $student->id) }}" class="btn btn-pdf" target="_blank">
+            📥 Download PDF
+        </a> -->
+        <div class="timestamp">
+            Dokumen ini dicetak pada: {{ \Carbon\Carbon::now()->translatedFormat('d F Y H:i:s') }}
         </div>
+    </div>
 
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                const printBtn = document.querySelector('.btn-print');
-                if (printBtn) {
-                    printBtn.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        window.print();
-                    });
-                }
-            });
-        </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const printBtn = document.querySelector('.btn-print');
+            if (printBtn) {
+                printBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    window.print();
+                });
+            }
+        });
+    </script>
 </body>
 
 </html>
