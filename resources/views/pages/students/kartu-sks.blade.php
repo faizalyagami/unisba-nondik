@@ -773,11 +773,18 @@
                 <tbody>
                     @foreach($kegiatanKelompok as $index => $kelompok)
                     @php
-                    $total = count($kelompok['kegiatan']);
-                    $terpenuhi = collect($kelompok['kegiatan'])->where('status', 'TERPENUHI')->count();
-                    $progressPersen = $total > 0 ? round(($terpenuhi / $total) * 100) : 0;
-                    $statusKategori = $terpenuhi == $total ? 'LENGKAP' : 'BELUM LENGKAP';
-                    $statusColor = $terpenuhi == $total ? 'status-terpenuhi' : 'status-belum';
+                        $total = $kelompok['total_kegiatan'];
+                        $terpenuhi = $kelompok['terpenuhi_kegiatan'];
+                        $progressPersen = $total > 0 ? round(($terpenuhi / $total) * 100) : 0;
+
+                        // Tentukan status berdasarkan minimal kegiatan wajib
+                        if ($kelompok['min_wajib'] > 0) {
+                            $statusKategori = ($kelompok['wajib_terpenuhi'] >= $kelompok['min_wajib']) ? 'LENGKAP' : 'BELUM LENGKAP';
+                        } else {
+                            // jika tidak ada informasi minimal, gunakan logika lama (semua kegiatan wajib terpenuhi)
+                            $statusKategori = ($kelompok['wajib_terpenuhi'] == $kelompok['wajib_total'] && $kelompok['wajib_total'] > 0) ? 'LENGKAP' : 'BELUM LENGKAP';
+                        }
+                        $statusColor = $statusKategori == 'LENGKAP' ? 'status-terpenuhi' : 'status-belum';
                     @endphp
                     <tr>
                         <td style="text-align: center;">{{ $index + 1 }}</td>

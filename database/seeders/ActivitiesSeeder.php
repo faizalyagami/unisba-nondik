@@ -194,14 +194,14 @@ class ActivitiesSeeder extends Seeder
 
             // Program Peningkatan Kompetensi Diri
             'Program Peningkatan Kompetensi Diri (1 KEGIATAN WAJIB)' => [
-                ['name' => 'Test Bahasa Inggris (TOEFL/IELTS/TOEIC/TOEP/dsb)', 'sks' => 15, 'required' => true, 'notes' => ''],
+                ['name' => 'Test Bahasa Inggris (TOEFL/IELTS/TOEIC/TOEP/dsb) (WAJIB)', 'sks' => 15, 'required' => true, 'notes' => ''],
                 ['name' => 'Test Bahasa Asing Lain (Mandarin, Arab, Jerman, Perancis, dsb)', 'sks' => 8, 'required' => false, 'notes' => ''],
                 ['name' => 'Sertifikat Kompetensi Kerja', 'sks' => 10, 'required' => false, 'notes' => ''],
             ],
 
             // Kegiatan Rohani Islam
             'Kegiatan Ruhul Islam (3 KEGIATAN WAJIB)' => [
-                ['name' => 'PJM Unisba (WAJIB)', 'sks' => 5, 'required' => true, 'notes' => ''],
+                ['name' => 'P3M Unisba (WAJIB)', 'sks' => 5, 'required' => true, 'notes' => ''],
                 ['name' => 'BTAQ Universitas (WAJIB)', 'sks' => 10, 'required' => true, 'notes' => ''],
                 ['name' => 'BTAQ Fakultas (WAJIB)', 'sks' => 12, 'required' => true, 'notes' => ''],
                 ['name' => 'Mengisi Acara Kegiatan Keislaman', 'sks' => 10, 'required' => false, 'notes' => ''],
@@ -211,7 +211,7 @@ class ActivitiesSeeder extends Seeder
 
             // Orientasi Kerja
             'Orientasi Kerja (1 KEGIATAN WAJIB)' => [
-                ['name' => 'Penyusunan Laporan Orientasi Kerja sesuai Bidang Peminatan', 'sks' => 7, 'required' => true, 'notes' => ''],
+                ['name' => 'Penyusunan Laporan Orientasi Kerja sesuai Bidang Peminatan (WAJIB)', 'sks' => 7, 'required' => true, 'notes' => ''],
             ]
         ];
 
