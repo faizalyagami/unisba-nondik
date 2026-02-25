@@ -37,7 +37,6 @@ class StudentController extends Controller
         $status = [0 => 'Semua', 1 => 'Aktif', 'Tidak Aktif'];
         $pansus = [0 => 'Semua', 'No', 'Yes'];
 
-
         $search_text = $request->search_text;
         $search_gender = $request->search_gender ? $request->search_gender : 0;
         $search_classof = $request->search_classof ? $request->search_classof : 'Semua';
@@ -48,11 +47,6 @@ class StudentController extends Controller
         $user = auth()->user();
 
         $students = Student::select('id', 'npm', 'name', 'email', 'phone', 'gender', 'class_of', 'period', 'certificate_approve', 'status')
-            ->selectRaw('(
-                select sum(sks) 
-                from student_activities 
-                join sub_activities on sub_activities.id = student_activities.sub_activity_id 
-                where student_activities.student_id = students.id and  student_activities.status = 3) as sumsks')
             ->where(function ($q) use ($search_text) {
                 $q->whereRaw('name like ?', ['%' . $search_text . '%'])
                     ->orWhereRaw('npm like ?', ['%' . $search_text . '%']);
@@ -73,6 +67,14 @@ class StudentController extends Controller
             ->orderBy('name')
             ->paginate(20)
             ->withQueryString();
+
+        // Hitung ulang total SKS untuk setiap mahasiswa menggunakan getKartuSKSData
+        foreach ($students as $student) {
+            $dataKartu = $this->getKartuSKSData($student);
+            $student->sumsks = $dataKartu['totalSks']; // timpa dengan nilai yang benar
+            $student->isLulus = ($dataKartu['totalSks'] >= $dataKartu['minimalSks'])
+                && $dataKartu['kegiatanWajibSemuaTerpenuhi'];
+        }
 
         return view('pages.students.index', compact(
             'active',
@@ -651,31 +653,48 @@ class StudentController extends Controller
 
     public function approveCertificate(Request $request)
     {
+        \Log::info('approveCertificate called with id: ' . $request->id); // untuk debugging
 
         $student = Student::where("id", $request->id)->first();
-        if ($student !== null) {
+
+        if (!$student) {
+            \Log::error('Student not found with id: ' . $request->id);
+            return response()->json([
+                'status' => 'fail',
+                'message' => 'Mahasiswa tidak ditemukan.'
+            ]);
+        }
+
+        try {
+            // Validasi kelulusan sebelum approve
+            $dataKartu = $this->getKartuSKSData($student);
+            $isLulus = ($dataKartu['totalSks'] >= $dataKartu['minimalSks'])
+                && $dataKartu['kegiatanWajibSemuaTerpenuhi'];
+
+            if (!$isLulus) {
+                return response()->json([
+                    'status' => 'fail',
+                    'message' => 'Mahasiswa belum memenuhi syarat kelulusan (SKS atau kegiatan wajib belum terpenuhi).'
+                ]);
+            }
+
             $student->certificate_approve = 1;
             $student->certificate_approve_date = now();
             $student->save();
 
-            return response()->json(['status' => 'ok']);
+            \Log::info('Certificate approved for student: ' . $student->id);
+
+            return response()->json([
+                'status' => 'ok',
+                'message' => 'Sertifikat berhasil disetujui'
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Error approving certificate: ' . $e->getMessage());
+            return response()->json([
+                'status' => 'fail',
+                'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+            ]);
         }
-
-        return response()->json(['status' => 'fail']);
-    }
-
-    public function rejectCertificate(Request $request)
-    {
-        $student = Student::where("id", $request->id)->first();
-        if ($student !== null) {
-            $student->certificate_approve = 0; // atau status reject
-            $student->certificate_approve_date = null; // kosongkan tanggal
-            $student->save();
-
-            return response()->json(['status' => 'ok']);
-        }
-
-        return response()->json(['status' => 'fail']);
     }
 
     /**
@@ -853,7 +872,7 @@ class StudentController extends Controller
                         'wajib_total'        => $activity['kegiatan_wajib_count'],
                         'total_kegiatan'     => count($activity['kegiatan']),
                         'terpenuhi_kegiatan' => collect($activity['kegiatan'])->where('status', 'TERPENUHI')->count()
-                        ];
+                    ];
                 }
 
                 return [
