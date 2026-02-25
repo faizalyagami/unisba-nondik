@@ -13,6 +13,8 @@ use Illuminate\Filesystem\Filesystem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Barryvdh\Snappy\Facades\SnappyPdf;
+use Illuminate\Support\Facades\View;
 use PDF;
 
 class HomeController extends Controller
@@ -31,6 +33,7 @@ class HomeController extends Controller
         $status = [0 => 'Semua', 'Open', 'Review', 'Approve', 'Reject'];
         $achievement = null;
         $result = "Belum Cukup";
+        $isLulus = false;
 
         $needed = Reff::select('value', 'show')->where('status', 1)->where('name', 'minimalsks')->orderBy('value')->first();
         $ranges = Reff::select('value', 'show')->where('status', 1)->where('name', 'rangesks')->orderBy('id')->get()->toArray();
@@ -50,17 +53,30 @@ class HomeController extends Controller
                     $result = $ranges[$key + 1]['show'];
                 }
             }
+
+            // --- AMBIL DATA KELULUSAN DARI KARTU SKS ---
+            $student = Student::find($user->student_id);
+            $studentController = app(StudentController::class);
+            $dataKartu = $studentController->getKartuSKSData($student);
+            $isLulus = ($dataKartu['totalSks'] >= $dataKartu['minimalSks']) 
+                        && $dataKartu['kegiatanWajibSemuaTerpenuhi'];
         }
         
+        $perPage = $request->input('per_page', 10);
+        $allowed = [10, 25, 50, 100];
+        if (!in_array($perPage, $allowed)) {
+            $perPage = 10;
+        }
+
         $studentActivities = StudentActivity::with([
                 'subActivity', 'student'
             ])
             ->when(in_array($user->level, [2, 3]), function($q) use($user) {
                 $q->where('student_id', $user->student_id);
             })
+            ->whereHas('student')
             ->orderBy('created_at', 'desc')
-            ->limit(50)
-            ->get();
+            ->paginate($perPage);
 
         $information = Information::where('status', 1)
             ->orderBy('created_at', 'desc')
@@ -79,7 +95,8 @@ class HomeController extends Controller
 
         return view('welcome', compact(
             'active', 'sub_active', 'status', 'studentActivities', 'result',
-            'needed', 'achievement', 'information', 'required', 'requiredHas'
+            'needed', 'achievement', 'information', 'required', 'requiredHas',
+            'isLulus'
         ));
     }
 
@@ -251,6 +268,7 @@ class HomeController extends Controller
      */
     public function printCertificate(Request $request)
     {
+        set_time_limit(0);
         $active = "";
         $sub_active = "";
 
@@ -332,8 +350,7 @@ class HomeController extends Controller
 
     public function generatePDF()
     {
-        $active = "";
-        $sub_active = "";
+        set_time_limit(0);
 
         $user = auth()->user();
         $genders = Reff::select('value', 'show')->where('status', 1)->where('name', 'genders')->orderBy('value')->pluck('show', 'value')->toArray();
@@ -351,10 +368,10 @@ class HomeController extends Controller
             ->first();
 
         $a = $achievement->sks;
-        for($key = 0; $key < (count($ranges) - 1); ++$key) {
-            if($a <= $ranges[$key + 1]['value'] && $a > $ranges[$key]['value']) {
+        for ($key = 0; $key < (count($ranges) - 1); ++$key) {
+            if ($a <= $ranges[$key + 1]['value'] && $a > $ranges[$key]['value']) {
                 $result = $ranges[$key]['show'];
-            } else if($a > $ranges[$key + 1]['value']) {
+            } else if ($a > $ranges[$key + 1]['value']) {
                 $result = $ranges[$key + 1]['show'];
             }
         }
@@ -363,27 +380,29 @@ class HomeController extends Controller
             return redirect()->route('home');
         }
 
-        $months = [1 => "Januari", "Febuari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+        $months = [1 => "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
         $rome_months = [1 => "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII"];
         $month_rome = $rome_months[Carbon::now()->format("n")];
-        
-        $student = Student::where('id', $user->student_id)
-        ->first();
-        
+
+        $student = Student::where('id', $user->student_id)->first();
+
         if ($student->certificate_approve_date) {
             $date = Carbon::parse($student->certificate_approve_date)->translatedFormat('d F Y');
         } else {
             $date = Carbon::now()->translatedFormat('d F Y');
         }
 
-        $date = date("d", strtotime($student->certificate_approve_date)) ." ". $months[date("n", strtotime($student->certificate_approve_date))] ." ". date("Y", strtotime($student->certificate_approve_date));
-          
-        $pdf = Pdf::loadView('pages.profiles.print-certificate-pdf', compact(
-            'active', 'sub_active', 'genders', 'religions', 'year', 
-            'achievement', 'student', 'date', 'result', 'current_year', 'month_rome'
-        ))->setPaper('a4', 'landscape');
-    
-        return $pdf->download('sertificate.pdf');
+        $html = view('pages.profiles.print-certificate-pdf', compact(
+            'genders', 'religions', 'year', 'achievement', 'student',
+            'date', 'result', 'current_year', 'month_rome'
+        ))->render();
+
+        $pdf = SnappyPdf::loadHTML($html);
+        $pdf->setOption('enable-local-file-access', true);
+        $pdf->setOption('disable-local-file-access', false);
+        $pdf->setOption('allow', public_path());
+
+        return $pdf->download('sertifikat.pdf');
     }
 
 }

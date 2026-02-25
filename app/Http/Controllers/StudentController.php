@@ -718,7 +718,7 @@ class StudentController extends Controller
     /**
      * Mengumpulkan data untuk kartu SKS
      */
-    private function getKartuSKSData(Student $student)
+    public function getKartuSKSData(Student $student)
     {
         try {
             // Gunakan cache untuk mempercepat

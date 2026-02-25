@@ -8,12 +8,24 @@
         "bold": "open_sans_bold_ff234b764b5e232c41da6e83e382f185"
     },
     "bellezac": {
-        "normal": "bellezac_normal_aa8d4e35c503882aacaa8ab163b7f14b"
+        "normal": "bellezac_normal_5728b4062a6952f6315db14e09fca92e"
     },
     "rasa-medium": {
-        "normal": "rasa_medium_normal_317bba0ff2d6a7ddb239c3aea97c0c59"
+        "normal": "rasa_medium_normal_8ff7884890de69c6764b520ad39a4534"
     },
     "greatvibes": {
-        "normal": "greatvibes_normal_4c9e26b8e23c64b79abef064862129ee"
+        "normal": "greatvibes_normal_ab4672de230b70091fcd92d40f9d5409"
+    },
+    "tttsars": {
+        "normal": "tttsars_normal_b83027651145f13ff182ed350a5bdc44"
+    },
+    "stars-love-bottom-heavy": {
+        "normal": "stars_love_bottom_heavy_normal_fe3d2fb2ed488fe4cb417c639d1617b7"
+    },
+    "georgia-pro": {
+        "normal": "georgia_pro_normal_72afa191809fe922e059923fd703d58a"
+    },
+    "hussar-bold": {
+        "normal": "hussar_bold_normal_8f08360b5677c914efba88aec08b0e55"
     }
 }

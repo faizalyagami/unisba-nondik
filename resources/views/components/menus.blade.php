@@ -73,7 +73,7 @@
 				<li class="nav-item {{ $active == 'informations' ? 'active' : '' }}">
 					<a href="{{ route('information.index') }}" class="nav-link"><span class="pcoded-micon"><i class="feather icon-info"></i></span><span class="pcoded-mtext">Informations</span></a>
 				</li>
-				{{-- @if(in_array($user->level, [1,2,3,4]))
+				@if(in_array($user->level, [1,2,3,4]))
 				<li class="nav-item pcoded-menu-caption">
 					<label>Setting Periode</label>
 				</li>
@@ -83,7 +83,7 @@
 						<span class="pcoded-mtext">Setting Periode</span>
 					</a>
 				</li>					
-				@endif --}}
+				@endif
 				@endif
 				@endif
 				@endif

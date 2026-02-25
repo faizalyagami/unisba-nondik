@@ -24,8 +24,8 @@
     }
 
     @font-face {
-        font-family: 'poppins-reguler';
-        src: url('../assets/fonts/Poppins-Reguler.ttf')
+        font-family: 'poppins-regular';
+        src: url('../assets/fonts/Poppins-Regular.ttf')
     }
 
     @font-face {
@@ -244,7 +244,6 @@
         margin-top: 10px;
     }
 
-    /* Berikut modifikasi agar teks geser kiri dan garis bawah nama rapi */
     .ttd-georgia td {
         text-align: center;
         /* teks rata kiri */
@@ -257,7 +256,6 @@
     .ttd-left {
         text-align: left;
         padding-left: 130px;
-        /* Ganti angka 50px sesuai kebutuhanmu */
     }
 
     .ttd-right {
@@ -307,14 +305,20 @@
         padding-left: 25px;
         font-size: 15px;
         margin-top: 0;
-        /* hilangkan jarak atas */
         line-height: 1.2;
         /* color: #334166; */
     }
 
+    /* Aturan untuk cetak A4 Landscape */
     @media print {
+        @page {
+            size: A4 landscape;
+            margin: 0;
+        }
+
         body {
             overflow: auto;
+            margin: 0;
         }
 
         .packing-label {
@@ -364,8 +368,8 @@
                 @php($path = route("students.kartu-sks", [$student->id]) )
                 <p>
                 <div style="text-align: center; margin-top: 117px; font-size: 30px; font-family: hussar-bold; color: #000">SERTIFIKAT SKS NON - AKADEMIK</div>
-                <div style="text-align: center; font-family: poppins-reguler; font-size: 27px; color: #000; letter-spacing: 0.5px;"> NOMOR: {{ sprintf("%'.03d", $student->order) }}/SNA/PSI/{{ $month_rome }}/{{ $current_year }}</div>
-                <div style="text-align: center; margin-top: 16px; font-size: 28px; color: #000">Diberikan Kepada:</div>
+                <div style="text-align: center; font-family: poppins-regular; font-size: 27px; color: #000; letter-spacing: 0.5px;"> NOMOR: {{ sprintf("%'.03d", $student->order) }}/SNA/PSI/{{ $month_rome }}/{{ $current_year }}</div>
+                <div style="text-align: center; margin-top: 5px; font-size: 28px; color: #000">Diberikan Kepada:</div>
                 <div style="text-align: center; margin-top: 2px; font-family: stars-love-bottom-heavy; color: #593772; font-size: 50px;">{{ ucwords(strtolower($student->name)) }}</div>
                 <div style="text-align: center; margin-top: 0px; font-size: 28px; color: #000">
                     NPM: {{ $student->npm }}
@@ -383,7 +387,7 @@
                     Fakultas Psikologi Unisba, dengan perolehan skor <strong>0 SKS</strong> dan mendapat predikat <strong>Belum Cukup</strong>
                     @endif
                 </div>
-                <div style="text-align: center; font-size: 21px; margin-top: 22px; poppins-reguler; color: #000">Bandung, {{ $date }}</div>
+                <div style="text-align: center; font-size: 21px; margin-top: 22px; poppins-regular; color: #000">Bandung, {{ $date }}</div>
                 @if($student->certificate_approve == 1)
                 <div style="position: absolute; top: 500px; margin-left: 107px;">
                     <img width="231px" class="img-fluid d-block w-10" src="{{ asset("assets/images/wadek-3.png") }}" alt="">
