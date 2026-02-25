@@ -34,6 +34,7 @@ class HomeController extends Controller
         $achievement = null;
         $result = "Belum Cukup";
         $isLulus = false;
+        $isLulusAndApproved = false;
 
         $needed = Reff::select('value', 'show')->where('status', 1)->where('name', 'minimalsks')->orderBy('value')->first();
         $ranges = Reff::select('value', 'show')->where('status', 1)->where('name', 'rangesks')->orderBy('id')->get()->toArray();
@@ -60,7 +61,8 @@ class HomeController extends Controller
             $dataKartu = $studentController->getKartuSKSData($student);
             $isLulus = ($dataKartu['totalSks'] >= $dataKartu['minimalSks']) 
                         && $dataKartu['kegiatanWajibSemuaTerpenuhi'];
-        }
+            $isLulusAndApproved = $isLulus && ($student->certificate_approve == 1);
+        } 
         
         $perPage = $request->input('per_page', 10);
         $allowed = [10, 25, 50, 100];
@@ -96,7 +98,7 @@ class HomeController extends Controller
         return view('welcome', compact(
             'active', 'sub_active', 'status', 'studentActivities', 'result',
             'needed', 'achievement', 'information', 'required', 'requiredHas',
-            'isLulus'
+            'isLulus', 'isLulusAndApproved'
         ));
     }
 
@@ -269,10 +271,23 @@ class HomeController extends Controller
     public function printCertificate(Request $request)
     {
         set_time_limit(0);
+
+        $user = auth()->user();
+        $student = Student::find($user->student_id);
+
+        // Validasi kelulusan dan approval
+        $studentController = app(StudentController::class);
+        $dataKartu = $studentController->getKartuSKSData($student);
+        $isLulus = ($dataKartu['totalSks'] >= $dataKartu['minimalSks']) 
+                    && $dataKartu['kegiatanWajibSemuaTerpenuhi'];
+
+        if (!$isLulus || $student->certificate_approve != 1) {
+            return redirect()->route('home')->with('error', 'Sertifikat belum dapat dicetak (syarat kelulusan atau persetujuan wadek belum terpenuhi).');
+        }
+
         $active = "";
         $sub_active = "";
 
-        $user = auth()->user();
         $genders = Reff::select('value', 'show')->where('status', 1)->where('name', 'genders')->orderBy('value')->pluck('show', 'value')->toArray();
         $religions = Reff::select('value', 'show')->where('status', 1)->where('name', 'religions')->orderBy('value')->pluck('show', 'value')->toArray();
         $year = Reff::select('value', 'show')->where('status', 1)->where('name', 'tahunajaran')->orderBy('value')->first();
@@ -296,16 +311,9 @@ class HomeController extends Controller
             }
         }
 
-        if ($result === 'Belum Cukup') {
-            return redirect()->route('home');
-        }
-
-        $months = [1 => "Januari", "Febuari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+        $months = [1 => "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
         $rome_months = [1 => "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII"];
         $month_rome = $rome_months[Carbon::now()->format("n")];
-        
-        $student = Student::where('id', $user->student_id)
-        ->first();
 
         if ($student->certificate_approve_date) {
             $date = Carbon::parse($student->certificate_approve_date)->translatedFormat('d F Y');
@@ -313,16 +321,13 @@ class HomeController extends Controller
             $date = Carbon::now()->translatedFormat('d F Y');
         }
 
-        
-        // $date = date("d", strtotime($student->certificate_approve_date)) ." ". $months[date("n", strtotime($student->certificate_approve_date))] ." ". date("Y", strtotime($student->certificate_approve_date));
-        
         if($request->has('download')) {
             $pdf = PDF::loadView('pages.profiles.print-certificate', compact(
                 'active', 'sub_active', 'genders', 'religions', 'year', 
                 'achievement', 'student', 'date', 'result', 'current_year', 'month_rome'
             ))->setPaper('a4', 'landscape');
         
-            return $pdf->download('sertificate.pdf');
+            return $pdf->download('sertifikat.pdf');
         }
         
         return view('pages.profiles.print-certificate', compact(
