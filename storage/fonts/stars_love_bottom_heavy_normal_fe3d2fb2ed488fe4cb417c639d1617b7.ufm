@@ -1,0 +1,101 @@
+StartFontMetrics 4.1
+Notice Converted by PHP-font-lib
+Comment https://github.com/PhenX/php-font-lib
+EncodingScheme FontSpecific
+Copyright Copyright © 2020 by Roland Hüse. All rights reserved.
+FontName Stars & Love Bottom Heavy
+FontSubfamily Regular
+UniqueID 1.000;UKWN;Stars&Love-BottomHeavy
+FullName Stars & Love Bottom Heavy
+Version Version 1.000
+PostScriptName Stars&Love-BottomHeavy
+Manufacturer Roland Hüse
+Designer Roland Hüse
+FontVendorURL https://rolandhuse.com
+FontDesignerURL https://rolandhuse.com
+PreferredFamily Stars & Love
+PreferredSubfamily Bottom Heavy
+Weight Medium
+ItalicAngle 0
+IsFixedPitch false
+UnderlineThickness 50
+UnderlinePosition -75
+FontHeightOffset 0
+Ascender 1050
+Descender -320
+FontBBox -199 -283 1361 911
+StartCharMetrics 74
+U 32 ; WX 300 ; N space ; G 1
+U 33 ; WX 253 ; N exclam ; G 69
+U 38 ; WX 682 ; N ampersand ; G 73
+U 44 ; WX 253 ; N comma ; G 66
+U 45 ; WX 585 ; N hyphen ; G 71
+U 46 ; WX 253 ; N period ; G 65
+U 48 ; WX 609 ; N zero ; G 55
+U 49 ; WX 447 ; N one ; G 56
+U 50 ; WX 588 ; N two ; G 57
+U 51 ; WX 567 ; N three ; G 58
+U 52 ; WX 615 ; N four ; G 59
+U 53 ; WX 567 ; N five ; G 60
+U 54 ; WX 524 ; N six ; G 61
+U 55 ; WX 363 ; N seven ; G 62
+U 56 ; WX 523 ; N eight ; G 63
+U 57 ; WX 530 ; N nine ; G 64
+U 58 ; WX 323 ; N colon ; G 67
+U 59 ; WX 323 ; N semicolon ; G 68
+U 63 ; WX 479 ; N question ; G 70
+U 64 ; WX 659 ; N at ; G 72
+U 65 ; WX 903 ; N A ; G 2
+U 66 ; WX 886 ; N B ; G 3
+U 67 ; WX 842 ; N C ; G 4
+U 68 ; WX 928 ; N D ; G 5
+U 69 ; WX 747 ; N E ; G 6
+U 70 ; WX 688 ; N F ; G 7
+U 71 ; WX 762 ; N G ; G 8
+U 72 ; WX 927 ; N H ; G 9
+U 73 ; WX 577 ; N I ; G 10
+U 74 ; WX 708 ; N J ; G 11
+U 75 ; WX 927 ; N K ; G 12
+U 76 ; WX 694 ; N L ; G 13
+U 77 ; WX 1183 ; N M ; G 14
+U 78 ; WX 1061 ; N N ; G 15
+U 79 ; WX 939 ; N O ; G 16
+U 80 ; WX 818 ; N P ; G 17
+U 81 ; WX 752 ; N Q ; G 18
+U 82 ; WX 956 ; N R ; G 19
+U 83 ; WX 736 ; N S ; G 20
+U 84 ; WX 645 ; N T ; G 21
+U 85 ; WX 848 ; N U ; G 22
+U 86 ; WX 780 ; N V ; G 23
+U 87 ; WX 1070 ; N W ; G 24
+U 88 ; WX 884 ; N X ; G 25
+U 89 ; WX 829 ; N Y ; G 26
+U 90 ; WX 639 ; N Z ; G 27
+U 97 ; WX 534 ; N a ; G 28
+U 98 ; WX 424 ; N b ; G 29
+U 99 ; WX 371 ; N c ; G 30
+U 100 ; WX 534 ; N d ; G 31
+U 101 ; WX 391 ; N e ; G 32
+U 102 ; WX 265 ; N f ; G 33
+U 103 ; WX 494 ; N g ; G 34
+U 104 ; WX 524 ; N h ; G 35
+U 105 ; WX 326 ; N i ; G 36
+U 106 ; WX 254 ; N j ; G 37
+U 107 ; WX 524 ; N k ; G 38
+U 108 ; WX 334 ; N l ; G 39
+U 109 ; WX 745 ; N m ; G 40
+U 110 ; WX 524 ; N n ; G 41
+U 111 ; WX 394 ; N o ; G 42
+U 112 ; WX 515 ; N p ; G 43
+U 113 ; WX 494 ; N q ; G 44
+U 114 ; WX 360 ; N r ; G 45
+U 115 ; WX 356 ; N s ; G 46
+U 116 ; WX 297 ; N t ; G 47
+U 117 ; WX 546 ; N u ; G 48
+U 118 ; WX 446 ; N v ; G 49
+U 119 ; WX 712 ; N w ; G 50
+U 120 ; WX 456 ; N x ; G 51
+U 121 ; WX 506 ; N y ; G 52
+U 122 ; WX 434 ; N z ; G 53
+EndCharMetrics
+EndFontMetrics

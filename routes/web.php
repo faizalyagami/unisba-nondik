@@ -26,6 +26,16 @@ use App\Http\Controllers\StudentActivityController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home')->middleware('auth');
 
+Route::get('/students/{student}/kartu-sks', [StudentController::class, 'kartuSKS'])->name('students.kartu-sks');
+Route::get('/students/{student}/kartu-sks/pdf', [StudentController::class, 'kartuSKSPDF'])->name('students.kartu-sks.pdf');
+
+Route::get('/test-kartu-sks/{npm}', function ($npm) {
+	$student = \App\Models\Student::where('npm', $npm)->first();
+	if (!$student) return "Student not found";
+
+	return app()->make(\App\Http\Controllers\StudentController::class)->kartuSKS($student);
+});
+
 Route::prefix('profile')->name('profile.')->middleware('auth')->group(function () {
 	Route::get('/', [HomeController::class, 'profile'])->name('index');
 	Route::get('/edit', [HomeController::class, 'editProfile'])->name('edit');
@@ -49,7 +59,7 @@ Route::prefix('student')->name('student.')->middleware('auth')->group(function (
 	Route::get('/show/{student}', [StudentController::class, 'show'])->name('show')->middleware('review');
 	Route::get('/edit/{student}', [StudentController::class, 'edit'])->name('edit')->middleware('review');
 	Route::post('/update/{student}', [StudentController::class, 'update'])->name('update')->middleware('review');
-	
+
 	Route::get('/export-format', [StudentController::class, 'exportFormatStudent'])->name('export-format')->middleware('review');
 	Route::get('/export-students', [StudentController::class, 'exportStudents'])->name('export-students')->middleware('review');
 
@@ -108,28 +118,28 @@ Route::prefix('information')->name('information.')->middleware('admin')->group(f
 	Route::post('/update/{information}', [InformationController::class, 'update'])->name('update');
 });
 
-Route::get('/forgot-password', function() {
+Route::get('/forgot-password', function () {
 	return view('auth.forgot-password');
 })->middleware('guest')->name('password-request');
 
 Route::post('/forgot-password', function (Request $request) {
-    $request->validate(['email' => 'required|email']);
- 
-    $status = Password::sendResetLink(
-        $request->only('email')
-    );
- 
-    return $status === Password::RESET_LINK_SENT
-                ? back()->with(['status' => __($status)])
-                : back()->withErrors(['email' => __($status)]);
+	$request->validate(['email' => 'required|email']);
+
+	$status = Password::sendResetLink(
+		$request->only('email')
+	);
+
+	return $status === Password::RESET_LINK_SENT
+		? back()->with(['status' => __($status)])
+		: back()->withErrors(['email' => __($status)]);
 })->middleware('guest')->name('password.email');
 
-Route::get('/reset-password/{token}', function($token) {
+Route::get('/reset-password/{token}', function ($token) {
 	return view('auth.reset-password', ['token' => $token]);
 	//return 'berhasil kirim email notifikasi reset password';
 })->middleware('guest')->name('password.reset');
 
-Route::post('/reset-password', function(Request $request) {
+Route::post('/reset-password', function (Request $request) {
 	$request->validate([
 		'token' => 'required',
 		'email' => 'required|email',
@@ -139,21 +149,19 @@ Route::post('/reset-password', function(Request $request) {
 	$status = Password::reset(
 		$request->only('email', 'password', 'password_confirmation', 'token'),
 		function ($user, $password) {
-            $user->forceFill([
-                'password' => Hash::make($password)
-            ])->setRememberToken(Str::random(60));
- 
-            $user->save();
- 
-            event(new PasswordReset($user));
-        }
+			$user->forceFill([
+				'password' => Hash::make($password)
+			])->setRememberToken(Str::random(60));
+
+			$user->save();
+
+			event(new PasswordReset($user));
+		}
 	);
-	
+
 	return $status === Password::PASSWORD_RESET
-	? redirect()->route('login')->withSuccess('Password has been changed')
-	: back()->withErrors(['email' => [__($status)]]);
-	
-	
+		? redirect()->route('login')->withSuccess('Password has been changed')
+		: back()->withErrors(['email' => [__($status)]]);
 })->middleware('guest')->name('password.update');
 // Route::post('/forgot-password', function() {
 

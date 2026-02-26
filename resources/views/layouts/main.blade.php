@@ -1,24 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		@include('components.header')
-		@include('components.header-link')
-	</head>
-	<body>
-		@include('components.pre-loader')
 
-		@include('components.content-header')
+<head>
+	@include('components.header')
+	@include('components.header-link')
+</head>
 
-		@include('components.menus')
-		
-		@include('components.footer-link')
+<body>
+	@include('components.pre-loader')
 
-		<div class="pcoded-main-container">
-			<div class="pcoded-content">
-				@yield('contents')
-			</div>
+	@include('components.content-header')
+
+	@include('components.menus')
+
+	@include('components.footer-link')
+
+	<div class="pcoded-main-container">
+		<div class="pcoded-content">
+			@yield('contents')
 		</div>
-		
-		@include('components.footer')
-	</body>
+	</div>
+
+	@include('components.footer')
+</body>
+
 </html>

@@ -1,19 +1,31 @@
 {
     "open sans": {
-        "300_italic": "D:\\Unisba\\unisba-nondik\\storage\\fonts\/open_sans_300_italic_54c67a410fca3ed6a82c331ec0184ef9",
-        "italic": "D:\\Unisba\\unisba-nondik\\storage\\fonts\/open_sans_italic_67bdd4a47b171988efc0a4ba996a68e0",
-        "bold_italic": "D:\\Unisba\\unisba-nondik\\storage\\fonts\/open_sans_bold_italic_762aac4dcb9c01f1ca640da86dd8d4ad",
-        "300": "D:\\Unisba\\unisba-nondik\\storage\\fonts\/open_sans_300_0885c5810a008bcb7c54e9d1bf54fb2c",
-        "normal": "D:\\Unisba\\unisba-nondik\\storage\\fonts\/open_sans_normal_f9f1b653d87c168097eaa958ffde3cdf",
-        "bold": "open_sans_bold_9f0e3c1c8c0fab5db8d6ce31e4104d18"
+        "300_italic": "E:\\project\\sksnondik\\storage\\fonts\/open_sans_300_italic_6d076855114db3a756225a500eeaf796",
+        "italic": "E:\\project\\sksnondik\\storage\\fonts\/open_sans_italic_3581d05c794ff7ccc3ccac55c27d28aa",
+        "bold_italic": "E:\\project\\sksnondik\\storage\\fonts\/open_sans_bold_italic_746a020ddb33bcc2eb2fc958dcdc1963",
+        "300": "E:\\project\\sksnondik\\storage\\fonts\/open_sans_300_eee70ffe92919281b4c3090c42249006",
+        "normal": "E:\\project\\sksnondik\\storage\\fonts\/open_sans_normal_fb8cbc3fa85ff7c317acbf9e1e9dedf3",
+        "bold": "open_sans_bold_ff234b764b5e232c41da6e83e382f185"
     },
     "bellezac": {
-        "normal": "bellezac_normal_940758ede33253fc1b0f450d46e8fa49"
+        "normal": "bellezac_normal_5728b4062a6952f6315db14e09fca92e"
     },
     "rasa-medium": {
-        "normal": "rasa_medium_normal_fe046e86216a9abf04c66a0988b72b6d"
+        "normal": "rasa_medium_normal_8ff7884890de69c6764b520ad39a4534"
     },
     "greatvibes": {
-        "normal": "greatvibes_normal_538eb847e4319f7eb5e054fba998f4f4"
+        "normal": "greatvibes_normal_ab4672de230b70091fcd92d40f9d5409"
+    },
+    "tttsars": {
+        "normal": "tttsars_normal_b83027651145f13ff182ed350a5bdc44"
+    },
+    "stars-love-bottom-heavy": {
+        "normal": "stars_love_bottom_heavy_normal_fe3d2fb2ed488fe4cb417c639d1617b7"
+    },
+    "georgia-pro": {
+        "normal": "georgia_pro_normal_72afa191809fe922e059923fd703d58a"
+    },
+    "hussar-bold": {
+        "normal": "hussar_bold_normal_8f08360b5677c914efba88aec08b0e55"
     }
 }

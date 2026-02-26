@@ -13,6 +13,8 @@ use Illuminate\Filesystem\Filesystem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Barryvdh\Snappy\Facades\SnappyPdf;
+use Illuminate\Support\Facades\View;
 use PDF;
 
 class HomeController extends Controller
@@ -31,36 +33,56 @@ class HomeController extends Controller
         $status = [0 => 'Semua', 'Open', 'Review', 'Approve', 'Reject'];
         $achievement = null;
         $result = "Belum Cukup";
+        $isLulus = false;
+        $isLulusAndApproved = false;
+        $dataKartu = null; // untuk menyimpan data kartu SKS
 
         $needed = Reff::select('value', 'show')->where('status', 1)->where('name', 'minimalsks')->orderBy('value')->first();
         $ranges = Reff::select('value', 'show')->where('status', 1)->where('name', 'rangesks')->orderBy('id')->get()->toArray();
 
-        if(in_array($user->level, [2, 3])) {
-            $achievement = StudentActivity::selectRaw('sum(sks) as sks')
-                ->join('sub_activities', 'sub_activities.id', 'student_activities.sub_activity_id')
-                ->where('student_id', $user->student_id)
-                ->where('student_activities.status', '3')
-                ->first();
+        if (in_array($user->level, [2, 3])) {
+            // Ambil data dari kartu SKS (yang sudah mempertimbangkan aturan per kategori)
+            $student = Student::find($user->student_id);
+            $studentController = app(StudentController::class);
+            $dataKartu = $studentController->getKartuSKSData($student);
 
-            $a = $achievement->sks;
-            for($key = 0; $key < (count($ranges) - 1); ++$key) {
-                if($a <= $ranges[$key + 1]['value'] && $a > $ranges[$key]['value']) {
+            // Gunakan total SKS dari kartu SKS
+            $totalSks = $dataKartu['totalSks'];
+            $isLulus = ($totalSks >= $dataKartu['minimalSks'])
+                && $dataKartu['kegiatanWajibSemuaTerpenuhi'];
+            $isLulusAndApproved = $isLulus && ($student->certificate_approve == 1);
+
+            // Hitung predikat berdasarkan total SKS dari kartu
+            $ranges = Reff::select('value', 'show')->where('status', 1)->where('name', 'rangesks')->orderBy('id')->get()->toArray();
+            $result = "Belum Cukup";
+            for ($key = 0; $key < (count($ranges) - 1); ++$key) {
+                if ($totalSks <= $ranges[$key + 1]['value'] && $totalSks > $ranges[$key]['value']) {
                     $result = $ranges[$key]['show'];
-                } else if($a > $ranges[$key + 1]['value']) {
+                } else if ($totalSks > $ranges[$key + 1]['value']) {
                     $result = $ranges[$key + 1]['show'];
                 }
             }
+
+            // Buat objek achievement palsu untuk kompatibilitas dengan view
+            $achievement = (object)['sks' => $totalSks];
         }
-        
+
+        $perPage = $request->input('per_page', 10);
+        $allowed = [10, 25, 50, 100];
+        if (!in_array($perPage, $allowed)) {
+            $perPage = 10;
+        }
+
         $studentActivities = StudentActivity::with([
-                'subActivity', 'student'
-            ])
-            ->when(in_array($user->level, [2, 3]), function($q) use($user) {
+            'subActivity',
+            'student'
+        ])
+            ->when(in_array($user->level, [2, 3]), function ($q) use ($user) {
                 $q->where('student_id', $user->student_id);
             })
+            ->whereHas('student')
             ->orderBy('created_at', 'desc')
-            ->limit(50)
-            ->get();
+            ->paginate($perPage);
 
         $information = Information::where('status', 1)
             ->orderBy('created_at', 'desc')
@@ -68,18 +90,29 @@ class HomeController extends Controller
 
         $required = Reff::select('value', 'show')->where('status', 1)->where('name', 'RequiredActivity')->orderBy('value')->first();
         $requiredHas = 0;
-        if(in_array($user->level, [2, 3])) {
-            $req = StudentActivity::whereHas('subActivity', function($q) {
-                    $q->whereRequired(true);
-                })
+        if (in_array($user->level, [2, 3])) {
+            $req = StudentActivity::whereHas('subActivity', function ($q) {
+                $q->whereRequired(true);
+            })
                 ->count();
 
             $requiredHas = $req;
         }
 
         return view('welcome', compact(
-            'active', 'sub_active', 'status', 'studentActivities', 'result',
-            'needed', 'achievement', 'information', 'required', 'requiredHas'
+            'active',
+            'sub_active',
+            'status',
+            'studentActivities',
+            'result',
+            'needed',
+            'achievement',
+            'information',
+            'required',
+            'requiredHas',
+            'isLulus',
+            'isLulusAndApproved',
+            'dataKartu'
         ));
     }
 
@@ -98,15 +131,18 @@ class HomeController extends Controller
         $religions = Reff::select('value', 'show')->where('status', 1)->where('name', 'religions')->orderBy('value')->pluck('show', 'value')->toArray();
 
         $student = User::with([
-                'student' => function($q) use($user) {
-                    $q->where('id', $user->student_id);
-                }
-            ])
+            'student' => function ($q) use ($user) {
+                $q->where('id', $user->student_id);
+            }
+        ])
             ->where('id', $user->id)
             ->first();
 
         return view('pages.profiles.index', compact(
-            'active', 'sub_active', 'genders', 'religions', 
+            'active',
+            'sub_active',
+            'genders',
+            'religions',
             'student'
         ));
     }
@@ -123,7 +159,7 @@ class HomeController extends Controller
 
         $user = auth()->user();
 
-        if(in_array($user->level, [1, 2, 4])) {
+        if (in_array($user->level, [1, 2, 4])) {
             return redirect()->route('user.edit', $user);
         }
 
@@ -134,7 +170,10 @@ class HomeController extends Controller
             ->first();
 
         return view('pages.profiles.edit', compact(
-            'active', 'sub_active', 'genders', 'religions', 
+            'active',
+            'sub_active',
+            'genders',
+            'religions',
             'student'
         ));
     }
@@ -149,21 +188,21 @@ class HomeController extends Controller
         $user = auth()->user();
 
         $this->validate($request, [
-            'name' => ['required'], 
-            'phone' => ['required'], 
-            'email' => ['required', 'unique:students,email,'. $user->student_id], 
-            'address' => ['required'], 
-            'gender' => ['required'], 
-            'religion' => ['required'], 
-            'date_of_birth' => ['required'], 
+            'name' => ['required'],
+            'phone' => ['required'],
+            'email' => ['required', 'unique:students,email,' . $user->student_id],
+            'address' => ['required'],
+            'gender' => ['required'],
+            'religion' => ['required'],
+            'date_of_birth' => ['required'],
         ]);
 
         try {
-            DB::transaction(function() use($request, $user) {
+            DB::transaction(function () use ($request, $user) {
                 $file = $request->file('photo');
-                if($file) {
+                if ($file) {
                     $value = $file;
-                    $file_name = date('YmdHis') .'.'. $value->getClientOriginalExtension();
+                    $file_name = date('YmdHis') . '.' . $value->getClientOriginalExtension();
                     $folder_path = public_path('uploads/profiles');
                 }
 
@@ -174,16 +213,16 @@ class HomeController extends Controller
                 $message->address = $request->address;
                 $message->gender = $request->gender;
                 $message->religion = $request->religion;
-                if($request->date_of_birth) {
+                if ($request->date_of_birth) {
                     $message->date_of_birth = $request->date_of_birth;
                 }
-                if($file) {
+                if ($file) {
                     $message->photo = $file_name;
                 }
                 $message->editor = auth()->user()->username;
                 $message->save();
 
-                if($file) {
+                if ($file) {
                     $fileSystem = new Filesystem();
                     if (!$fileSystem->exists($folder_path)) {
                         $fileSystem->makeDirectory($folder_path, 0777, true, true);
@@ -213,7 +252,8 @@ class HomeController extends Controller
         $user = auth()->user();
 
         return view('pages.profiles.edit-password', compact(
-            'active', 'sub_active'
+            'active',
+            'sub_active'
         ));
     }
 
@@ -227,7 +267,7 @@ class HomeController extends Controller
         $user = auth()->user();
 
         $this->validate($request, [
-            'password' => ['required', 'confirmed'], 
+            'password' => ['required', 'confirmed'],
         ]);
 
         try {
@@ -251,10 +291,24 @@ class HomeController extends Controller
      */
     public function printCertificate(Request $request)
     {
+        set_time_limit(0);
+
+        $user = auth()->user();
+        $student = Student::find($user->student_id);
+
+        // Validasi kelulusan dan approval
+        $studentController = app(StudentController::class);
+        $dataKartu = $studentController->getKartuSKSData($student);
+        $isLulus = ($dataKartu['totalSks'] >= $dataKartu['minimalSks'])
+            && $dataKartu['kegiatanWajibSemuaTerpenuhi'];
+
+        if (!$isLulus || $student->certificate_approve != 1) {
+            return redirect()->route('home')->with('error', 'Sertifikat belum dapat dicetak (syarat kelulusan atau persetujuan wadek belum terpenuhi).');
+        }
+
         $active = "";
         $sub_active = "";
 
-        $user = auth()->user();
         $genders = Reff::select('value', 'show')->where('status', 1)->where('name', 'genders')->orderBy('value')->pluck('show', 'value')->toArray();
         $religions = Reff::select('value', 'show')->where('status', 1)->where('name', 'religions')->orderBy('value')->pluck('show', 'value')->toArray();
         $year = Reff::select('value', 'show')->where('status', 1)->where('name', 'tahunajaran')->orderBy('value')->first();
@@ -270,39 +324,54 @@ class HomeController extends Controller
             ->first();
 
         $a = $achievement->sks;
-        for($key = 0; $key < (count($ranges) - 1); ++$key) {
-            if($a <= $ranges[$key + 1]['value'] && $a > $ranges[$key]['value']) {
+        for ($key = 0; $key < (count($ranges) - 1); ++$key) {
+            if ($a <= $ranges[$key + 1]['value'] && $a > $ranges[$key]['value']) {
                 $result = $ranges[$key]['show'];
-            } else if($a > $ranges[$key + 1]['value']) {
+            } else if ($a > $ranges[$key + 1]['value']) {
                 $result = $ranges[$key + 1]['show'];
             }
         }
 
-        if ($result === 'Belum Cukup') {
-            return redirect()->route('home');
-        }
-
-        $months = [1 => "Januari", "Febuari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+        $months = [1 => "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
         $rome_months = [1 => "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII"];
         $month_rome = $rome_months[Carbon::now()->format("n")];
-        
-        $student = Student::where('id', $user->student_id)
-        ->first();
-        
-        $date = date("d", strtotime($student->certificate_approve_date)) ." ". $months[date("n", strtotime($student->certificate_approve_date))] ." ". date("Y", strtotime($student->certificate_approve_date));
-        
-        if($request->has('download')) {
-            $pdf = PDF::loadView('pages.profiles.print-certificate', compact(
-                'active', 'sub_active', 'genders', 'religions', 'year', 
-                'achievement', 'student', 'date', 'result', 'current_year', 'month_rome'
-            ))->setPaper('a4', 'landscape');
-        
-            return $pdf->download('sertificate.pdf');
+
+        if ($student->certificate_approve_date) {
+            $date = Carbon::parse($student->certificate_approve_date)->translatedFormat('d F Y');
+        } else {
+            $date = Carbon::now()->translatedFormat('d F Y');
         }
-        
+
+        if ($request->has('download')) {
+            $pdf = PDF::loadView('pages.profiles.print-certificate', compact(
+                'active',
+                'sub_active',
+                'genders',
+                'religions',
+                'year',
+                'achievement',
+                'student',
+                'date',
+                'result',
+                'current_year',
+                'month_rome'
+            ))->setPaper('a4', 'landscape');
+
+            return $pdf->download('sertifikat.pdf');
+        }
+
         return view('pages.profiles.print-certificate', compact(
-            'active', 'sub_active', 'genders', 'religions', 'year', 
-            'achievement', 'student', 'date', 'result', 'current_year', 'month_rome'
+            'active',
+            'sub_active',
+            'genders',
+            'religions',
+            'year',
+            'achievement',
+            'student',
+            'date',
+            'result',
+            'current_year',
+            'month_rome'
         ));
     }
 
@@ -319,14 +388,14 @@ class HomeController extends Controller
         $user = auth()->user();
 
         return view('template', compact(
-            'active', 'sub_active'
+            'active',
+            'sub_active'
         ));
     }
 
     public function generatePDF()
     {
-        $active = "";
-        $sub_active = "";
+        set_time_limit(0);
 
         $user = auth()->user();
         $genders = Reff::select('value', 'show')->where('status', 1)->where('name', 'genders')->orderBy('value')->pluck('show', 'value')->toArray();
@@ -344,10 +413,10 @@ class HomeController extends Controller
             ->first();
 
         $a = $achievement->sks;
-        for($key = 0; $key < (count($ranges) - 1); ++$key) {
-            if($a <= $ranges[$key + 1]['value'] && $a > $ranges[$key]['value']) {
+        for ($key = 0; $key < (count($ranges) - 1); ++$key) {
+            if ($a <= $ranges[$key + 1]['value'] && $a > $ranges[$key]['value']) {
                 $result = $ranges[$key]['show'];
-            } else if($a > $ranges[$key + 1]['value']) {
+            } else if ($a > $ranges[$key + 1]['value']) {
                 $result = $ranges[$key + 1]['show'];
             }
         }
@@ -356,21 +425,35 @@ class HomeController extends Controller
             return redirect()->route('home');
         }
 
-        $months = [1 => "Januari", "Febuari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+        $months = [1 => "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
         $rome_months = [1 => "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII"];
         $month_rome = $rome_months[Carbon::now()->format("n")];
-        
-        $student = Student::where('id', $user->student_id)
-        ->first();
-        
-        $date = date("d", strtotime($student->certificate_approve_date)) ." ". $months[date("n", strtotime($student->certificate_approve_date))] ." ". date("Y", strtotime($student->certificate_approve_date));
-          
-        $pdf = Pdf::loadView('pages.profiles.print-certificate-pdf', compact(
-            'active', 'sub_active', 'genders', 'religions', 'year', 
-            'achievement', 'student', 'date', 'result', 'current_year', 'month_rome'
-        ))->setPaper('a4', 'landscape');
-    
-        return $pdf->download('sertificate.pdf');
-    }
 
+        $student = Student::where('id', $user->student_id)->first();
+
+        if ($student->certificate_approve_date) {
+            $date = Carbon::parse($student->certificate_approve_date)->translatedFormat('d F Y');
+        } else {
+            $date = Carbon::now()->translatedFormat('d F Y');
+        }
+
+        $html = view('pages.profiles.print-certificate-pdf', compact(
+            'genders',
+            'religions',
+            'year',
+            'achievement',
+            'student',
+            'date',
+            'result',
+            'current_year',
+            'month_rome'
+        ))->render();
+
+        $pdf = SnappyPdf::loadHTML($html);
+        $pdf->setOption('enable-local-file-access', true);
+        $pdf->setOption('disable-local-file-access', false);
+        $pdf->setOption('allow', public_path());
+
+        return $pdf->download('sertifikat.pdf');
+    }
 }

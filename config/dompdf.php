@@ -278,6 +278,8 @@ return array(
          * @var bool
          */
         "enable_html5_parser" => true,
+
+        'log_output_file' => storage_path('logs/dompdf.html'),
     ),
 
 
