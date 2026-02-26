@@ -24,7 +24,7 @@
 
         <div class="card-header-right">
             <div class="btn-group card-option">
-                <button type="button" class="btn dropdown-toggle btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button type="button" class="btn dropdown-toggle btn-icon" data-toggle="modal" data-target="#exampleModal">
                     <i class="feather icon-more-horizontal"></i>
                 </button>
                 <ul class="list-unstyled card-option dropdown-menu dropdown-menu-right">
