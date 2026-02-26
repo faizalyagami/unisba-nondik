@@ -71,7 +71,7 @@
         <div class="card flat-card widget-purple-card">
             <div class="row-table">
                 <div class="col-sm-3 card-body" style="background-color: rgb(13, 145, 222)">
-                    <a href="{{ route('profile.print-certificate') }}" target="_blank">
+                    <a href="{{ route('profile.print-certificate') }}">
                         <i class="fas fa-print"></i>
                     </a>
                 </div>
@@ -135,19 +135,19 @@
                 @if(in_array(auth()->user()->level, [2, 3]))
                 @if($requiredHas < $required->value)
                     <span class="blink_me" style="color: #fb786e">Anda belum mengikuti {{ $required->value - $requiredHas }} kegiatan wajib.</span>
-                    @endif
-                    @endif
-                    <div class="card-header-right">
-                        <div class="btn-group card-option">
-                            <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="feather icon-more-horizontal"></i>
-                            </button>
-                            <ul class="list-unstyled card-option dropdown-menu dropdown-menu-right">
-                                <li class="dropdown-item full-card"><a href="#!"><span><i class="feather icon-maximize"></i> maximize</span><span style="display:none"><i class="feather icon-minimize"></i> Restore</span></a></li>
-                                <li class="dropdown-item minimize-card"><a href="#!"><span><i class="feather icon-minus"></i> collapse</span><span style="display:none"><i class="feather icon-plus"></i> expand</span></a></li>
-                            </ul>
-                        </div>
+                @endif
+                @endif
+                <div class="card-header-right">
+                    <div class="btn-group card-option">
+                        <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="feather icon-more-horizontal"></i>
+                        </button>
+                        <ul class="list-unstyled card-option dropdown-menu dropdown-menu-right">
+                            <li class="dropdown-item full-card"><a href="#!"><span><i class="feather icon-maximize"></i> maximize</span><span style="display:none"><i class="feather icon-minimize"></i> Restore</span></a></li>
+                            <li class="dropdown-item minimize-card"><a href="#!"><span><i class="feather icon-minus"></i> collapse</span><span style="display:none"><i class="feather icon-plus"></i> expand</span></a></li>
+                        </ul>
                     </div>
+                </div>
             </div>
             <div class="card-body">
                 <!-- Form Show Entries -->
@@ -256,49 +256,8 @@
                     </table>
                 </div>
 
-                <!-- Pagination -->
-                @if ($studentActivities->hasPages())
-                <div class="d-flex justify-content-center mt-3">
-                    <nav aria-label="Page navigation">
-                        <ul class="pagination">
-                            {{-- Previous Page Link --}}
-                            @if ($studentActivities->onFirstPage())
-                            <li class="page-item disabled">
-                                <span class="page-link"><i class="feather icon-chevron-left"></i></span>
-                            </li>
-                            @else
-                            <li class="page-item">
-                                <a class="page-link" href="{{ $studentActivities->previousPageUrl() }}" rel="prev">
-                                    <i class="feather icon-chevron-left"></i>
-                                </a>
-                            </li>
-                            @endif
-
-                            {{-- Pagination Elements --}}
-                            @foreach ($studentActivities->getUrlRange(1, $studentActivities->lastPage()) as $page => $url)
-                            @if ($page == $studentActivities->currentPage())
-                            <li class="page-item active"><span class="page-link">{{ $page }}</span></li>
-                            @else
-                            <li class="page-item"><a class="page-link" href="{{ $url }}">{{ $page }}</a></li>
-                            @endif
-                            @endforeach
-
-                            {{-- Next Page Link --}}
-                            @if ($studentActivities->hasMorePages())
-                            <li class="page-item">
-                                <a class="page-link" href="{{ $studentActivities->nextPageUrl() }}" rel="next">
-                                    <i class="feather icon-chevron-right"></i>
-                                </a>
-                            </li>
-                            @else
-                            <li class="page-item disabled">
-                                <span class="page-link"><i class="feather icon-chevron-right"></i></span>
-                            </li>
-                            @endif
-                        </ul>
-                    </nav>
-                </div>
-                @endif
+                <!-- Pagination menggunakan custom-default -->
+                {{ $studentActivities->links('vendor.pagination.custom-default') }}
             </div>
         </div>
     </div>
@@ -348,68 +307,6 @@
     .badge-secondary {
         background-color: #6c757d;
         color: #fff;
-    }
-
-    /* Pagination styling */
-    .pagination {
-        display: flex;
-        padding-left: 0;
-        list-style: none;
-        border-radius: 0.25rem;
-        margin: 0;
-    }
-
-    .page-item:first-child .page-link {
-        margin-left: 0;
-        border-top-left-radius: 0.25rem;
-        border-bottom-left-radius: 0.25rem;
-    }
-
-    .page-item:last-child .page-link {
-        border-top-right-radius: 0.25rem;
-        border-bottom-right-radius: 0.25rem;
-    }
-
-    .page-item.active .page-link {
-        z-index: 3;
-        color: #fff;
-        background-color: #007bff;
-        border-color: #007bff;
-    }
-
-    .page-item.disabled .page-link {
-        color: #6c757d;
-        pointer-events: none;
-        cursor: auto;
-        background-color: #fff;
-        border-color: #dee2e6;
-    }
-
-    .page-link {
-        position: relative;
-        display: block;
-        padding: 0.5rem 0.75rem;
-        margin-left: -1px;
-        line-height: 1.25;
-        color: #007bff;
-        background-color: #fff;
-        border: 1px solid #dee2e6;
-        text-decoration: none;
-        transition: all 0.2s;
-    }
-
-    .page-link:hover {
-        z-index: 2;
-        color: #0056b3;
-        text-decoration: none;
-        background-color: #e9ecef;
-        border-color: #dee2e6;
-    }
-
-    .page-link:focus {
-        z-index: 3;
-        outline: 0;
-        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
     }
 
     /* Hover effect untuk baris tabel */
