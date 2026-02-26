@@ -71,7 +71,7 @@
         <div class="card flat-card widget-purple-card">
             <div class="row-table">
                 <div class="col-sm-3 card-body" style="background-color: rgb(13, 145, 222)">
-                    <a href="{{ route('profile.print-certificate') }}">
+                    <a href="{{ route('profile.print-certificate') }}" target="_blank">
                         <i class="fas fa-print"></i>
                     </a>
                 </div>
