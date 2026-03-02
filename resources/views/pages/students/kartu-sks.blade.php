@@ -779,12 +779,12 @@
 
                         // Tentukan status berdasarkan minimal kegiatan wajib
                         if ($kelompok['min_wajib'] > 0) {
-                            $statusKategori = ($kelompok['wajib_terpenuhi'] >= $kelompok['min_wajib']) ? 'LENGKAP' : 'BELUM LENGKAP';
+                            $statusKategori = ($kelompok['wajib_terpenuhi'] >= $kelompok['min_wajib']) ? 'TERPENUHI' : 'BELUM TERPENUHI';
                         } else {
                             // jika tidak ada informasi minimal, gunakan logika lama (semua kegiatan wajib terpenuhi)
-                            $statusKategori = ($kelompok['wajib_terpenuhi'] == $kelompok['wajib_total'] && $kelompok['wajib_total'] > 0) ? 'LENGKAP' : 'BELUM LENGKAP';
+                            $statusKategori = ($kelompok['wajib_terpenuhi'] == $kelompok['wajib_total'] && $kelompok['wajib_total'] > 0) ? 'TERPENUHI' : 'BELUM TERPENUHI';
                         }
-                        $statusColor = $statusKategori == 'LENGKAP' ? 'status-terpenuhi' : 'status-belum';
+                        $statusColor = $statusKategori == 'TERPENUHI' ? 'status-terpenuhi' : 'status-belum';
                     @endphp
                     <tr>
                         <td style="text-align: center;">{{ $index + 1 }}</td>

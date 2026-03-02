@@ -11,23 +11,36 @@ class Student extends Model
 
     protected $guarded = ['id'];
 
-    public function user() {
-        return $this->hasOne('App\Models\User');
+    /**
+     * Relasi ke User
+     */
+    public function user()
+    {
+        return $this->hasOne(User::class, 'student_id');
     }
 
-    public function studentActivities() {
-        return $this->hasMany('App\Models\StudentActivity');
+    /**
+     * Relasi ke StudentActivity
+     */
+    public function studentActivities()
+    {
+        return $this->hasMany(StudentActivity::class, 'student_id');
     }
 
-    public static function lastOrder($clas_of) {
-        $student = static::select('order')
-            ->where('class_of', $clas_of)
-            ->orderBy('id', 'desc')
-            ->first();
+    /**
+     * Relasi ke Period
+     */
+    public function period()
+    {
+        return $this->belongsTo(Period::class, 'period_id');
+    }
 
-        //$last = $student->order;
-        $last = $student ? $student->order : 0;
-
-        return $last;
+    /**
+     * Mendapatkan nomor order terakhir berdasarkan angkatan
+     */
+    public function lastOrder($class_of)
+    {
+        $last = self::where('class_of', $class_of)->orderBy('order', 'desc')->first();
+        return $last ? $last->order : 0;
     }
 }

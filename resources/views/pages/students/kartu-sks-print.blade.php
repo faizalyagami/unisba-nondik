@@ -693,7 +693,7 @@
                     $total = count($kelompok['kegiatan']);
                     $terpenuhi = collect($kelompok['kegiatan'])->where('status', 'TERPENUHI')->count();
                     $progressPersen = $total > 0 ? round(($terpenuhi / $total) * 100) : 0;
-                    $statusKategori = $terpenuhi == $total ? 'LENGKAP' : 'BELUM LENGKAP';
+                    $statusKategori = $terpenuhi == $total ? 'TERPENUHI' : 'BELUM TERPENUHI';
                     $statusColor = $terpenuhi == $total ? 'status-terpenuhi' : 'status-belum';
                     @endphp
                     <tr>

@@ -368,7 +368,9 @@
                 @php($path = route("students.kartu-sks", [$student->id]) )
                 <p>
                 <div style="text-align: center; margin-top: 117px; font-size: 30px; font-family: hussar-bold; color: #000">SERTIFIKAT SKS NON - AKADEMIK</div>
-                <div style="text-align: center; font-family: poppins-regular; font-size: 27px; color: #000; letter-spacing: 0.5px;"> NOMOR: {{ sprintf("%'.03d", $student->order) }}/SNA/PSI/{{ $month_rome }}/{{ $current_year }}</div>
+                <div style="text-align: center; font-family: poppins-regular; font-size: 27px; color: #000; letter-spacing: 0.5px;">
+                    NOMOR: {{ sprintf("%'.03d", $student->order) }}/SNA/PSI/{{ $month_rome }}/{{ $current_year }}
+                </div>
                 <div style="text-align: center; margin-top: 5px; font-size: 28px; color: #000">Diberikan Kepada:</div>
                 <div style="text-align: center; margin-top: 2px; font-family: stars-love-bottom-heavy; color: #593772; font-size: 50px;">{{ ucwords(strtolower($student->name)) }}</div>
                 <div style="text-align: center; margin-top: 0px; font-size: 28px; color: #000">

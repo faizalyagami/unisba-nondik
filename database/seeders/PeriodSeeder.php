@@ -28,7 +28,7 @@ class PeriodSeeder extends Seeder
                 'name' => '2025/2026 Semester Genap',
                 'tahun_awal' => 2025,
                 'tahun_akhir' => 2026,
-                'semester' => 'ganjil',
+                'semester' => 'genap',
                 'is_active' => false,
                 'created_at' => now(),
                 'updated_at' => now()

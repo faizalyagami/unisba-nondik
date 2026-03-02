@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\PeriodController;
 use Illuminate\Auth\Events\PasswordReset;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\ActivityController;
@@ -99,6 +100,16 @@ Route::prefix('activity')->name('activity.')->middleware('admin')->group(functio
 	});
 });
 
+// ====================================================
+// ADMIN PANEL UNTUK MENGELOLA PERIODE
+// ====================================================
+Route::prefix('admin')->name('admin.')->middleware(['auth', 'wadek'])->group(function () {
+    Route::resource('periods', PeriodController::class);
+    Route::post('periods/{period}/activate', [PeriodController::class, 'activate'])->name('periods.activate');
+    Route::post('periods/{period}/reset-order', [PeriodController::class, 'resetOrder'])->name('periods.reset-order');
+});
+// ====================================================
+
 Route::prefix('user')->name('user.')->middleware(['wadek'])->group(function () {
 	Route::get('/', [UserController::class, 'index'])->name('index');
 	Route::post('/', [UserController::class, 'store'])->name('store');
@@ -136,7 +147,6 @@ Route::post('/forgot-password', function (Request $request) {
 
 Route::get('/reset-password/{token}', function ($token) {
 	return view('auth.reset-password', ['token' => $token]);
-	//return 'berhasil kirim email notifikasi reset password';
 })->middleware('guest')->name('password.reset');
 
 Route::post('/reset-password', function (Request $request) {
@@ -163,8 +173,5 @@ Route::post('/reset-password', function (Request $request) {
 		? redirect()->route('login')->withSuccess('Password has been changed')
 		: back()->withErrors(['email' => [__($status)]]);
 })->middleware('guest')->name('password.update');
-// Route::post('/forgot-password', function() {
-
-// })->middleware('guest')->name('password.email');
 
 Route::get('/send-email', [SendEmail::class, 'index']);

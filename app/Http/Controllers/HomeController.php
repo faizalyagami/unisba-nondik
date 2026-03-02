@@ -294,7 +294,9 @@ class HomeController extends Controller
         set_time_limit(0);
 
         $user = auth()->user();
-        $student = Student::find($user->student_id);
+        
+        // Load relasi period
+        $student = Student::with('period')->where('id', $user->student_id)->first();
 
         // Validasi kelulusan dan approval
         $studentController = app(StudentController::class);

@@ -653,12 +653,11 @@ class StudentController extends Controller
 
     public function approveCertificate(Request $request)
     {
-        \Log::info('approveCertificate called with id: ' . $request->id); // untuk debugging
+        \Log::info('approveCertificate called with id: ' . $request->id);
 
         $student = Student::where("id", $request->id)->first();
 
         if (!$student) {
-            \Log::error('Student not found with id: ' . $request->id);
             return response()->json([
                 'status' => 'fail',
                 'message' => 'Mahasiswa tidak ditemukan.'
@@ -678,16 +677,42 @@ class StudentController extends Controller
                 ]);
             }
 
+            // CEK APAKAH SUDAH PERNAH DIAPPROVE SEBELUMNYA
+            if ($student->certificate_approve == 1) {
+                return response()->json([
+                    'status' => 'fail',
+                    'message' => 'Sertifikat mahasiswa ini sudah disetujui sebelumnya.'
+                ]);
+            }
+
+            // AMBIL NOMOR URUT DARI PERIODE AKTIF
+            try {
+                $orderData = \App\Models\Period::getNextOrderNumber();
+            } catch (\Exception $e) {
+                return response()->json([
+                    'status' => 'fail',
+                    'message' => $e->getMessage()
+                ]);
+            }
+
+            // Dapatkan bulan Romawi
+            $rome_months = [1 => "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII"];
+            $month_rome = $rome_months[now()->month];
+
+            // Update data mahasiswa
             $student->certificate_approve = 1;
             $student->certificate_approve_date = now();
+            $student->order = $orderData['order'];
+            $student->period_id = $orderData['period_id']; // Simpan ID periode
             $student->save();
 
-            \Log::info('Certificate approved for student: ' . $student->id);
+            \Log::info('Certificate approved for student: ' . $student->id . ' with order: ' . $orderData['order'] . ' in period: ' . $orderData['period_name']);
 
             return response()->json([
                 'status' => 'ok',
-                'message' => 'Sertifikat berhasil disetujui'
+                'message' => 'Sertifikat berhasil disetujui dengan nomor ' . sprintf("%03d", $orderData['order']) . ' periode ' . $orderData['period_name']
             ]);
+            
         } catch (\Exception $e) {
             \Log::error('Error approving certificate: ' . $e->getMessage());
             return response()->json([

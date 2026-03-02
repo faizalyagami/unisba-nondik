@@ -77,8 +77,8 @@
 				<li class="nav-item pcoded-menu-caption">
 					<label>Setting Periode</label>
 				</li>
-				<li class="nav-item">
-					<a href=#>
+				<li class="nav-item {{ $active == 'periods' ? 'active' : '' }}">
+					<a href="{{ route('admin.periods.index') }}">
 						<span class="pcoded-micon"><i class="feather icon-calendar"></i></span>
 						<span class="pcoded-mtext">Setting Periode</span>
 					</a>
