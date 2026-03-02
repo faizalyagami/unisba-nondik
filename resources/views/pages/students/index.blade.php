@@ -10,7 +10,7 @@
                     <h5 class="m-b-10">Mahasiswa</h5>
                 </div>
                 <ul class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="index.html"><i class="feather icon-home"></i></a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('home') }}"><i class="feather icon-home"></i></a></li>
                     <li class="breadcrumb-item"><a href="#!">Dashboard Analytics</a></li>
                 </ul>
             </div>
@@ -20,16 +20,20 @@
 
 <div class="card">
     <div class="card-header">
-        <h5>&nbsp;</h5>
+        <h5>Daftar Mahasiswa</h5>
         <div class="card-header-right">
-            <div class="btn-group card-option">
-                <button type="button" class="btn dropdown-toggle btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="feather icon-more-horizontal"></i>
-                </button>
-                <ul class="list-unstyled card-option dropdown-menu dropdown-menu-right">
-                    <li class="dropdown-item"><a href="javascript:void(0)" class="" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo"><i class="feather mr-2 icon-search"></i> Search & Filter</a></li>
-                </ul>
-            </div>
+            <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#exampleModal">
+                <i class="feather icon-search"></i> Filter
+            </button>
+            <a href="{{ route('student.create') }}" class="btn btn-sm btn-success">
+                <i class="feather icon-user-plus"></i> Tambah
+            </a>
+            <a href="{{ route('student.import') }}" class="btn btn-sm btn-info">
+                <i class="feather icon-log-in"></i> Import
+            </a>
+            <a href="{{ route('student.export-students') }}?search_text={{ $search_text }}&search_gender={{ $search_gender }}&search_classof={{ $search_classof }}&search_pansus={{ $search_pansus }}&search_status={{ $search_status }}" class="btn btn-sm btn-warning">
+                <i class="feather icon-log-out"></i> Export
+            </a>
         </div>
     </div>
 
@@ -41,18 +45,20 @@
                     @csrf
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Search & Filter</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="search_text" class="col-form-label">Search</label>
-                            <input type="text" class="form-control" name="search_text" id="search_text" value="{{  $search_text }}">
+                            <input type="text" class="form-control" name="search_text" id="search_text" value="{{ $search_text }}">
                         </div>
                         <div class="form-group">
                             <label for="class_of">Angkatan</label>
                             <select class="form-control" name="search_classof" id="class_of">
                                 @foreach ($classofs as $year)
-                                <option value="{{ $year }}" {{ ($search_classof == $year ? "selected":"") }}>{{ $year }}</option>
+                                <option value="{{ $year }}" {{ $search_classof == $year ? 'selected' : '' }}>{{ $year }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -60,13 +66,14 @@
                             <label for="status">Status</label>
                             <select class="form-control" name="search_status" id="status">
                                 @foreach ($status as $key => $val)
-                                <option value="{{ $key }}" {{ ($search_status == $key ? "selected":"") }}>{{ $val }}</option>
+                                <option value="{{ $key }}" {{ $search_status == $key ? 'selected' : '' }}>{{ $val }}</option>
                                 @endforeach
                             </select>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <input type="submit" class="btn btn-primary" value="Search">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-primary">Search</button>
                     </div>
                 </form>
             </div>
@@ -109,7 +116,7 @@
                         <td>{{ $student->phone }}</td>
                         <td>{{ $genders[$student->gender] ?? '-' }}</td>
                         <td>{{ $student->class_of }}</td>
-                        <td>{{ date("d F Y", strtotime($student->period)) }}</td>
+                        <td>{{ date('d F Y', strtotime($student->period)) }}</td>
                         <td>
                             @if($student->isLulus)
                                 {{ $student->sumsks }} SKS
@@ -229,6 +236,14 @@
     }
     .table-hover tbody tr:hover {
         background-color: rgba(23, 162, 184, 0.05);
+    }
+    .card-header-right {
+        display: flex;
+        gap: 5px;
+    }
+    .btn-sm {
+        padding: 5px 10px;
+        font-size: 12px;
     }
 </style>
 
